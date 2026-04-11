@@ -5,6 +5,7 @@ import { Pause, Play, ChevronLeft, ChevronRight } from 'lucide-react'
 const galleries = [
   {
     label: 'Advanced AI Lecture Series',
+    category: 'Academic',
     color: 'bg-orange-500',
     images: [
       'https://images.unsplash.com/photo-1544158498-5006d6342898?auto=format&fit=crop&q=80&w=800&h=500',
@@ -14,6 +15,7 @@ const galleries = [
   },
   {
     label: 'High-Performance Computing Lab',
+    category: 'Academic',
     color: 'bg-pink-500',
     images: [
       'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80&w=800&h=500',
@@ -23,6 +25,7 @@ const galleries = [
   },
   {
     label: 'Cloud Computing Workshop',
+    category: 'Academic',
     color: 'bg-fcit-100',
     images: [
       'https://images.unsplash.com/photo-1540317580384-e5d43867caa6?auto=format&fit=crop&q=80&w=800&h=500',
@@ -32,6 +35,7 @@ const galleries = [
   },
   {
     label: 'Capstone Project Exhibition',
+    category: 'Academic',
     color: 'bg-fcit-300',
     images: [
       'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800&h=500',
@@ -41,6 +45,7 @@ const galleries = [
   },
   {
     label: 'Open Source Contribution Drive',
+    category: 'Events',
     color: 'bg-fcit-200',
     images: [
       'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&h=500',
@@ -50,6 +55,7 @@ const galleries = [
   },
   {
     label: 'National Level Hackfest',
+    category: 'Events',
     color: 'bg-green-500',
     images: [
       'https://images.unsplash.com/photo-1504384308090-c894fd18ee4c?auto=format&fit=crop&q=80&w=800&h=500',
@@ -59,6 +65,7 @@ const galleries = [
   },
   {
     label: 'Tech Symposium 2026',
+    category: 'Events',
     color: 'bg-amber-500',
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800&h=500',
@@ -68,6 +75,7 @@ const galleries = [
   },
   {
     label: 'Annual Student-Parent Networking',
+    category: 'Campus Life',
     color: 'bg-rose-500',
     images: [
       'https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800&h=500',
@@ -77,6 +85,7 @@ const galleries = [
   },
   {
     label: 'Tech Carnival Cultural Eve',
+    category: 'Events',
     color: 'bg-fcit-400',
     images: [
       'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=800&h=500',
@@ -86,6 +95,7 @@ const galleries = [
   },
   {
     label: 'Placement Drive 2026',
+    category: 'Campus Life',
     color: 'bg-teal-500',
     images: [
       'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800&h=500',
@@ -95,6 +105,7 @@ const galleries = [
   },
   {
     label: 'Wellness & Mindfulness',
+    category: 'Campus Life',
     color: 'bg-lime-500',
     images: [
       'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800&h=500',
@@ -371,6 +382,11 @@ function CarouselCard({ gallery }) {
 }
 
 export default function CampusExperience() {
+  const tabs = ['Academic', 'Events', 'Campus Life']
+  const [activeTab, setActiveTab] = useState('Academic')
+
+  const filteredGalleries = galleries.filter(g => g.category === activeTab)
+
   return (
     <section className="py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -385,17 +401,48 @@ export default function CampusExperience() {
           <h2 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight text-fcit-300">
             Campus Life Gallery
           </h2>
-
-          {/* Removed descriptive text for cleaner look matching the reference */}
         </motion.div>
 
-        {/* Gallery Grid Container - Gold Background */}
-        <div className="bg-[#DFB94C] py-12 px-6 rounded-t-[2.5rem] shadow-inner mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10 mx-[6%]">
-          {galleries.map((gallery, i) => (
-            <CarouselCard key={i} gallery={gallery} />
-          ))}
+        {/* Tab Navigation */}
+        <div className="flex justify-center mb-8">
+          <div className="bg-slate-100 p-1.5 rounded-2xl inline-flex gap-2 shadow-inner overflow-x-auto max-w-full">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-6 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all duration-300 ${
+                  activeTab === tab ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                {activeTab === tab && (
+                  <motion.div
+                    layoutId="activeTabIndicator"
+                    className="absolute inset-0 bg-fcit-400 rounded-xl"
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  />
+                )}
+                <span className="relative z-10">{tab}</span>
+              </button>
+            ))}
           </div>
+        </div>
+
+        {/* Gallery Grid Container - Gold Background */}
+        <div className="bg-[#DFB94C] py-12 px-6 rounded-t-[2.5rem] shadow-inner mt-4 min-h-[500px]">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10 mx-[6%]"
+            >
+              {filteredGalleries.map((gallery, i) => (
+                <CarouselCard key={i} gallery={gallery} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

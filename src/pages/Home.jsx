@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { GraduationCap, BookOpen, Users, Award, ArrowRight, Monitor, Globe, Code, Database, Brain, Shield, Cpu, BarChart3, ChevronDown, CheckCircle2, Mail, Library, Dumbbell, Coffee } from 'lucide-react'
 import CampusExperience from '../components/CampusExperience'
@@ -51,6 +52,60 @@ const facilities = [
   { title: 'Sports Deck', description: 'Modern indoor and outdoor sporting facilities ensuring holistic physical development.', icon: Dumbbell },
   { title: 'Cafeteria', description: 'Hygienic, multi-cuisine dining areas offering an excellent environment for discussions.', icon: Coffee },
 ]
+
+function ProgramCard({ prog, index }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -10 }}
+      className="group relative bg-white flex flex-col rounded-[2.5rem] p-1 shadow-sm hover:shadow-2xl transition-all duration-300 hover:border-fcit-200"
+    >
+      {/* Glowing border effect */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10`} />
+      <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`} />
+      
+      <div className="h-full bg-white rounded-[2.35rem] p-6 lg:p-8 relative overflow-hidden z-10 border border-slate-100 group-hover:border-transparent transition-colors flex flex-col">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/20 rounded-bl-[100px] -z-10 group-hover:bg-fcit-100/50 transition-colors"></div>
+        
+        {/* Header: Clickable on Mobile to Expand */}
+        <div 
+          className="flex items-center justify-between lg:block cursor-pointer lg:cursor-default" 
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center gap-4 lg:block">
+            <div className={`w-14 h-14 lg:w-16 lg:h-16 rounded-[1.5rem] bg-gradient-to-br ${prog.gradient} flex items-center justify-center lg:mb-6 shadow-lg shadow-fcit-400/20 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shrink-0`}>
+              <prog.icon className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+            </div>
+            <h3 className="text-xl lg:text-2xl font-bold text-slate-900 leading-tight group-hover:text-fcit-400 transition-colors lg:mb-3">{prog.title}</h3>
+          </div>
+          <ChevronDown className={`w-6 h-6 lg:hidden text-slate-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+        </div>
+
+        {/* Collapsible Details */}
+        <div className={`lg:block overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-96 opacity-100 mt-6' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100 mt-0 lg:mt-auto'}`}>
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-50 text-slate-600 text-sm font-bold border border-slate-100 mb-4">
+            {prog.duration} • Full-time
+          </div>
+          <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+            <span className="font-semibold text-slate-700 block mb-1">Eligibility:</span> {prog.eligibility}
+          </p>
+          
+          <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-fcit-400 font-bold group-hover:text-fcit-300 transition-colors cursor-pointer mt-auto">
+            <span>View Details</span>
+            <div className="w-10 h-10 rounded-full bg-fcit-100/30 flex items-center justify-center group-hover:bg-fcit-200/50 transition-colors">
+              <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function Home() {
   return (
@@ -220,7 +275,7 @@ export default function Home() {
                 
                 <div className="bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-fcit-200 p-6 md:p-8 md:ml-12 shadow-sm hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
                   <div className="flex items-center gap-6">
-                    <span className="text-5xl md:text-6xl font-black text-fcit-100/70 group-hover:text-fcit-300/40 transition-colors pointer-events-none select-none">
+                    <span aria-hidden="true" className="text-5xl md:text-6xl font-black text-fcit-100/30 group-hover:text-fcit-300/10 transition-colors pointer-events-none select-none">
                       0{i + 1}
                     </span>
                     <p className="text-xl text-slate-700 leading-relaxed font-medium">{obj}</p>
@@ -255,41 +310,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {scaPrograms.map((prog, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-                className="group relative bg-white rounded-[2.5rem] p-1 shadow-sm hover:shadow-2xl transition-all duration-300 hover:border-fcit-200"
-              >
-                {/* Glowing border effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10`} />
-                <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`} />
-                
-                <div className="h-full bg-white rounded-[2.35rem] p-8 relative overflow-hidden z-10 border border-slate-100 group-hover:border-transparent transition-colors">
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/20 rounded-bl-[100px] -z-10 group-hover:bg-fcit-100/50 transition-colors"></div>
-                  
-                  <div className={`w-16 h-16 rounded-[1.5rem] bg-gradient-to-br ${prog.gradient} flex items-center justify-center mb-6 shadow-lg shadow-fcit-400/20 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
-                    <prog.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3 leading-tight group-hover:text-fcit-400 transition-colors">{prog.title}</h3>
-                  <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-50 text-slate-600 text-sm font-bold border border-slate-100 mb-4">
-                    {prog.duration} • Full-time
-                  </div>
-                  <p className="text-slate-500 text-sm mb-8 leading-relaxed">
-                    <span className="font-semibold text-slate-700 block mb-1">Eligibility:</span> {prog.eligibility}
-                  </p>
-                  
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-fcit-400 font-bold group-hover:text-fcit-300 transition-colors cursor-pointer mt-auto">
-                    <span>View Details</span>
-                    <div className="w-10 h-10 rounded-full bg-fcit-100/30 flex items-center justify-center group-hover:bg-fcit-200/50 transition-colors">
-                      <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              <ProgramCard key={i} prog={prog} index={i} />
             ))}
           </div>
         </div>
@@ -321,41 +342,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {scsPrograms.map((prog, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-                className="group relative bg-white rounded-[2.5rem] p-1 shadow-sm hover:shadow-2xl transition-all duration-300 hover:border-fcit-200"
-              >
-                {/* Glowing border effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10`} />
-                <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`} />
-                
-                <div className="h-full bg-white rounded-[2.35rem] p-8 relative overflow-hidden z-10 border border-slate-100 group-hover:border-transparent transition-colors">
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/20 rounded-bl-[100px] -z-10 group-hover:bg-fcit-100/50 transition-colors"></div>
-                  
-                  <div className={`w-16 h-16 rounded-[1.5rem] bg-gradient-to-br ${prog.gradient} flex items-center justify-center mb-6 shadow-lg shadow-fcit-300/20 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
-                    <prog.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3 leading-tight group-hover:text-fcit-400 transition-colors">{prog.title}</h3>
-                  <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-50 text-slate-600 text-sm font-bold border border-slate-100 mb-4">
-                    {prog.duration} • Full-time
-                  </div>
-                  <p className="text-slate-500 text-sm mb-8 leading-relaxed">
-                    <span className="font-semibold text-slate-700 block mb-1">Eligibility:</span> {prog.eligibility}
-                  </p>
-                  
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-fcit-400 font-bold group-hover:text-fcit-300 transition-colors cursor-pointer mt-auto">
-                    <span>View Details</span>
-                    <div className="w-10 h-10 rounded-full bg-fcit-100/30 flex items-center justify-center group-hover:bg-fcit-200/50 transition-colors">
-                      <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              <ProgramCard key={i} prog={prog} index={i} />
             ))}
           </div>
         </div>

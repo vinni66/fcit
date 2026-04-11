@@ -40,7 +40,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-8">
           
           {/* Brand & Social */}
           <div className="lg:col-span-4 xl:col-span-3">
@@ -69,48 +69,51 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Explore Links */}
-          <div className="lg:col-span-2">
-            <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Explore</h3>
-            <ul className="space-y-2">
-              {exploreLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="flex justify-between items-center px-3 py-2.5 rounded-xl bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300 group"
-                  >
-                    <span className="text-slate-400 group-hover:text-white font-medium text-sm transition-colors">
-                      {link.name}
-                    </span>
-                    <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
-                      <ArrowRight className="w-3 h-3 text-fcit-400" />
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Sub Grid for Links to look better on Mobile */}
+          <div className="lg:col-span-4 grid grid-cols-2 gap-8">
+            {/* Explore Links */}
+            <div>
+              <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Explore</h3>
+              <ul className="space-y-2">
+                {exploreLinks.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300 group"
+                    >
+                      <span className="text-slate-400 group-hover:text-white font-medium text-sm transition-colors">
+                        {link.name}
+                      </span>
+                      <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
+                        <ArrowRight className="w-3 h-3 text-fcit-400" />
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Academics Links */}
-          <div className="lg:col-span-2">
-            <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Academics</h3>
-            <ul className="space-y-2">
-              {academicLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="flex justify-between items-center px-3 py-2.5 rounded-xl bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300 group"
-                  >
-                    <span className="text-slate-400 group-hover:text-white font-medium text-sm transition-colors">
-                      {link.name}
-                    </span>
-                    <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
-                      <ArrowRight className="w-3 h-3 text-fcit-400" />
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {/* Academics Links */}
+            <div>
+              <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Academics</h3>
+              <ul className="space-y-2">
+                {academicLinks.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300 group"
+                    >
+                      <span className="text-slate-400 group-hover:text-white font-medium text-sm transition-colors">
+                        {link.name}
+                      </span>
+                      <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
+                        <ArrowRight className="w-3 h-3 text-fcit-400" />
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Contact */}
@@ -136,8 +139,13 @@ export default function Footer() {
                <div className="absolute -top-10 -right-10 w-24 h-24 bg-fcit-400/20 rounded-full blur-xl group-hover:bg-fcit-400/40 transition-colors" />
                <h3 className="text-lg font-bold mb-2 text-white relative z-10">Weekly Tech Insights</h3>
                <p className="text-slate-400 text-sm mb-4 leading-relaxed relative z-10">Subscribe to our newsletter for the latest tech trends and campus updates.</p>
-               <form className="flex flex-col gap-3 relative z-10" onSubmit={(e) => e.preventDefault()}>
-                 <input type="email" placeholder="Email address" required className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none focus:ring-1 focus:ring-fcit-400 text-sm text-white placeholder-slate-500" />
+               <form className="flex flex-col gap-3 relative z-10 w-full" onSubmit={(e) => e.preventDefault()}>
+                 <div className="relative">
+                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                     <Mail className="h-5 w-5 text-slate-500" />
+                   </div>
+                   <input type="email" placeholder="Email address" required className="block w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-fcit-400 focus:border-fcit-400 text-sm text-white placeholder-slate-400 shadow-inner" />
+                 </div>
                  <button className="w-full bg-fcit-400 hover:bg-fcit-300 text-white font-bold py-3 rounded-xl transition-colors text-sm shadow-lg shadow-fcit-400/20">Subscribe</button>
                  <p className="text-[10px] text-slate-500 mt-1 text-center">By subscribing, you agree to our Privacy Policy. No spam.</p>
                </form>

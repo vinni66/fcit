@@ -96,8 +96,14 @@ export default function Navbar() {
             </div>
           </nav>
 
-          {/* Mobile Toggle & Search */}
+          {/* Mobile Apply, Search & Toggle */}
           <div className="flex items-center gap-2 xl:hidden">
+            <Link 
+              to="/admissions"
+              className="bg-fcit-400 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm mr-1 border border-fcit-300"
+            >
+              Apply
+            </Link>
             <button
               onClick={() => setSearchOpen(true)}
               className="text-white p-2 rounded-xl hover:bg-white/20 transition-colors"
