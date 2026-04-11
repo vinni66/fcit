@@ -1,11 +1,11 @@
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ArrowRight } from 'lucide-react'
 
 const socialLinks = [
-  { icon: Facebook, href: '#', label: 'Facebook', color: 'hover:text-fcit-200 hover:bg-white/20' },
-  { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-fcit-200 hover:bg-white/20' },
-  { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:text-fcit-200 hover:bg-white/20' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:text-fcit-200 hover:bg-white/20' },
-  { icon: Youtube, href: '#', label: 'YouTube', color: 'hover:text-fcit-200 hover:bg-white/20' },
+  { icon: Facebook, href: 'https://facebook.com/gmuniversity', label: 'Facebook', color: 'hover:text-fcit-200 hover:bg-white/20' },
+  { icon: Twitter, href: 'https://twitter.com/gmuniversity', label: 'Twitter', color: 'hover:text-fcit-200 hover:bg-white/20' },
+  { icon: Instagram, href: 'https://instagram.com/gmuniversity', label: 'Instagram', color: 'hover:text-fcit-200 hover:bg-white/20' },
+  { icon: Linkedin, href: 'https://linkedin.com/school/gmuniversity', label: 'LinkedIn', color: 'hover:text-fcit-200 hover:bg-white/20' },
+  { icon: Youtube, href: 'https://youtube.com/gmuniversity', label: 'YouTube', color: 'hover:text-fcit-200 hover:bg-white/20' },
 ]
 
 const exploreLinks = [
@@ -134,11 +134,12 @@ export default function Footer() {
           <div className="lg:col-span-2 xl:col-span-2">
              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden group hover:border-fcit-400/30 transition-colors">
                <div className="absolute -top-10 -right-10 w-24 h-24 bg-fcit-400/20 rounded-full blur-xl group-hover:bg-fcit-400/40 transition-colors" />
-               <h3 className="text-lg font-bold mb-2 text-white relative z-10">Join Us</h3>
-               <p className="text-slate-400 text-sm mb-4 leading-relaxed relative z-10">Subscribe to our academic newsletter.</p>
+               <h3 className="text-lg font-bold mb-2 text-white relative z-10">Weekly Tech Insights</h3>
+               <p className="text-slate-400 text-sm mb-4 leading-relaxed relative z-10">Subscribe to our newsletter for the latest tech trends and campus updates.</p>
                <form className="flex flex-col gap-3 relative z-10" onSubmit={(e) => e.preventDefault()}>
-                 <input type="email" placeholder="Email address" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none focus:ring-1 focus:ring-fcit-400 text-sm text-white placeholder-slate-500" />
+                 <input type="email" placeholder="Email address" required className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none focus:ring-1 focus:ring-fcit-400 text-sm text-white placeholder-slate-500" />
                  <button className="w-full bg-fcit-400 hover:bg-fcit-300 text-white font-bold py-3 rounded-xl transition-colors text-sm shadow-lg shadow-fcit-400/20">Subscribe</button>
+                 <p className="text-[10px] text-slate-500 mt-1 text-center">By subscribing, you agree to our Privacy Policy. No spam.</p>
                </form>
              </div>
           </div>

@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
-import { Briefcase, TrendingUp, Building2, ArrowRight, Star, Globe, ShieldCheck } from 'lucide-react'
+import { Briefcase, TrendingUp, Building2, ArrowRight, Star, Globe, ShieldCheck, Quote } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const placementStats = [
@@ -21,6 +21,12 @@ const internships = [
   { student: 'Priyanka R', company: 'Flipkart', role: 'SDE Intern', year: 2024 },
   { student: 'Vishal S', company: 'Infosys', role: 'Full Stack Intern', year: 2024 },
   { student: 'Ananya B', company: 'TCS', role: 'ML Intern', year: 2023 },
+]
+
+const testimonials = [
+  { student: 'Rahul M', company: 'Google', quote: 'The comprehensive curriculum and continuous guidance from the faculty at FCIT helped me secure my dream role at Google. The practical labs, especially in data structures, were top-notch.', year: 2025 },
+  { student: 'Sneha P', company: 'Microsoft', quote: 'The placement cell is incredibly active. The mock interviews and technical workshops gave me the confidence I needed to ace multiple rounds at Microsoft.', year: 2025 },
+  { student: 'Aditya K', company: 'Amazon', quote: 'Studying Cloud Technologies here was a game-changer. Recommending FCIT to any student looking for strong corporate placements focusing on latest technologies.', year: 2024 },
 ]
 
 function CounterStat({ stat, delay }) {
@@ -193,6 +199,51 @@ export default function Placements() {
                 <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 group-hover:border-fcit-200/50 transition-colors">
                   <p className="text-fcit-400 font-bold text-lg mb-1">{intern.company}</p>
                   <p className="text-slate-600 font-medium">{intern.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Success Stories / Testimonials */}
+      <section className="py-24 bg-[#f8fbff]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-black text-slate-900 mb-6">
+              Success <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent">Stories</span>
+            </h2>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full" />
+          </motion.div>
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {testimonials.map((test, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="bg-white p-8 rounded-[2rem] border border-fcit-100 shadow-sm relative group hover:shadow-xl transition-all duration-300"
+              >
+                <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Quote className="w-12 h-12 text-fcit-400" />
+                </div>
+                <p className="text-slate-600 italic font-medium leading-relaxed mb-8 relative z-10">"{test.quote}"</p>
+                
+                <div className="flex items-center gap-4 mt-auto">
+                  <div className="w-12 h-12 bg-gradient-to-br from-fcit-400 to-fcit-300 rounded-full flex items-center justify-center text-white font-bold">
+                    {test.student.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900">{test.student}</h4>
+                    <p className="text-sm text-fcit-400 font-bold">{test.company} <span className="text-slate-400 font-medium ml-1">({test.year})</span></p>
+                  </div>
                 </div>
               </motion.div>
             ))}

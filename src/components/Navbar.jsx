@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, GraduationCap } from 'lucide-react'
+import { Menu, X, GraduationCap, Search } from 'lucide-react'
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -19,6 +19,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -82,15 +83,34 @@ export default function Navbar() {
                 </Link>
               )
             })}
+            
+            {/* Search Icon */}
+            <div className="pl-4 ml-2 border-l border-white/20">
+              <button 
+                onClick={() => setSearchOpen(true)}
+                className="p-2 text-white/90 hover:text-fcit-200 transition-colors bg-white/5 hover:bg-white/15 rounded-full"
+                aria-label="Search"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
           </nav>
 
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="xl:hidden text-white p-2 rounded-xl hover:bg-white/20 transition-colors shrink-0"
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile Toggle & Search */}
+          <div className="flex items-center gap-2 xl:hidden">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="text-white p-2 rounded-xl hover:bg-white/20 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="text-white p-2 rounded-xl hover:bg-white/20 transition-colors shrink-0"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -119,6 +139,44 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Search Overlay Placeholder */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-start justify-center pt-24 px-4"
+          >
+            <motion.div 
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100"
+            >
+              <div className="flex items-center px-4 border-b border-slate-100">
+                <Search className="w-5 h-5 text-slate-400" />
+                <input 
+                  autoFocus
+                  type="text" 
+                  placeholder="Search faculty, programs, or news..." 
+                  className="flex-1 w-full p-4 text-slate-700 focus:outline-none text-lg"
+                />
+                <button 
+                  onClick={() => setSearchOpen(false)}
+                  className="p-2 text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-4 bg-slate-50 text-center text-slate-500 text-sm">
+                Press Enter to search
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

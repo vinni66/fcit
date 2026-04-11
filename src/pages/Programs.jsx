@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import { Monitor, Code, Brain, Shield, Database, BarChart3, Cpu, ArrowRight, Clock, CheckCircle } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Monitor, Code, Brain, Shield, Database, BarChart3, Cpu, ArrowRight, Clock, CheckCircle, ChevronDown, Download, Layers, X } from 'lucide-react'
+import { useState } from 'react'
 
 const scaPrograms = [
   {
@@ -96,6 +97,8 @@ const scsPrograms = [
 ]
 
 function ProgramCard({ prog, i }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <motion.div
        initial={{ opacity: 0, y: 30 }}
@@ -134,18 +137,46 @@ function ProgramCard({ prog, i }) {
            ))}
          </div>
 
-         <div className="pt-6 border-t border-slate-100 flex items-center justify-between text-fcit-400 font-bold group-hover:text-fcit-300 transition-colors cursor-pointer mt-auto">
-           <span>Explore Curriculum</span>
-           <div className="w-12 h-12 rounded-full bg-fcit-100/30 flex items-center justify-center group-hover:bg-fcit-200/50 transition-colors">
-             <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
-           </div>
-         </div>
-       </div>
+          <div 
+             className="pt-6 border-t border-slate-100 flex items-center justify-between text-fcit-400 font-bold hover:text-fcit-300 transition-colors cursor-pointer mt-auto"
+             onClick={() => setIsExpanded(!isExpanded)}
+           >
+            <span>Explore Curriculum</span>
+            <div className="w-12 h-12 rounded-full bg-fcit-100/30 flex items-center justify-center hover:bg-fcit-200/50 transition-colors">
+              <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronDown className="w-5 h-5 text-fcit-400" />
+              </motion.div>
+            </div>
+          </div>
+          
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pt-4 pb-2">
+                  <p className="text-sm text-slate-500 mb-4 font-medium leading-relaxed">
+                    Get detailed information about semester-wise subjects, lab requirements, and project work.
+                  </p>
+                  <button className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 shadow-md">
+                    <Download className="w-4 h-4" />
+                    Download Syllabus PDF
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
     </motion.div>
   )
 }
 
 export default function Programs() {
+  const [showCompare, setShowCompare] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -178,12 +209,86 @@ export default function Programs() {
             <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight">
               Academic <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">Programs</span>
             </h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed mb-6">
               FCIT offers a comprehensive range of undergraduate and postgraduate degrees across two distinct schools of excellence: <strong className="font-bold text-fcit-400">SCA & SCS</strong>.
             </p>
+            <button 
+              onClick={() => setShowCompare(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-fcit-400 text-white rounded-xl font-bold shadow-lg shadow-fcit-400/20 hover:bg-fcit-300 hover:-translate-y-1 transition-all duration-300"
+            >
+              <Layers className="w-5 h-5" />
+              Compare Specializations
+            </button>
           </motion.div>
         </div>
       </section>
+
+      {/* Comparison Modal */}
+      <AnimatePresence>
+        {showCompare && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              className="bg-white max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
+            >
+              <div className="sticky top-0 bg-white border-b border-slate-100 p-6 flex justify-between items-center z-10">
+                <h2 className="text-2xl font-black text-slate-900">Program Comparison</h2>
+                <button onClick={() => setShowCompare(false)} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6 overflow-x-auto">
+                <table className="w-full min-w-[700px] text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50">
+                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Specialization</th>
+                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Key Focus Areas</th>
+                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Career Paths</th>
+                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Math Base Req.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">General</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Core software eng, databases, networks</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Software Engineer, Cloud Architect</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Standard</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">AI & Data Analytics</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Generative AI, NLP, Predictive Modeling</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">AI Engineer, Data Analyst</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Strong</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">Data Science</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Big Data tech, Advanced Stats, Mining</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Data Scientist, ML Engineer</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">High</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">Cyber Security</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Cryptography, Ethical Hacking, Forensics</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Security Analyst, Pen Tester</td>
+                      <td className="p-4 border-b border-slate-100 text-slate-600">Standard</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="p-6 bg-slate-50 border-t border-slate-100 text-sm text-slate-500">
+                Comparisons shown above are high-level generalizations to help you choose the right path.
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* SCA Section */}
       <section className="py-24 bg-white relative">

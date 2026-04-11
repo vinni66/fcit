@@ -4,7 +4,7 @@ import { Pause, Play, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const galleries = [
   {
-    label: 'Lecture',
+    label: 'Advanced AI Lecture Series',
     color: 'bg-orange-500',
     images: [
       'https://images.unsplash.com/photo-1544158498-5006d6342898?auto=format&fit=crop&q=80&w=800&h=500',
@@ -13,7 +13,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Laboratory',
+    label: 'High-Performance Computing Lab',
     color: 'bg-pink-500',
     images: [
       'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80&w=800&h=500',
@@ -22,7 +22,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Workshop/FDP',
+    label: 'Cloud Computing Workshop',
     color: 'bg-fcit-100',
     images: [
       'https://images.unsplash.com/photo-1540317580384-e5d43867caa6?auto=format&fit=crop&q=80&w=800&h=500',
@@ -31,7 +31,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Project Based Learning',
+    label: 'Capstone Project Exhibition',
     color: 'bg-fcit-300',
     images: [
       'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800&h=500',
@@ -40,7 +40,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Software Development',
+    label: 'Open Source Contribution Drive',
     color: 'bg-fcit-200',
     images: [
       'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&h=500',
@@ -49,7 +49,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Hackathon',
+    label: 'National Level Hackfest',
     color: 'bg-green-500',
     images: [
       'https://images.unsplash.com/photo-1504384308090-c894fd18ee4c?auto=format&fit=crop&q=80&w=800&h=500',
@@ -58,7 +58,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Presentation',
+    label: 'Tech Symposium 2026',
     color: 'bg-amber-500',
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800&h=500',
@@ -67,7 +67,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Students-Parents Meet',
+    label: 'Annual Student-Parent Networking',
     color: 'bg-rose-500',
     images: [
       'https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800&h=500',
@@ -76,7 +76,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Cultural',
+    label: 'Tech Carnival Cultural Eve',
     color: 'bg-fcit-400',
     images: [
       'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=800&h=500',
@@ -85,7 +85,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Campus Drive',
+    label: 'Placement Drive 2026',
     color: 'bg-teal-500',
     images: [
       'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800&h=500',
@@ -94,7 +94,7 @@ const galleries = [
     ],
   },
   {
-    label: 'Yoga',
+    label: 'Wellness & Mindfulness',
     color: 'bg-lime-500',
     images: [
       'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800&h=500',
@@ -258,7 +258,7 @@ function CarouselCard({ gallery }) {
       <div className="relative z-10 rounded-2xl overflow-hidden shadow-xl aspect-[4/3] bg-gray-900 cursor-pointer">
         {/* Image with directional slide + bounce */}
         <AnimatePresence mode="popLayout" custom={direction}>
-          <motion.img
+          <motion.div
             key={current}
             custom={direction}
             variants={slideVariants}
@@ -266,10 +266,23 @@ function CarouselCard({ gallery }) {
             animate="center"
             exit="exit"
             transition={springTransition}
-            src={gallery.images[current]}
-            alt={`${gallery.label} ${current + 1}`}
-            className="w-full h-full object-cover absolute inset-0"
-          />
+            className="w-full h-full absolute inset-0 bg-slate-800"
+          >
+            <motion.img
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              src={gallery.images[current]}
+              alt={`${gallery.label} ${current + 1}`}
+              className="w-full h-full object-cover absolute inset-0"
+              onLoad={(e) => {
+                e.target.style.opacity = 1;
+              }}
+              style={{ opacity: 0 }}
+            />
+            {/* Dynamic skeleton loader background that is visible until img opacity hits 1 */}
+            <div className="absolute inset-0 bg-slate-200 animate-pulse -z-10" />
+          </motion.div>
         </AnimatePresence>
 
         {/* Gradient overlay at bottom */}

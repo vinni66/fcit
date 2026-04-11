@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BottomNav from './components/BottomNav'
+import BackToTop from './components/BackToTop'
 import Home from './pages/Home'
 import Programs from './pages/Programs'
 import Faculty from './pages/Faculty'
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/contact-us" element={<Contact />} />
       </Routes>
       <BottomNav />
+      <BackToTop />
       <Footer />
     </BrowserRouter>
   )
