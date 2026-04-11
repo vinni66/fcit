@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BottomNav from './components/BottomNav'
 import BackToTop from './components/BackToTop'
+import ChatBot from './components/ChatBot'
 import Home from './pages/Home'
 import Programs from './pages/Programs'
 import Faculty from './pages/Faculty'
@@ -44,6 +45,7 @@ export default function App() {
       </Routes>
       <BottomNav />
       <BackToTop />
+      <ChatBot />
       <Footer />
     </BrowserRouter>
   )

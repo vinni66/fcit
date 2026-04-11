@@ -52,8 +52,8 @@ export default function Navbar() {
               <img src="https://cdn.jsdelivr.net/gh/vinni66/Images/assets/gmulogo1.png" alt="GMU Logo" className="h-10 sm:h-12 lg:h-14 w-auto object-contain drop-shadow-sm" />
             </motion.div>
             <div className="hidden md:flex flex-col justify-center border-l-2 border-white/20 pl-3 xl:pl-4">
-              <span className="font-extrabold text-[0.8rem] lg:text-[0.9rem] tracking-tight text-white group-hover:text-fcit-200 transition-colors leading-snug">
-                Faculty of <br /> Computer Applications
+              <span className="font-extrabold text-[1rem] lg:text-[1.1rem] tracking-tight text-white group-hover:text-fcit-200 transition-colors leading-snug">
+                GM University
               </span>
             </div>
           </Link>
