@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fcit-100: rgb(255, 219, 253);
+  --color-fcit-200: rgb(201, 190, 255);
+  --color-fcit-300: rgb(132, 148, 255);
+  --color-fcit-400: rgb(99, 103, 255);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
+
+* {
+  font-family: 'DM Sans', sans-serif;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #0a0a2a, #1a1a4a);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #0077ff, #00ccff, #0077ff);
+  border-radius: 10px;
+  border: 2px solid rgba(0, 119, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 119, 255, 0.8), 0 0 20px rgba(0, 204, 255, 0.6);
+  transition: all 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #0088ff, #00ddff, #0088ff);
+  box-shadow: 0 0 15px #0088ff, 0 0 30px rgba(0, 221, 255, 0.8);
+}
+
+::-webkit-scrollbar-corner {
+  background: #0a0a2a;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #0077ff #0a0a2a;
+}
