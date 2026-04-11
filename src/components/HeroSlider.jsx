@@ -167,7 +167,7 @@ export default function HeroSlider() {
             }}
             className={`transition-all duration-500 rounded-full ${
               current === i 
-                ? 'w-10 h-2 bg-fcit-400 shadow-[0_0_10px_rgba(99,103,255,0.8)]' 
+                ? 'w-10 h-2 bg-fcit-400 shadow-[0_0_10px_rgba(114,28,36,0.8)]' 
                 : 'w-2 h-2 bg-white/40 hover:bg-white/60'
             }`}
           />

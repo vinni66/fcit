@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-fcit-100: rgb(255, 219, 253);
-  --color-fcit-200: rgb(201, 190, 255);
-  --color-fcit-300: rgb(132, 148, 255);
-  --color-fcit-400: rgb(99, 103, 255);
+  --color-fcit-100: rgb(253, 241, 218); /* Light Gold */
+  --color-fcit-200: rgb(233, 192, 100); /* Soft Gold */
+  --color-fcit-300: rgb(218, 165, 32); /* Gold */
+  --color-fcit-400: rgb(114, 28, 36); /* Maroon */
 }
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
@@ -28,28 +28,28 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(135deg, #0a0a2a, #1a1a4a);
+  background: linear-gradient(135deg, #2a0a0d, #4a1a20);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #0077ff, #00ccff, #0077ff);
+  background: linear-gradient(45deg, #721C24, #DAA520, #721C24);
   border-radius: 10px;
-  border: 2px solid rgba(0, 119, 255, 0.3);
-  box-shadow: 0 0 10px rgba(0, 119, 255, 0.8), 0 0 20px rgba(0, 204, 255, 0.6);
+  border: 2px solid rgba(114, 28, 36, 0.3);
+  box-shadow: 0 0 10px rgba(114, 28, 36, 0.8), 0 0 20px rgba(218, 165, 32, 0.6);
   transition: all 0.3s ease-in-out;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #0088ff, #00ddff, #0088ff);
-  box-shadow: 0 0 15px #0088ff, 0 0 30px rgba(0, 221, 255, 0.8);
+  background: linear-gradient(45deg, #8b232c, #f1c24e, #8b232c);
+  box-shadow: 0 0 15px #8b232c, 0 0 30px rgba(241, 194, 78, 0.8);
 }
 
 ::-webkit-scrollbar-corner {
-  background: #0a0a2a;
+  background: #2a0a0d;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #0077ff #0a0a2a;
+  scrollbar-color: #721C24 #2a0a0d;
 }

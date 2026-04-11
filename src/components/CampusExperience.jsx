@@ -359,7 +359,7 @@ function CarouselCard({ gallery }) {
 
 export default function CampusExperience() {
   return (
-    <section className="py-20 bg-[#f8fbff] overflow-hidden">
+    <section className="py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -367,25 +367,22 @@ export default function CampusExperience() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
-          <h2 className="text-4xl sm:text-5xl font-black text-slate-900 mb-4 tracking-tight">
-            <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">
-              Campus
-            </span>{' '}
-            Experience
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight text-fcit-300">
+            Campus Life Gallery
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed font-light">
-            Immerse yourself in our dynamic learning environment through interactive galleries
-            showcasing academic excellence and student life
-          </p>
+
+          {/* Removed descriptive text for cleaner look matching the reference */}
         </motion.div>
 
-        {/* Gallery Grid - 3 columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10 mx-[6%]">
+        {/* Gallery Grid Container - Gold Background */}
+        <div className="bg-[#DFB94C] py-12 px-6 rounded-t-[2.5rem] shadow-inner mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10 mx-[6%]">
           {galleries.map((gallery, i) => (
             <CarouselCard key={i} gallery={gallery} />
           ))}
+          </div>
         </div>
       </div>
     </section>

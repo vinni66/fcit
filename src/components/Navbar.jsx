@@ -35,8 +35,8 @@ export default function Navbar() {
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
         scrolled
-          ? 'bg-white/80 backdrop-blur-xl border-slate-200/50 shadow-[0_10px_30px_-10px_rgba(99,103,255,0.1)] py-2'
-          : 'bg-white/40 backdrop-blur-md border-transparent py-4'
+          ? 'bg-fcit-400/95 backdrop-blur-xl border-fcit-400 shadow-[0_10px_30px_-10px_rgba(114,28,36,0.3)] py-2'
+          : 'bg-gradient-to-r from-fcit-400 to-[#5d171d] shadow-lg py-4 border-transparent'
       }`}
     >
       <div className="w-full max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,8 +50,8 @@ export default function Navbar() {
             >
               <img src="https://cdn.jsdelivr.net/gh/vinni66/Images/assets/gmulogo1.png" alt="GMU Logo" className="h-10 sm:h-12 lg:h-14 w-auto object-contain drop-shadow-sm" />
             </motion.div>
-            <div className="hidden md:flex flex-col justify-center border-l-2 border-slate-200 pl-3 xl:pl-4">
-              <span className="font-extrabold text-[0.8rem] lg:text-[0.9rem] tracking-tight text-slate-900 group-hover:text-fcit-400 transition-colors leading-snug">
+            <div className="hidden md:flex flex-col justify-center border-l-2 border-white/20 pl-3 xl:pl-4">
+              <span className="font-extrabold text-[0.8rem] lg:text-[0.9rem] tracking-tight text-white group-hover:text-fcit-200 transition-colors leading-snug">
                 Faculty of <br /> Computer Applications
               </span>
             </div>
@@ -65,10 +65,10 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-3 py-2 text-[13px] xl:text-sm font-bold rounded-full transition-all duration-300 whitespace-nowrap ${
+                  className={`relative px-4 py-2 text-[13px] xl:text-sm font-bold transition-all duration-300 whitespace-nowrap rounded-md ${
                     isActive
-                      ? 'text-fcit-400 bg-fcit-100/50'
-                      : 'text-slate-600 hover:text-fcit-400 hover:bg-slate-100/80'
+                      ? 'text-fcit-400 bg-fcit-300 shadow-md'
+                      : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {link.name}
@@ -87,7 +87,7 @@ export default function Navbar() {
           {/* Mobile Toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="xl:hidden text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors shrink-0"
+            className="xl:hidden text-white p-2 rounded-xl hover:bg-white/20 transition-colors shrink-0"
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -101,7 +101,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden bg-white/95 backdrop-blur-3xl border-t border-slate-100 shadow-2xl overflow-hidden"
+            className="xl:hidden bg-gradient-to-b from-fcit-400 to-[#5d171d] border-t border-white/10 shadow-2xl overflow-hidden"
           >
             <div className="px-4 py-6 space-y-2">
               {navLinks.map((link) => (
@@ -109,10 +109,10 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-5 py-4 rounded-2xl text-base font-bold transition-all duration-300 ${
+                  className={`block px-5 py-4 rounded-xl text-base font-bold transition-all duration-300 ${
                     location.pathname === link.path
-                      ? 'text-fcit-400 bg-fcit-100/30 border border-fcit-200/50 shadow-sm'
-                      : 'text-slate-600 hover:text-fcit-400 hover:bg-slate-50'
+                      ? 'text-fcit-400 bg-fcit-300 shadow-md'
+                      : 'text-white/90 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {link.name}
