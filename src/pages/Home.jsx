@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { GraduationCap, BookOpen, Users, Award, ArrowRight, Monitor, Globe, Code, Database, Brain, Shield, Cpu, BarChart3, ChevronDown, CheckCircle2 } from 'lucide-react'
+import { GraduationCap, BookOpen, Users, Award, ArrowRight, Monitor, Globe, Code, Database, Brain, Shield, Cpu, BarChart3, ChevronDown, CheckCircle2, Mail, Library, Dumbbell, Coffee } from 'lucide-react'
 import CampusExperience from '../components/CampusExperience'
 import HeroSlider from '../components/HeroSlider'
 
@@ -38,6 +38,18 @@ const scsPrograms = [
   { title: 'MSc – AI & Data Analytics', duration: '2 Years', icon: Cpu, gradient: 'from-fcit-400 to-fcit-300', eligibility: 'B.Sc/BCA Relevant Fields or B.Tech with Maths' },
   { title: 'MSc – Data Science', duration: '2 Years', icon: Database, gradient: 'from-fcit-300 to-fcit-200', eligibility: 'B.Sc/BCA Relevant Fields or B.Tech with Maths' },
   { title: 'MSc – Cyber Security', duration: '2 Years', icon: Shield, gradient: 'from-fcit-200 to-fcit-100', eligibility: 'B.Sc/BCA Relevant Fields or B.Tech with Maths' },
+]
+
+const leadershipPreview = [
+  { name: 'Dr. Jane Doe', designation: 'Dean, FCIT', initials: 'JD', gradient: 'from-fcit-400 to-fcit-300', specialization: 'Computer Science' },
+  { name: 'Mr. John Smith', designation: 'Director (SCA)', initials: 'JS', gradient: 'from-fcit-300 to-fcit-200', specialization: 'Computer Applications' },
+  { name: 'Dr. Emily Chen', designation: 'Director (SCS)', initials: 'EC', gradient: 'from-fcit-200 to-fcit-100', specialization: 'Artificial Intelligence' },
+]
+
+const facilities = [
+  { title: 'Central Library', description: 'Extensive collection of technical literature, journals, and digital resources with quiet reading spaces.', icon: Library },
+  { title: 'Sports Deck', description: 'Modern indoor and outdoor sporting facilities ensuring holistic physical development.', icon: Dumbbell },
+  { title: 'Cafeteria', description: 'Hygienic, multi-cuisine dining areas offering an excellent environment for discussions.', icon: Coffee },
 ]
 
 export default function Home() {
@@ -349,10 +361,98 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Leadership & Faculty Preview */}
+      <section className="py-24 bg-[#f8fbff] border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+              Leadership & <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-300">Faculty</span>
+            </h2>
+            <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full mb-6" />
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto font-light">
+              Our esteemed academic leaders act as mentors, guiding the next generation of tech innovators.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {leadershipPreview.map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+                className="bg-white/80 backdrop-blur-sm rounded-[2.5rem] border border-white p-8 shadow-[0_10px_30px_-10px_rgba(99,103,255,0.1)] hover:shadow-2xl hover:border-fcit-200 transition-all duration-300 text-center group"
+              >
+                <div className={`w-24 h-24 rounded-[1.5rem] bg-gradient-to-br ${f.gradient} flex items-center justify-center mx-auto mb-6 shadow-xl shadow-fcit-400/20 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300`}>
+                  <span className="text-3xl font-black text-white">{f.initials}</span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 mb-2 group-hover:text-fcit-400 transition-colors">{f.name}</h3>
+                <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-fcit-100/50 text-fcit-400 font-bold text-sm mb-4 border border-fcit-100">
+                  {f.designation}
+                </div>
+                <p className="text-slate-500 font-medium text-sm mb-6 pb-6 border-b border-slate-100">{f.specialization}</p>
+                <div className="flex justify-center gap-4">
+                  <motion.button whileHover={{ scale: 1.1 }} className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:text-fcit-400 hover:bg-fcit-100/50 hover:shadow-lg transition-all duration-300">
+                    <Mail className="w-5 h-5" />
+                  </motion.button>
+                  <motion.button whileHover={{ scale: 1.1 }} className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:text-fcit-400 hover:bg-fcit-100/50 hover:shadow-lg transition-all duration-300">
+                    <BookOpen className="w-5 h-5" />
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Campus Experience - Auto-sliding Carousels */}
       <div className="bg-[#fbfcff] pb-10">
         <CampusExperience />
       </div>
+
+      {/* Campus Facilities Preview */}
+      <section className="py-24 bg-white relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+           <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+              Campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-200">Facilities</span>
+            </h2>
+            <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full mb-6" />
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {facilities.map((fac, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                viewport={{ once: true }}
+                className="group relative bg-[#f8fbff] rounded-[2rem] p-10 border border-slate-100 shadow-sm hover:shadow-xl hover:border-fcit-200 transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-fcit-100/50 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-125" />
+                <div className="w-16 h-16 bg-white shadow-md rounded-2xl flex items-center justify-center mb-6 relative z-10 group-hover:-translate-y-2 group-hover:bg-fcit-400 transition-all duration-300">
+                  <fac.icon className="w-8 h-8 text-fcit-400 group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3 relative z-10">{fac.title}</h3>
+                <p className="text-slate-600 font-medium leading-relaxed relative z-10">{fac.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Light Theme CTA */}
       <section className="relative py-24 overflow-hidden bg-gradient-to-br from-fcit-100/30 via-[#f8fbff] to-white">
