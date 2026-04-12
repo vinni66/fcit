@@ -63,8 +63,8 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
       className={`sticky top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled
-          ? 'bg-fcit-400/95 backdrop-blur-xl border-fcit-400 shadow-lg py-2'
-          : 'bg-gradient-to-r from-fcit-400 to-[#5d171d] py-4 border-transparent'
+        ? 'bg-fcit-400/95 backdrop-blur-xl border-fcit-400 shadow-lg py-2'
+        : 'bg-gradient-to-r from-fcit-400 to-[#5d171d] py-4 border-transparent'
         }`}
     >
       <div className="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,7 +105,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <motion.span
-                    className="font-medium text-[0.5rem] sm:text-[0.8rem] tracking-[0.2em] sm:tracking-[0.25em] text-white/70 uppercase mb-0.5"
+                    className="font-medium text-[0.7rem] sm:text-[1.1rem] tracking-[0.2em] sm:tracking-[0.25em] text-white/100 uppercase mb-0.5"
                   >
                     Faculty of
                   </motion.span>
@@ -143,8 +143,8 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={`relative px-4 py-2 text-sm font-bold transition-all duration-300 whitespace-nowrap rounded-xl ${isActive
-                      ? 'text-fcit-400 bg-fcit-100/50 shadow-md'
-                      : 'text-white/90 hover:text-white hover:bg-white/15'
+                    ? 'text-fcit-400 bg-fcit-100/50 shadow-md'
+                    : 'text-white/90 hover:text-white hover:bg-white/15'
                     }`}
                 >
                   {link.name}
@@ -165,8 +165,8 @@ export default function Navbar() {
                 onMouseEnter={() => setDropdownOpen(true)}
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className={`flex items-center gap-1 px-4 py-2 text-sm font-bold transition-all duration-300 rounded-xl ${dropdownOpen || secondaryLinks.some(l => location.pathname === l.path)
-                    ? 'text-white bg-white/20 shadow-md'
-                    : 'text-white/90 hover:text-white hover:bg-white/15'
+                  ? 'text-white bg-white/20 shadow-md'
+                  : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
               >
                 More
@@ -197,8 +197,8 @@ export default function Navbar() {
                               to={link.path}
                               onClick={() => setDropdownOpen(false)}
                               className={`px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-between group ${isActive
-                                  ? 'text-fcit-400 bg-fcit-100'
-                                  : 'text-white/80 hover:text-white hover:bg-white/10'
+                                ? 'text-fcit-400 bg-fcit-100'
+                                : 'text-white/80 hover:text-white hover:bg-white/10'
                                 }`}
                             >
                               {link.name}
@@ -260,8 +260,8 @@ export default function Navbar() {
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
                   className={`px-5 py-4 rounded-2xl text-sm font-bold transition-all duration-300 flex items-center gap-3 ${location.pathname === link.path
-                      ? 'text-fcit-400 bg-fcit-100 shadow-inner'
-                      : 'text-white/80 hover:bg-white/10'
+                    ? 'text-fcit-400 bg-fcit-100 shadow-inner'
+                    : 'text-white/80 hover:bg-white/10'
                     }`}
                 >
                   <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === link.path ? 'bg-fcit-400' : 'bg-white'}`} />
