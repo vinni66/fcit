@@ -1,450 +1,171 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useMemo, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Pause, Play, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronRight, Maximize2, X, Sparkles, Image as ImageIcon } from 'lucide-react'
+import TextReveal from './TextReveal'
 
-const galleries = [
-  {
-    label: 'Advanced AI Lecture Series',
-    category: 'Academic',
-    color: 'bg-orange-500',
-    images: [
-      'https://images.unsplash.com/photo-1544158498-5006d6342898?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1571260899304-425dea57a24c?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'High-Performance Computing Lab',
-    category: 'Academic',
-    color: 'bg-pink-500',
-    images: [
-      'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Cloud Computing Workshop',
-    category: 'Academic',
-    color: 'bg-fcit-100',
-    images: [
-      'https://images.unsplash.com/photo-1540317580384-e5d43867caa6?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1515169067868-5387abfec8da?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Capstone Project Exhibition',
-    category: 'Academic',
-    color: 'bg-fcit-300',
-    images: [
-      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Open Source Contribution Drive',
-    category: 'Events',
-    color: 'bg-fcit-200',
-    images: [
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1607799279861-4ddf5b0db114?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'National Level Hackfest',
-    category: 'Events',
-    color: 'bg-green-500',
-    images: [
-      'https://images.unsplash.com/photo-1504384308090-c894fd18ee4c?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Tech Symposium 2026',
-    category: 'Events',
-    color: 'bg-amber-500',
-    images: [
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1475721025505-c310b809a744?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Annual Student-Parent Networking',
-    category: 'Campus Life',
-    color: 'bg-rose-500',
-    images: [
-      'https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Tech Carnival Cultural Eve',
-    category: 'Events',
-    color: 'bg-fcit-400',
-    images: [
-      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1470229722913-7c092fb462bd?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Placement Drive 2026',
-    category: 'Campus Life',
-    color: 'bg-teal-500',
-    images: [
-      'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1556761175-10a42426615e?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
-  {
-    label: 'Wellness & Mindfulness',
-    category: 'Campus Life',
-    color: 'bg-lime-500',
-    images: [
-      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?auto=format&fit=crop&q=80&w=800&h=500',
-      'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800&h=500',
-    ],
-  },
+const images = [
+  { url: 'https://zhwicjfupdbaaceerozm.supabase.co/storage/v1/object/public/gallery-images/1774678559730-nzkfnj9lt0s.jpg', title: 'Department Convocation', category: 'Cultural', size: 'col-span-2 row-span-2', subtitle: 'Academic Excellence' },
+  { url: 'https://zhwicjfupdbaaceerozm.supabase.co/storage/v1/object/public/gallery-images/1774719584250-cigzaeslvsg.jpeg', title: 'Research Collaboration', category: 'Technical', size: 'col-span-1 row-span-1', subtitle: 'Expert Mentorship' },
+  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/3.jpg', title: 'Battle Ground Arena', category: 'Gaming', size: 'col-span-1 row-span-1', subtitle: 'BGMI Tournament' },
+  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/2.jpg', title: 'Code Compass', category: 'Technical', size: 'col-span-1 row-span-1', subtitle: 'Logic Challenge' },
+  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg', title: 'Flash Mob Drop', category: 'Cultural', size: 'col-span-1 row-span-2', subtitle: 'Tech Carnival Opening' },
+  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/4.jpg', title: 'Pixel Perfect', category: 'Technical', size: 'col-span-1 md:col-span-2 row-span-1', subtitle: 'PPT Presentation' },
+  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/2.jpg', title: 'Dance Mania Night', category: 'Cultural', size: 'col-span-1 md:col-span-2 row-span-1', subtitle: 'Stage Fusion' },
+  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg', title: 'Scitopia Fusion', category: 'Cultural', size: 'col-span-1 row-span-1', subtitle: 'Final Stage Show' },
 ]
 
-function CarouselCard({ gallery }) {
-  const [current, setCurrent] = useState(0)
-  const [direction, setDirection] = useState(1) // 1 = forward, -1 = backward
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [isHovered, setIsHovered] = useState(false)
-  const intervalRef = useRef(null)
-  const total = gallery.images.length
+const categories = ['All', 'Technical', 'Gaming', 'Cultural']
 
-  const goTo = (idx, dir) => {
-    setDirection(dir)
-    setCurrent(idx)
-  }
-
-  const next = () => goTo((current + 1) % total, 1)
-  const prev = () => goTo((current - 1 + total) % total, -1)
-
-  useEffect(() => {
-    if (isPlaying && !isHovered) {
-      intervalRef.current = setInterval(next, 3000)
-    }
-    return () => clearInterval(intervalRef.current)
-  }, [isPlaying, isHovered, current, total])
-
-  const togglePlay = (e) => {
-    e.stopPropagation()
-    setIsPlaying(!isPlaying)
-  }
-
-  const prevIdx = (current - 1 + total) % total
-  const nextIdx = (current + 1) % total
-
-  // Bounce/spring physics slide variants
-  const slideVariants = {
-    enter: (dir) => ({
-      x: dir > 0 ? 300 : -300,
-      opacity: 0,
-      scale: 0.85,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (dir) => ({
-      x: dir > 0 ? -300 : 300,
-      opacity: 0,
-      scale: 0.85,
-    }),
-  }
-
-  // Spring transition with bounce
-  const springTransition = {
-    x: { type: 'spring', stiffness: 300, damping: 25, mass: 0.8 },
-    opacity: { duration: 0.3 },
-    scale: { type: 'spring', stiffness: 400, damping: 30 },
-  }
-
-  // Thumbnail bounce-in variants
-  const thumbVariants = {
-    hidden: (side) => ({
-      opacity: 0,
-      x: side === 'left' ? 40 : -40,
-      scale: 0.6,
-      rotateY: side === 'left' ? 15 : -15,
-    }),
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 0.85,
-      rotateY: 0,
-    },
-    exit: (side) => ({
-      opacity: 0,
-      x: side === 'left' ? 40 : -40,
-      scale: 0.6,
-      rotateY: side === 'left' ? 15 : -15,
-    }),
-  }
-
-  const thumbSpring = {
-    type: 'spring',
-    stiffness: 350,
-    damping: 20,
-    mass: 0.6,
-  }
-
+const GalleryItem = memo(({ img, onExpand }) => {
   return (
     <motion.div
-      className="relative group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      whileHover={{ y: -5 }}
+      className={`relative ${img.size} rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-premium hover:shadow-2xl transition-all duration-500`}
+      onClick={() => onExpand(img)}
     >
-      {/* Prev thumbnail on hover */}
-      <AnimatePresence custom="left">
-        {isHovered && total > 1 && (
-          <motion.div
-            custom="left"
-            variants={thumbVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={thumbSpring}
-            className="absolute -left-16 top-1/2 -translate-y-1/2 z-20 w-32 h-24 rounded-lg overflow-hidden border-2 border-white shadow-2xl cursor-pointer"
-            onClick={prev}
-            whileHover={{ scale: 0.95, transition: { type: 'spring', stiffness: 500, damping: 15 } }}
-            whileTap={{ scale: 0.8 }}
-          >
-            <img
-              src={gallery.images[prevIdx]}
-              alt="Previous"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center hover:bg-black/10 transition-colors">
-              <ChevronLeft className="w-6 h-6 text-white drop-shadow-lg" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Next thumbnail on hover */}
-      <AnimatePresence custom="right">
-        {isHovered && total > 1 && (
-          <motion.div
-            custom="right"
-            variants={thumbVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={thumbSpring}
-            className="absolute -right-16 top-1/2 -translate-y-1/2 z-20 w-32 h-24 rounded-lg overflow-hidden border-2 border-white shadow-2xl cursor-pointer"
-            onClick={next}
-            whileHover={{ scale: 0.95, transition: { type: 'spring', stiffness: 500, damping: 15 } }}
-            whileTap={{ scale: 0.8 }}
-          >
-            <img
-              src={gallery.images[nextIdx]}
-              alt="Next"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center hover:bg-black/10 transition-colors">
-              <ChevronRight className="w-6 h-6 text-white drop-shadow-lg" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main Card */}
-      <div className="relative z-10 rounded-2xl overflow-hidden shadow-xl aspect-[4/3] bg-gray-900 cursor-pointer">
-        {/* Image with directional slide + bounce */}
-        <AnimatePresence mode="popLayout" custom={direction}>
-          <motion.div
-            key={current}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={springTransition}
-            className="w-full h-full absolute inset-0 bg-slate-800"
-          >
-            <motion.img
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              src={gallery.images[current]}
-              alt={`${gallery.label} ${current + 1}`}
-              className="w-full h-full object-cover absolute inset-0"
-              onLoad={(e) => {
-                e.target.style.opacity = 1;
-              }}
-              style={{ opacity: 0 }}
-            />
-            {/* Dynamic skeleton loader background that is visible until img opacity hits 1 */}
-            <div className="absolute inset-0 bg-slate-200 animate-pulse -z-10" />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Gradient overlay at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-
-        {/* Colored status dot - top left */}
-        <motion.div
-          animate={{ scale: [1, 1.3, 1] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className={`absolute top-3 left-3 w-3 h-3 rounded-full ${gallery.color} shadow-lg`}
+      <img 
+        src={`${img.url}?auto=format&fit=crop&q=80&w=1200`} 
+        alt={img.title} 
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+      />
+      
+      {/* Light Liquid Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-fcit-100 via-fcit-100/40 to-transparent opacity-0 group-hover:opacity-95 transition-opacity duration-500" />
+      
+      {/* Lens Flare Effect (Goldish) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        <motion.div 
+          animate={{ x: [-100, 500], y: [-100, 500] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          className="w-[200px] h-[200px] bg-fcit-200/20 blur-[80px] rounded-full"
         />
+      </div>
 
-        {/* Controls - top right (glassmorphic) */}
-        <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/40 backdrop-blur-md rounded-full px-2.5 py-1.5">
-          <button
-            onClick={togglePlay}
-            className="text-white hover:text-fcit-200 transition-colors"
-          >
-            {isPlaying && !isHovered ? (
-              <Pause className="w-3.5 h-3.5" />
-            ) : (
-              <Play className="w-3.5 h-3.5" />
-            )}
-          </button>
-          <span className="text-white text-xs font-medium">
-            {current + 1}/{total}
+      <div className="absolute bottom-6 left-8 right-8 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="flex items-center gap-2 mb-2 border-b border-fcit-400/10 pb-2">
+          <span className="px-3 py-1 bg-fcit-400 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg">
+            {img.category}
           </span>
+          <div className="w-1 h-1 bg-fcit-400/30 rounded-full" />
+          <span className="text-fcit-400/60 text-[10px] font-bold uppercase tracking-wider">2026 Season</span>
         </div>
-
-        {/* Label - bottom left */}
-        <div className="absolute bottom-3 left-3">
-          <h3 className="text-white font-bold text-base drop-shadow-lg">{gallery.label}</h3>
+        <h4 className="text-2xl font-black text-slate-900 leading-tight mb-4 group-hover:text-fcit-400 transition-colors">{img.title}</h4>
+        <div className="flex items-center gap-2 text-fcit-400 font-black text-[10px] uppercase tracking-tighter">
+          Explore Moments <Maximize2 className="w-4 h-4" />
         </div>
-
-        {/* Pagination dots - bottom center */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-          {gallery.images.map((_, i) => (
-            <motion.button
-              key={i}
-              onClick={(e) => { e.stopPropagation(); goTo(i, i > current ? 1 : -1) }}
-              animate={i === current ? { scale: [1, 1.4, 1] } : { scale: 1 }}
-              transition={i === current ? { type: 'spring', stiffness: 500, damping: 15 } : {}}
-              className={`rounded-full transition-all duration-300 ${
-                i === current
-                  ? 'w-2 h-2 bg-white shadow-lg'
-                  : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Hover arrows on main card with bounce */}
-        <AnimatePresence>
-          {isHovered && total > 1 && (
-            <>
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.85 }}
-                onClick={(e) => { e.stopPropagation(); prev() }}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </motion.button>
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.85 }}
-                onClick={(e) => { e.stopPropagation(); next() }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </motion.button>
-            </>
-          )}
-        </AnimatePresence>
       </div>
     </motion.div>
   )
-}
+})
 
 export default function CampusExperience() {
-  const tabs = ['Academic', 'Events', 'Campus Life']
-  const [activeTab, setActiveTab] = useState('Academic')
+  const [activeTab, setActiveTab] = useState('All')
+  const [selected, setSelected] = useState(null)
 
-  const filteredGalleries = galleries.filter(g => g.category === activeTab)
+  const filtered = useMemo(() => 
+    activeTab === 'All' ? images : images.filter(i => i.category === activeTab),
+  [activeTab])
 
   return (
-    <section className="py-16 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10"
-        >
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight text-fcit-300">
-            Campus Life Gallery
-          </h2>
-        </motion.div>
+    <section className="py-24 bg-fcit-100/30 transition-colors duration-500 relative overflow-hidden">
+      {/* Modern Background Accents */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fcit-400/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-fcit-300/10 rounded-full blur-[100px] pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+          <div className="text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-fcit-400 font-bold mb-6 tracking-widest uppercase text-[10px] shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" /> Discovery
+            </div>
+            <TextReveal 
+              text="Campus Life Mosaic" 
+              className="text-5xl md:text-7xl font-black text-fcit-400 mb-4 tracking-tighter"
+            />
+            <p className="text-xl text-slate-600 font-light max-w-xl">
+              An immersive digital collage of the moments that define our vibrant, high-energy academic community.
+            </p>
+          </div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-slate-100 p-1.5 rounded-2xl inline-flex gap-2 shadow-inner overflow-x-auto max-w-full">
-            {tabs.map((tab) => (
+          <div className="flex flex-wrap gap-3 p-2 bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-sm">
+            {categories.map(cat => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`relative px-6 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all duration-300 ${
-                  activeTab === tab ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200'
+                key={cat}
+                onClick={() => setActiveTab(cat)}
+                className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                  activeTab === cat 
+                    ? 'bg-fcit-400 text-white shadow-glow-maroon' 
+                    : 'text-slate-500 hover:text-fcit-400 hover:bg-fcit-100'
                 }`}
               >
-                {activeTab === tab && (
-                  <motion.div
-                    layoutId="activeTabIndicator"
-                    className="absolute inset-0 bg-fcit-400 rounded-xl"
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  />
-                )}
-                <span className="relative z-10">{tab}</span>
+                {cat}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Gallery Grid Container - Gold Background */}
-        <div className="bg-[#DFB94C] py-12 px-6 rounded-t-[2.5rem] shadow-inner mt-4 min-h-[500px]">
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={activeTab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10 mx-[6%]"
-            >
-              {filteredGalleries.map((gallery, i) => (
-                <CarouselCard key={i} gallery={gallery} />
-              ))}
-            </motion.div>
+        <motion.div 
+          layout
+          className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]"
+        >
+          <AnimatePresence mode="popLayout">
+            {filtered.map((img, i) => (
+              <GalleryItem key={img.url} img={img} onExpand={setSelected} />
+            ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
+
+      {/* Liquid Expansion Modal */}
+      <AnimatePresence>
+        {selected && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelected(null)}
+              className="absolute inset-0 bg-white/95 backdrop-blur-2xl"
+            />
+            <motion.div 
+              layoutId={selected.url}
+              className="relative w-full max-w-6xl aspect-video bg-white rounded-[3rem] overflow-hidden shadow-2xl z-10 border border-slate-200"
+            >
+              <button 
+                onClick={() => setSelected(null)}
+                className="absolute top-8 right-8 z-20 w-12 h-12 bg-fcit-100 hover:bg-fcit-400 text-fcit-400 hover:text-white rounded-full flex items-center justify-center backdrop-blur-xl transition-all border border-fcit-200"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              
+              <img src={`${selected.url}?auto=format&fit=crop&q=95&w=1600`} alt={selected.title} className="w-full h-full object-cover" />
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent pointer-events-none" />
+              
+              <div className="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                  <span className="inline-flex items-center gap-2 text-fcit-300 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">
+                    <ImageIcon className="w-4 h-4" /> Media Gallery Item
+                  </span>
+                  <h2 className="text-4xl md:text-6xl font-black text-fcit-400 tracking-tighter mb-2">{selected.title}</h2>
+                  <p className="text-slate-600 font-medium text-lg max-w-2xl leading-relaxed">
+                    Visual highlights from our specialized labs and high-energy corporate engagement sessions at GM University.
+                  </p>
+                </div>
+                <div className="flex gap-4">
+                  <button onClick={() => setSelected(null)} className="px-10 py-4 bg-fcit-400 text-white font-black rounded-full hover:scale-105 transition-transform flex items-center gap-3 shadow-xl">
+                    Next Story <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

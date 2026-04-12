@@ -35,6 +35,7 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([
     { id: 1, type: 'bot', text: 'Hi there! 👋 I am the FCIT AI Assistant. How can I help you today?' }
   ])
+  const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -55,11 +56,13 @@ export default function ChatBot() {
     setInputValue('')
 
     // Simulate AI thinking delay
+    setIsTyping(true)
     setTimeout(() => {
       const responseText = getBotResponse(text)
       const botMsg = { id: Date.now() + 1, type: 'bot', text: responseText }
       setMessages((prev) => [...prev, botMsg])
-    }, 600)
+      setIsTyping(false)
+    }, 1200)
   }
 
   const handlePromptClick = (prompt) => {
@@ -75,93 +78,180 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating Action Button */}
+      {/* Floating Action Button (Glass Orb) */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
+            initial={{ scale: 0, opacity: 0, rotate: -45 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            exit={{ scale: 0, opacity: 0, rotate: 45 }}
+            whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-50 w-14 h-14 bg-gradient-to-tr from-fcit-400 to-fcit-300 rounded-full flex items-center justify-center text-white shadow-xl shadow-fcit-400/30 hover:shadow-2xl transition-shadow border-2 border-white"
+            className="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-50 w-16 h-16 bg-white/15 backdrop-blur-xl rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(114,28,36,0.2)] hover:shadow-[0_15px_40px_rgba(114,28,36,0.3)] border border-white/40 group overflow-hidden"
             aria-label="Open Chat"
           >
-            <Bot className="w-6 h-6 animate-pulse" />
+            {/* Animated Pulse Core */}
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute inset-0 bg-gradient-to-tr from-fcit-400/30 to-fcit-300/30 rounded-full"
+            />
+            
+            {/* Gloss Reflection */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-50" />
+            
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="relative z-10"
+            >
+              <Bot className="w-7 h-7 text-fcit-400 drop-shadow-sm" />
+            </motion.div>
+
+            {/* Shine Sweep Effect */}
+            <motion.div
+              animate={{ x: [-100, 100] }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+            />
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Chat Window */}
+      {/* Chat Window (Liquid Glass) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9, transformOrigin: 'bottom right' }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="fixed bottom-[100px] right-4 md:bottom-24 md:right-8 z-50 w-[calc(100vw-32px)] md:w-[380px] h-[550px] max-h-[80vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-100"
+            initial={{ opacity: 0, scale: 0.5, x: 200, y: 200, filter: 'blur(20px)' }}
+            animate={{ opacity: 1, scale: 1, x: 0, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.8, y: 50, filter: 'blur(10px)' }}
+            transition={{ type: 'spring', stiffness: 350, damping: 28, mass: 0.8 }}
+            className="fixed bottom-[100px] right-4 md:bottom-24 md:right-8 z-50 w-[calc(100vw-32px)] md:w-[400px] h-[600px] max-h-[85vh] bg-white/70 backdrop-blur-[35px] rounded-[2.5rem] shadow-glass flex flex-col overflow-hidden border border-white/40"
+            style={{ willChange: 'transform, opacity, filter' }}
           >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-fcit-400 to-fcit-300 px-6 py-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-inner">
-                  <Bot className="w-6 h-6 text-white" />
+            {/* Glossy Header */}
+            <div className="relative bg-gradient-to-r from-fcit-400 to-fcit-300 px-6 py-5 flex items-center justify-between overflow-hidden">
+              {/* Shine Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
+              <motion.div
+                animate={{ x: [-200, 400] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 pointer-events-none"
+              />
+
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="relative">
+                  <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-md shadow-inner border border-white/20">
+                    <Bot className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-fcit-400 shadow-sm" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-lg leading-tight">FCIT Assistant</h3>
-                  <p className="text-fcit-100/90 text-xs font-medium">Online • AI Bot</p>
+                  <h3 className="text-white font-extrabold text-xl tracking-tight leading-none mb-1">FCIT Assistant</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                    <p className="text-fcit-100/80 text-xs font-bold uppercase tracking-widest">Active Intelligence</p>
+                  </div>
                 </div>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-2xl flex items-center justify-center text-white transition-all hover:rotate-90"
                 aria-label="Close Chat"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 bg-slate-50 p-4 overflow-y-auto custom-scrollbar flex flex-col gap-4">
-              {messages.map((msg) => (
-                <div 
+            <div className="flex-1 bg-transparent p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6 scroll-smooth">
+              {messages.map((msg, i) => (
+                <motion.div 
                   key={msg.id} 
+                  initial={{ opacity: 0, x: msg.type === 'user' ? 20 : -20, scale: 0.9, filter: 'blur(5px)' }}
+                  animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
                   className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${
-                      msg.type === 'user' 
-                        ? 'bg-fcit-400 text-white rounded-br-sm shadow-md' 
-                        : 'bg-white text-slate-700 rounded-bl-sm shadow-sm border border-slate-100'
-                    }`}
-                  >
+                  <div className={`relative max-w-[85%] p-4 rounded-3xl text-sm font-medium leading-relaxed shadow-sm ${
+                    msg.type === 'user' 
+                      ? 'bg-gradient-to-br from-fcit-400 to-fcit-300 text-white rounded-br-none glow-maroon' 
+                      : 'bg-white/80 backdrop-blur-md text-slate-800 rounded-bl-none border border-white/60 shadow-inner'
+                  }`}>
                     {msg.text}
-                  </motion.div>
-                </div>
+                  </div>
+                </motion.div>
               ))}
               
-              {/* Quick Prompts - only show if there are few messages to not crowd the chat later */}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-white/80 backdrop-blur-md p-4 rounded-3xl rounded-bl-none border border-white/60 shadow-inner flex gap-1.5 items-center">
+                    {[0, 1, 2].map((dot) => (
+                      <motion.div
+                        key={dot}
+                        animate={{
+                          y: [0, -5, 0],
+                          opacity: [0.3, 1, 0.3],
+                        }}
+                        transition={{
+                          duration: 0.6,
+                          repeat: Infinity,
+                          delay: dot * 0.15,
+                        }}
+                        className="w-1.5 h-1.5 bg-fcit-300 rounded-full"
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+              
+              {/* Quick Prompts - Staggered Reveal */}
               {messages.length < 3 && (
                 <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="flex flex-col gap-2 mt-2"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    visible: {
+                      transition: {
+                        staggerChildren: 0.1
+                      }
+                    }
+                  }}
+                  className="flex flex-col gap-3 mt-4"
                 >
-                  <span className="text-xs text-slate-400 font-medium ml-1">Suggested Questions:</span>
+                  <motion.span 
+                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                    className="text-[10px] text-slate-400 font-extrabold uppercase tracking-[0.2em] ml-1"
+                  >
+                    Direct Inquiries
+                  </motion.span>
                   {quickPrompts.map((prompt, i) => (
-                    <button
+                    <motion.button
                       key={i}
+                      variants={{
+                        hidden: { opacity: 0, x: -20, filter: 'blur(5px)' },
+                        visible: { opacity: 1, x: 0, filter: 'blur(0px)' }
+                      }}
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => handlePromptClick(prompt)}
-                      className="text-left bg-white border border-fcit-200 hover:border-fcit-400 hover:bg-fcit-50 text-slate-600 hover:text-fcit-400 text-xs p-2.5 rounded-xl shadow-sm transition-colors flex items-center justify-between group"
+                      className="text-left bg-white/50 backdrop-blur-sm border border-white/80 hover:border-fcit-400 hover:bg-white text-slate-700 hover:text-fcit-400 text-xs p-4 rounded-2xl shadow-sm transition-all flex items-center justify-between group"
                     >
-                      <span className="pr-4">{prompt}</span>
-                      <ChevronRight className="w-3.5 h-3.5 text-fcit-300 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </button>
+                      <span className="font-semibold">{prompt}</span>
+                      <ChevronRight className="w-4 h-4 text-fcit-300 opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1" />
+                    </motion.button>
                   ))}
                 </motion.div>
               )}
@@ -169,32 +259,33 @@ export default function ChatBot() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div className="p-4 bg-white border-t border-slate-100">
+            {/* Glassy Input Area */}
+            <div className="p-6 bg-white/40 backdrop-blur-md border-t border-white/60">
               <form 
                 onSubmit={(e) => {
                   e.preventDefault()
                   handleSend(inputValue)
                 }}
-                className="relative flex items-center gap-2"
+                className="relative flex items-center gap-3"
               >
                 <div className="relative flex-1">
                   <input
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Type your question..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-full py-3 px-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-fcit-300 focus:border-fcit-300 transition-shadow transition-colors"
+                    placeholder="Ask about MCA, BCA, Placements..."
+                    className="w-full bg-white/80 border border-white/60 rounded-2xl py-4 px-6 pr-14 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-fcit-400/50 focus:border-fcit-400 transition-all placeholder:text-slate-400 shadow-inner"
                   />
                   <button
                     type="submit"
                     disabled={!inputValue.trim()}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-fcit-400 hover:bg-fcit-300 text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-fcit-400/20"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-fcit-400 hover:bg-fcit-300 text-white rounded-xl flex items-center justify-center transition-all disabled:opacity-30 disabled:grayscale shadow-lg shadow-fcit-400/20 active:scale-95"
                   >
-                    <Send className="w-3.5 h-3.5 ml-0.5" />
+                    <Send className="w-4 h-4 ml-0.5" />
                   </button>
                 </div>
               </form>
+              <p className="text-[9px] text-slate-400 text-center mt-4 font-bold uppercase tracking-widest opacity-60">FCIT Virtual Hub • 2025-26 Edition</p>
             </div>
             
             {/* Minimalist style injection for custom scrollbar within chat */}

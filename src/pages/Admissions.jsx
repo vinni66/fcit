@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion'
 import { School, ArrowRight, Calendar, FileText, CheckCircle, UploadCloud, UserCheck, CreditCard } from 'lucide-react'
+import TextReveal from '../components/TextReveal'
+import FadeIn from '../components/FadeIn'
+import AnimatedDivider from '../components/AnimatedDivider'
 
 const eligibility = [
   { program: 'BCA', criteria: '10+2 with Mathematics/Computer Science, min 50% aggregate' },
@@ -54,9 +57,11 @@ export default function Admissions() {
             >
               <School className="w-10 h-10 text-white" />
             </motion.div>
-            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight">
-              Admissions <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">2025-26</span>
-            </h1>
+            <TextReveal
+              text="Admissions 2025-26"
+              highlightFrom={1}
+              className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight"
+            />
             <p className="text-xl text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
               Begin your journey with <strong className="font-bold text-fcit-400">FCIT</strong>. Explore eligibility criteria, our streamlined admission process, and apply today to shape your career in technology.
             </p>
@@ -73,9 +78,11 @@ export default function Admissions() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-              Eligibility <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent">Criteria</span>
-            </h2>
+            <TextReveal
+              text="Eligibility Criteria"
+              highlightFrom={1}
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
+            />
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full mb-8" />
           </motion.div>
           
@@ -86,9 +93,10 @@ export default function Admissions() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
                 whileHover={{ scale: 1.02, y: -5 }}
-                className="group bg-[#f8fbff] rounded-[2rem] border border-fcit-100 p-8 shadow-sm hover:shadow-xl hover:border-fcit-200 transition-all duration-300"
+                style={{ willChange: 'transform, opacity' }}
+                className="group bg-[#f8fbff] rounded-[2rem] border border-fcit-100 p-8 shadow-sm hover:shadow-xl hover:border-fcit-200 transition-all duration-300 transform-gpu"
               >
                 <div className="flex items-center gap-5 mb-5">
                   <div className="w-16 h-16 bg-gradient-to-br from-fcit-400 to-fcit-300 rounded-2xl flex items-center justify-center shadow-md shadow-fcit-400/20 group-hover:rotate-3 transition-transform">
@@ -102,7 +110,7 @@ export default function Admissions() {
               </motion.div>
             ))}
           </div>
-        </div>
+          </div>
       </section>
 
       {/* Admission Process - Vertical Timeline Layout */}
@@ -114,9 +122,11 @@ export default function Admissions() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-              Admission <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent">Process</span>
-            </h2>
+            <TextReveal
+              text="Admission Process"
+              highlightFrom={1}
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
+            />
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-300 to-fcit-400 mx-auto rounded-full mb-8" />
             <p className="text-xl text-slate-600 font-light">Follow these simple steps to complete your enrollment.</p>
           </motion.div>
@@ -128,8 +138,9 @@ export default function Admissions() {
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="relative group block"
+                viewport={{ once: true, margin: "-50px", amount: 0.1 }}
+                style={{ willChange: 'transform, opacity' }}
+                className="relative group block transform-gpu"
               >
                 {/* Timeline Dot/Icon */}
                 <div className="absolute -left-[45px] md:-left-[77px] top-1/2 -translate-y-1/2 w-14 h-14 bg-gradient-to-br from-fcit-400 to-fcit-300 rounded-full flex items-center justify-center border-4 border-white shadow-xl group-hover:scale-110 transition-transform duration-300 z-10">
@@ -150,7 +161,7 @@ export default function Admissions() {
               </motion.div>
             ))}
           </div>
-        </div>
+          </div>
       </section>
 
       {/* CTA Box */}

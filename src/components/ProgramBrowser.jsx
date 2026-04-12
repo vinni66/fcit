@@ -158,20 +158,39 @@ export default function ProgramBrowser() {
       {/* Results Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[400px]">
         <AnimatePresence mode="popLayout">
-          {filteredPrograms.map((prog) => (
+          {filteredPrograms.map((prog, index) => (
             <motion.div
               key={prog.id}
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                transition: { 
+                  duration: 0.4, 
+                  delay: index * 0.05,
+                  ease: [0.23, 1, 0.32, 1] 
+                }
+              }}
+              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
               className="bg-white p-8 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between group hover:border-fcit-400 hover:shadow-premium transition-all duration-300"
             >
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-fcit-100/50 flex items-center justify-center mb-8 group-hover:bg-fcit-400 transition-colors shadow-sm">
+                <motion.div 
+                  className="w-14 h-14 rounded-2xl bg-fcit-100/50 flex items-center justify-center mb-8 group-hover:bg-fcit-400 transition-colors shadow-sm"
+                  animate={{
+                    y: [0, -4, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.2
+                  }}
+                >
                   <prog.icon className="w-7 h-7 text-fcit-400 group-hover:text-white transition-colors" />
-                </div>
+                </motion.div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-fcit-400 transition-colors">{prog.title}</h3>
                 <p className="text-sm text-fcit-400 font-bold mb-6 tracking-wide uppercase opacity-80">{prog.category} • {prog.duration}</p>
                 <div className="flex flex-wrap gap-2">

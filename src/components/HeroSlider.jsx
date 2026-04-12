@@ -8,7 +8,7 @@ import MagneticButton from './MagneticButton'
 const slides = [
   {
     id: 1,
-    image: 'https://raw.githubusercontent.com/vinni66/Images/main/pht/4.jpg',
+    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/4.jpg',
     title: 'Empowering Commerce &',
     highlight: 'Tech Innovation',
     subtitle: 'Where future corporate leaders and tech innovators are forged through excellence.',
@@ -17,7 +17,7 @@ const slides = [
   },
   {
     id: 2,
-    image: 'https://raw.githubusercontent.com/vinni66/Images/main/pht/3.jpg',
+    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/3.jpg',
     title: 'Transformative',
     highlight: 'Learning Journey',
     subtitle: 'State-of-the-art facilities and a dynamic curriculum aligned with global standards.',
@@ -26,7 +26,7 @@ const slides = [
   },
   {
     id: 3,
-    image: 'https://raw.githubusercontent.com/vinni66/Images/main/pht/2.jpg',
+    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/2.jpg',
     title: 'Global Computing',
     highlight: 'Excellence',
     subtitle: 'Join a community of innovators solving real-world challenges through code.',
@@ -35,7 +35,7 @@ const slides = [
   },
   {
     id: 4,
-    image: 'https://raw.githubusercontent.com/vinni66/Images/main/pht/1.jpg',
+    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg',
     title: 'Cutting-Edge',
     highlight: 'AI & Research',
     subtitle: 'Push the boundaries of AI, Data Science, and Cyber Security with expert mentors.',
@@ -72,16 +72,21 @@ export default function HeroSlider() {
       <AnimatePresence mode="wait">
         <motion.div
           key={`bg-${current}`}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 0.9, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1 }}
+          animate={{ opacity: 0.9, scale: 1.08 }}
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ 
+            opacity: { duration: 1.5, ease: "easeOut" },
+            scale: { duration: 10, ease: "linear" }
+          }}
+          className="absolute inset-0 origin-center"
+          style={{ willChange: 'transform, opacity' }}
         >
           <img 
             src={slides[current].image} 
             alt="Hero Background" 
             className="w-full h-full object-cover"
+            fetchPriority={current === 0 ? "high" : "auto"}
           />
           {/* Subtle 10% Vignette/Overlay */}
           <div className="absolute inset-0 bg-black/10" />
@@ -90,7 +95,7 @@ export default function HeroSlider() {
       </AnimatePresence>
 
       {/* 3D Background Overlay - Lightened */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen">
+      <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-screen overflow-hidden">
         <ThreeHero />
       </div>
 
@@ -105,7 +110,7 @@ export default function HeroSlider() {
         >
           {/* Content */}
           <div className="relative z-10 w-full h-full flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32">
               <div className="max-w-4xl">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -139,11 +144,11 @@ export default function HeroSlider() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
-                  className="flex flex-col sm:flex-row gap-6 items-start"
+                  className="flex flex-col sm:flex-row gap-6 items-start transform-gpu will-change-transform"
                 >
                   <MagneticButton 
                     href={slides[current].link}
-                    className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-fcit-400 to-fcit-300 text-white px-10 py-5 rounded-full font-bold text-lg overflow-hidden transition-all hover:shadow-[0_0_35px_rgba(218,165,32,0.4)] glow-maroon"
+                    className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-fcit-400 to-fcit-300 text-white px-10 py-5 rounded-full font-bold text-lg overflow-hidden transition-all hover:shadow-[0_0_35px_rgba(218,165,32,0.4)] glow-maroon transform-gpu will-change-transform"
                   >
                     <span className="relative z-10">{slides[current].cta}</span>
                     <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -152,7 +157,7 @@ export default function HeroSlider() {
 
                   <MagneticButton 
                     href="/contact-us"
-                    className="group relative inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all"
+                    className="group relative inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all transform-gpu will-change-transform"
                   >
                     Contact Us
                   </MagneticButton>

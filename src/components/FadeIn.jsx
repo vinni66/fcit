@@ -18,7 +18,7 @@ export default function FadeIn({ children, delay = 0, direction = 'up', distance
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-50px", amount: 0.1 }}
       transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
       variants={variants}
       className={className}

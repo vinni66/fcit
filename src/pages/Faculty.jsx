@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, BookOpen, Award } from 'lucide-react'
 import FacultyModal from '../components/FacultyModal'
+import TextReveal from '../components/TextReveal'
+import FadeIn from '../components/FadeIn'
+import AnimatedDivider from '../components/AnimatedDivider'
 
 const faculty = [
   {
@@ -150,9 +153,11 @@ export default function Faculty() {
              transition={{ duration: 0.6 }}
              className="inline-block p-8 md:p-12 rounded-[3rem] bg-white/60 backdrop-blur-3xl border border-white/80 shadow-xl shadow-fcit-200/20"
           >
-            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight text-glow">
-              Our <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">Faculty</span>
-            </h1>
+            <TextReveal
+              text="Our Faculty"
+              highlightFrom={1}
+              className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight text-glow"
+            />
             <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
               Meet the dedicated educators, industry experts, and researchers driving academic excellence at <strong className="font-bold text-fcit-400">FCIT</strong>.
             </p>
@@ -171,7 +176,10 @@ export default function Faculty() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-black text-slate-900 mb-2">Leadership</h2>
+            <TextReveal
+              text="Leadership"
+              className="text-3xl font-black text-slate-900 mb-2"
+            />
             <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-300 mx-auto rounded-full" />
           </motion.div>
 
@@ -184,7 +192,8 @@ export default function Faculty() {
                   initial={{ opacity: 0, scale: isDean ? 0.95 : 0.9, y: 30 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  style={{ willChange: 'transform, opacity' }}
                   onClick={() => openProfile(f)}
                   className={`bg-white rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${
                     isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
@@ -222,14 +231,20 @@ export default function Faculty() {
             })}
           </div>
 
+          
+          <AnimatedDivider />
+
           {/* Faculty Members */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-12 mt-12"
           >
-            <h2 className="text-3xl font-black text-slate-900 mb-12">Academic Faculty</h2>
+            <TextReveal
+              text="Academic Faculty"
+              className="text-3xl font-black text-slate-900 mb-12"
+            />
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -239,7 +254,8 @@ export default function Faculty() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
+                style={{ willChange: 'transform, opacity' }}
                 onClick={() => openProfile(f)}
                 className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer"
               >

@@ -1,6 +1,88 @@
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion'
+import { useEffect, useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Briefcase, TrendingUp, Building2, ArrowRight, Star, Globe, ShieldCheck, Quote, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import TextReveal from '../components/TextReveal'
+import FadeIn from '../components/FadeIn'
+import AnimatedDivider from '../components/AnimatedDivider'
+
+function InfiniteScroller({ items }) {
+  return (
+    <div className="relative flex overflow-hidden py-10">
+      <motion.div
+        animate={{
+          x: [0, -1000],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        className="flex gap-8 px-4"
+      >
+        {[...items, ...items].map((item, i) => (
+          <div
+            key={i}
+            className="flex-shrink-0 px-8 py-5 bg-white/40 backdrop-blur-md rounded-2xl border border-white/80 shadow-sm hover:shadow-xl transition-all duration-300 flex items-center gap-3 group"
+          >
+            <Building2 className="w-5 h-5 text-fcit-300 group-hover:text-fcit-400 transition-colors" />
+            <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors text-lg">{item}</span>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  )
+}
+
+function GlobalReachMap() {
+  const cities = [
+    { name: 'Bangalore', x: '75%', y: '65%', lpa: '18 LPA' },
+    { name: 'San Francisco', x: '15%', y: '35%', lpa: '75k USD' },
+    { name: 'London', x: '45%', y: '30%', lpa: '55k GBP' },
+    { name: 'Dubai', x: '58%', y: '45%', lpa: '45k AED' },
+    { name: 'Singapore', x: '82%', y: '58%', lpa: '65k SGD' },
+  ]
+  
+  return (
+    <div className="relative w-full aspect-[21/9] bg-slate-950 rounded-[3rem] overflow-hidden shadow-2xl border border-white/10 group">
+      {/* Dark Map Base */}
+      <div className="absolute inset-0 opacity-20 bg-[url('https://gmu.ac.in/FCIT/campusimages/world_map_dots.png')] bg-cover bg-center mix-blend-screen" />
+      
+      {/* Animated Grids */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]" />
+      
+      {/* Hotspots */}
+      {cities.map((city, i) => (
+        <motion.div
+          key={i}
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          className="absolute"
+          style={{ left: city.x, top: city.y }}
+        >
+          <div className="relative">
+            <motion.div
+              animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute -inset-4 bg-fcit-300 rounded-full"
+            />
+            <div className="w-3 h-3 bg-fcit-300 rounded-full shadow-[0_0_15px_#daa520]" />
+            
+            {/* Tooltip */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 p-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap z-20">
+              <p className="text-white font-black text-[10px] uppercase tracking-widest">{city.name}</p>
+              <p className="text-fcit-300 font-bold text-lg">{city.lpa}</p>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+      
+      <div className="absolute bottom-10 left-10 text-white z-10">
+        <h4 className="text-3xl font-black mb-1">Global Reach</h4>
+        <p className="text-white/50 font-medium">Connecting our students to world-class tech hubs.</p>
+      </div>
+    </div>
+  )
+}
 
 const placementStats = [
   { label: 'Overall Placement Rate', value: '95', suffix: '%', icon: TrendingUp },
@@ -136,9 +218,11 @@ export default function Placements() {
             >
               <Briefcase className="w-10 h-10 text-white" />
             </motion.div>
-            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight">
-              Placements & <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">Internships</span>
-            </h1>
+            <TextReveal
+               text="Placements & Internships"
+               highlightFrom={1}
+               className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight"
+            />
             <p className="text-xl text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
               Our students consistently secure outstanding career opportunities and highly competitive internships at <strong className="font-bold text-fcit-400">top global tech companies</strong>.
             </p>
@@ -155,7 +239,10 @@ export default function Placements() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-black text-slate-900 mb-6">Placement Highlights</h2>
+            <TextReveal
+              text="Placement Highlights"
+              className="text-4xl font-black text-slate-900 mb-6"
+            />
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full" />
           </motion.div>
 
@@ -167,38 +254,26 @@ export default function Placements() {
         </div>
       </section>
 
-      {/* Recruiting Companies */}
-      <section className="py-24 bg-[#f8fbff]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-[#f8fbff] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-black text-slate-900 mb-6">
-              Our <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent">Recruiting Partners</span>
-            </h2>
+            <TextReveal
+              text="Recruiting Partners"
+              highlightFrom={1}
+              className="text-4xl font-black text-slate-900 mb-6"
+            />
             <p className="text-lg text-slate-600 font-medium">Industry leaders who trust our graduating talent.</p>
           </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            {companies.map((c, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: (i % 6) * 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="px-8 py-5 bg-white rounded-2xl border border-fcit-100 shadow-sm hover:shadow-[0_10px_30px_-10px_rgba(99,103,255,0.2)] hover:border-fcit-300 transition-all duration-300 group"
-              >
-                <div className="flex items-center gap-3">
-                  <Building2 className="w-5 h-5 text-slate-400 group-hover:text-fcit-400 transition-colors" />
-                  <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors text-lg">{c}</span>
-                </div>
-              </motion.div>
-            ))}
+          <InfiniteScroller items={companies} />
+          
+          <div className="mt-24 px-4">
+             <GlobalReachMap />
           </div>
         </div>
       </section>
@@ -214,9 +289,11 @@ export default function Placements() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-black text-slate-900 mb-6">
-              Our Official <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent">Interns</span>
-            </h2>
+            <TextReveal
+              text="Our Official Interns"
+              highlightFrom={2}
+              className="text-4xl font-black text-slate-900 mb-6"
+            />
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-300 to-fcit-200 mx-auto rounded-full" />
           </motion.div>
 
@@ -265,9 +342,11 @@ export default function Placements() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl font-black text-slate-900 mb-6">
-                 Internship & Industry <span className="text-fcit-400">Gallery</span>
-              </h2>
+            <TextReveal
+               text="Internship & Industry Gallery"
+               highlightFrom={2}
+               className="text-4xl font-black text-slate-900 mb-6"
+            />
               <p className="text-lg text-slate-500 font-medium">Real-world corporate exposure captured through the lens.</p>
             </motion.div>
 

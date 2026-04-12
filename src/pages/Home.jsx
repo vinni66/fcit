@@ -1,12 +1,15 @@
 import { useState, useRef } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { GraduationCap, BookOpen, Users, Award, ArrowRight, Monitor, Globe, Code, Database, Brain, Shield, Cpu, BarChart3, ChevronDown, CheckCircle2, Mail, Library, Dumbbell, Coffee } from 'lucide-react'
+import { GraduationCap, BookOpen, Users, Award, ArrowRight, Monitor, Globe, Code, Database, Brain, Shield, Cpu, BarChart3, ChevronDown, CheckCircle2, Mail, Library, Dumbbell, Coffee, Zap, Rocket } from 'lucide-react'
 import CampusExperience from '../components/CampusExperience'
 import HeroSlider from '../components/HeroSlider'
 import FadeIn from '../components/FadeIn'
 import StatsCounter from '../components/StatsCounter'
 import ProgramBrowser from '../components/ProgramBrowser'
 import FacultyModal from '../components/FacultyModal'
+import TextReveal from '../components/TextReveal'
+import AnimatedDivider from '../components/AnimatedDivider'
+import DepartmentTimeline from '../components/DepartmentTimeline'
 
 const objectives = [
   'Impart comprehensive engineering education aligned with industry needs.',
@@ -92,9 +95,11 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fcit-100/50 border border-fcit-200 text-fcit-400 font-bold text-sm mb-6 uppercase tracking-wider glow-gold backdrop-blur-md">
                 <Globe className="w-4 h-4" /> Discover FCIT
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-                Department <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-200 text-glow">Overview</span>
-              </h2>
+              <TextReveal
+                text="Department Overview"
+                className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight"
+                highlightFrom={1}
+              />
               <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 via-fcit-300 to-fcit-100 rounded-full mb-8 shadow-[0_0_15px_rgba(218,165,32,0.5)]" />
               <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-light">
                 Welcome to the Department of Computer Science! Our programs foster technical depth, innovation, and hands-on learning for a fast-changing world. Join us to experience collaborative research, expert faculty, and vibrant student life.
@@ -131,8 +136,10 @@ export default function Home() {
         </div>
       </FadeIn>
 
+      <AnimatedDivider />
+
       {/* Real Functionality: Program Browser */}
-      <section className="bg-[#f8fbff] relative py-20 border-t border-slate-100">
+      <section className="bg-[#f8fbff] relative py-20">
          <ProgramBrowser />
       </section>
 
@@ -141,9 +148,11 @@ export default function Home() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-200 text-glow">Vision & Mission</span>
-            </h2>
+            <TextReveal
+              text="Our Vision & Mission"
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-4"
+              highlightFrom={1}
+            />
             <p className="text-lg text-slate-600 max-w-2xl mx-auto font-light">The guiding principles that drive our pursuit of academic and technological excellence.</p>
           </div>
 
@@ -194,7 +203,11 @@ export default function Home() {
       <FadeIn className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">Department Objectives</h2>
+            <TextReveal
+              text="Department Objectives"
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-4"
+              highlightFrom={1}
+            />
             <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-300 mx-auto rounded-full" />
           </div>
 
@@ -216,12 +229,16 @@ export default function Home() {
         </div>
       </FadeIn>
 
-      <FadeIn className="py-24 bg-[#f8fbff] border-t border-slate-100">
+      <AnimatedDivider />
+
+      <FadeIn className="py-24 bg-[#f8fbff]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-              Leadership & <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-300">Faculty</span>
-            </h2>
+            <TextReveal
+              text="Leadership & Faculty"
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
+              highlightFrom={2}
+            />
             <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full mb-6" />
             <p className="text-lg text-slate-600 max-w-2xl mx-auto font-light">
               Our esteemed academic leaders act as mentors, guiding the next generation of tech innovators.
@@ -269,16 +286,101 @@ export default function Home() {
         </div>
       </FadeIn>
 
+      <FadeIn className="py-24 bg-fcit-100 flex items-center justify-center overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+          <div className="bg-white/80 backdrop-blur-3xl rounded-[4rem] p-12 md:p-20 shadow-premium border border-white/50 relative overflow-hidden group">
+            {/* Animated Mesh Overlay Inside Card */}
+            <motion.div 
+              animate={{
+                opacity: [0.03, 0.08, 0.03],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-gradient-to-br from-fcit-400 via-transparent to-fcit-200 pointer-events-none"
+            />
+            
+            <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Zap className="w-64 h-64 text-fcit-400 rotate-12" />
+            </div>
+            
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+              <div className="flex-1 text-center md:text-left">
+                <motion.div 
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-fcit-400 text-white font-black uppercase tracking-widest text-[10px] mb-8 shadow-lg cursor-default"
+                >
+                  <Rocket className="w-4 h-4 animate-bounce" /> Flagship Event 2026
+                </motion.div>
+                <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-6 leading-none">
+                  Tech Carnival <span className="text-fcit-400 uppercase">2K26</span>
+                </h2>
+                <p className="text-xl text-slate-600 font-medium max-w-xl mb-10 leading-relaxed">
+                  Experience the massive energy of India's premier national-level technical competition, hosted exclusively by the Faculty of Computing & IT.
+                </p>
+                <div className="flex flex-wrap items-center gap-6 justify-center md:justify-start">
+                  {[
+                    { val: '2000+', label: 'Participants' },
+                    { val: '50+', label: 'Universities' },
+                    { val: '₹2L+', label: 'Prize Pool' }
+                  ].map((stat, i) => (
+                    <motion.div 
+                      key={i}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                      className="px-6 py-4 bg-white/50 backdrop-blur-md rounded-3xl border border-white text-center shadow-sm"
+                    >
+                      <div className="text-2xl font-black text-fcit-400 leading-none">{stat.val}</div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{stat.label}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex-1 relative">
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  className="relative w-full aspect-square rounded-[3.5rem] overflow-hidden shadow-2xl ring-8 ring-fcit-100 border border-fcit-400/20"
+                >
+                  <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg" alt="Tech Carnival 2K26 Arena" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-fcit-400/60 to-transparent" />
+                  
+                  {/* Digital Scanning Line */}
+                  <motion.div 
+                    animate={{ top: ['-10%', '110%'] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                    className="absolute left-0 right-0 h-1 bg-white/20 blur-sm pointer-events-none"
+                  />
+
+                  <div className="absolute bottom-10 left-10">
+                    <motion.div 
+                      animate={{ scale: [1, 1.1, 1], rotate: [0, 10, 0] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-fcit-400 shadow-xl mb-4"
+                    >
+                      <Zap className="w-8 h-8 fill-current" />
+                    </motion.div>
+                    <div className="text-white text-2xl font-black tracking-tight leading-none">The Future <br /> Is Here.</div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+
       <div className="bg-[#fbfcff] pb-10">
         <CampusExperience />
       </div>
 
+      <DepartmentTimeline />
+
       <FadeIn className="py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
            <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-              Campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-200">Facilities</span>
-            </h2>
+            <TextReveal
+              text="Campus Facilities"
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
+              highlightFrom={1}
+            />
             <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full mb-6" />
           </div>
 
@@ -313,10 +415,11 @@ export default function Home() {
       <section className="relative py-24 overflow-hidden bg-gradient-to-br from-fcit-100/30 via-[#f8fbff] to-white">
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
           <FadeIn className="p-12 md:p-16 rounded-[3rem] bg-white/70 border border-white/80 backdrop-blur-3xl shadow-[0_20px_60px_-15px_rgba(99,103,255,0.1)] relative overflow-hidden">
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
-              Ready to Shape <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-300">Your Future?</span>
-            </h2>
+            <TextReveal
+              text="Ready to Shape Your Future?"
+              className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight"
+              highlightFrom={3}
+            />
             <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
               Join FCIT and become part of a vibrant community of innovators, researchers, and future technology leaders at GM University.
             </p>

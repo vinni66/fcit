@@ -32,10 +32,10 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative bg-slate-950 text-white overflow-hidden rounded-t-[3rem] mt-auto">
+    <footer className="relative bg-white text-slate-900 overflow-hidden rounded-t-[3rem] mt-auto border-t border-fcit-400/5">
       {/* Premium Ambient Background Glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fcit-400/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fcit-400/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-fcit-300/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4" />
       </div>
 
@@ -45,14 +45,14 @@ export default function Footer() {
           {/* Brand & Social */}
           <div className="lg:col-span-4 xl:col-span-3">
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-12 flex items-center justify-center bg-white rounded-xl p-1.5 shadow-lg shadow-fcit-400/20">
-                <img src="https://cdn.jsdelivr.net/gh/vinni66/Images/assets/gmulogo1.png" alt="GMU Logo" className="h-full w-auto object-contain" />
+              <div className="h-12 flex items-center justify-center bg-white rounded-xl p-1.5 shadow-lg shadow-fcit-400/10 border border-fcit-400/5">
+                <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" alt="FCIT Logo" className="h-full w-auto object-contain" />
               </div>
-              <h3 className="text-2xl font-black text-white tracking-tight leading-none uppercase">
+              <h3 className="text-2xl font-black text-fcit-400 tracking-tight leading-none uppercase">
                 Faculty of <br /> Computing and IT
               </h3>
             </div>
-            <p className="text-slate-300/90 mb-8 leading-relaxed font-light text-sm pr-2">
+            <p className="text-slate-500 mb-8 leading-relaxed font-light text-sm pr-2">
               Empowering students through excellence in education, innovation, and research. Shaping future leaders in modern technology at GM University.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -60,7 +60,7 @@ export default function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
-                  className={`p-2.5 bg-white/5 border border-white/10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 ${s.color}`}
+                  className={`p-2.5 bg-fcit-100 border border-fcit-400/10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 text-fcit-400 ${s.color}`}
                   aria-label={s.label}
                 >
                   <s.icon className="w-4 h-4" />
@@ -73,18 +73,18 @@ export default function Footer() {
           <div className="lg:col-span-4 grid grid-cols-2 gap-8">
             {/* Explore Links */}
             <div>
-              <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Explore</h3>
+              <h3 className="text-lg font-bold mb-6 text-fcit-400 tracking-wide">Explore</h3>
               <ul className="space-y-2">
                 {exploreLinks.map((link) => (
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300 group"
+                      className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-fcit-100 border border-transparent hover:border-fcit-400/10 transition-all duration-300 group"
                     >
-                      <span className="text-slate-400 group-hover:text-white font-medium text-sm transition-colors">
+                      <span className="text-slate-600 group-hover:text-fcit-400 font-medium text-sm transition-colors">
                         {link.name}
                       </span>
-                      <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
+                      <div className="w-5 h-5 rounded-full bg-fcit-100 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
                         <ArrowRight className="w-3 h-3 text-fcit-400" />
                       </div>
                     </a>
@@ -95,18 +95,18 @@ export default function Footer() {
 
             {/* Academics Links */}
             <div>
-              <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Academics</h3>
+              <h3 className="text-lg font-bold mb-6 text-fcit-400 tracking-wide">Academics</h3>
               <ul className="space-y-2">
                 {academicLinks.map((link) => (
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300 group"
+                      className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-fcit-100 border border-transparent hover:border-fcit-400/10 transition-all duration-300 group"
                     >
-                      <span className="text-slate-400 group-hover:text-white font-medium text-sm transition-colors">
+                      <span className="text-slate-600 group-hover:text-fcit-400 font-medium text-sm transition-colors">
                         {link.name}
                       </span>
-                      <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
+                      <div className="w-5 h-5 rounded-full bg-fcit-100 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
                         <ArrowRight className="w-3 h-3 text-fcit-400" />
                       </div>
                     </a>
@@ -118,14 +118,14 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="lg:col-span-2 lg:col-start-9 xl:col-span-3 xl:col-start-8">
-            <h3 className="text-lg font-bold mb-6 text-white tracking-wide">Contact Us</h3>
+            <h3 className="text-lg font-bold mb-6 text-fcit-400 tracking-wide">Contact Us</h3>
             <div className="space-y-4">
               {contactInfo.map((c, i) => (
                 <div key={i} className="flex items-start gap-3 group">
-                  <div className="p-2 bg-fcit-400/10 rounded-lg border border-fcit-400/20 group-hover:bg-fcit-400/20 group-hover:border-fcit-400/40 transition-colors mt-0.5">
+                  <div className="p-2 bg-fcit-100 rounded-lg border border-fcit-400/10 group-hover:bg-fcit-400/10 group-hover:border-fcit-400/20 transition-colors mt-0.5">
                     <c.icon className="w-4 h-4 text-fcit-300" />
                   </div>
-                  <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-200 transition-colors font-medium">
+                  <p className="text-slate-600 text-sm leading-relaxed group-hover:text-fcit-400 transition-colors font-medium">
                     {c.text}
                   </p>
                 </div>
@@ -135,19 +135,19 @@ export default function Footer() {
 
           {/* Newsletter / CTA Box style */}
           <div className="lg:col-span-2 xl:col-span-2">
-             <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden group hover:border-fcit-400/30 transition-colors">
-               <div className="absolute -top-10 -right-10 w-24 h-24 bg-fcit-400/20 rounded-full blur-xl group-hover:bg-fcit-400/40 transition-colors" />
-               <h3 className="text-lg font-bold mb-2 text-white relative z-10">Weekly Tech Insights</h3>
-               <p className="text-slate-400 text-sm mb-4 leading-relaxed relative z-10">Subscribe to our newsletter for the latest tech trends and campus updates.</p>
+             <div className="bg-fcit-100 border border-fcit-400/5 rounded-2xl p-6 relative overflow-hidden group hover:border-fcit-400/30 transition-colors shadow-sm">
+               <div className="absolute -top-10 -right-10 w-24 h-24 bg-fcit-400/5 rounded-full blur-xl group-hover:bg-fcit-400/10 transition-colors" />
+               <h3 className="text-lg font-bold mb-2 text-fcit-400 relative z-10">Weekly Tech Insights</h3>
+               <p className="text-slate-500 text-sm mb-4 leading-relaxed relative z-10">Subscribe to our newsletter for the latest tech trends and campus updates.</p>
                <form className="flex flex-col gap-3 relative z-10 w-full" onSubmit={(e) => e.preventDefault()}>
                  <div className="relative">
                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                     <Mail className="h-5 w-5 text-slate-500" />
+                     <Mail className="h-5 w-5 text-slate-400" />
                    </div>
-                   <input type="email" placeholder="Email address" required className="block w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-fcit-400 focus:border-fcit-400 text-sm text-white placeholder-slate-400 shadow-inner" />
+                   <input type="email" placeholder="Email address" required className="block w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-fcit-400 focus:border-fcit-400 text-sm text-slate-900 placeholder-slate-400 shadow-sm" />
                  </div>
-                 <button className="w-full bg-fcit-400 hover:bg-fcit-300 text-white font-bold py-3 rounded-xl transition-colors text-sm shadow-lg shadow-fcit-400/20">Subscribe</button>
-                 <p className="text-[10px] text-slate-500 mt-1 text-center">By subscribing, you agree to our Privacy Policy. No spam.</p>
+                 <button className="w-full bg-fcit-400 hover:bg-fcit-300 text-white font-bold py-3 rounded-xl transition-colors text-sm shadow-lg shadow-fcit-400/20">Subscribe Now</button>
+                 <p className="text-[10px] text-slate-400 mt-1 text-center">By subscribing, you agree to our Privacy Policy.</p>
                </form>
              </div>
           </div>
@@ -155,15 +155,15 @@ export default function Footer() {
       </div>
 
       {/* Deep Footer Bar */}
-      <div className="border-t border-white/10 bg-black/20 backdrop-blur-lg">
+      <div className="border-t border-slate-100 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-slate-500 text-sm font-medium">
+            <div className="text-slate-400 text-sm font-medium">
               © {year} FCIT - Faculty of Computing and IT. All rights reserved.
             </div>
             <div className="flex items-center space-x-8 text-sm font-medium">
-              <a href="#" className="text-slate-500 hover:text-fcit-300 transition-colors duration-300">Privacy Policy</a>
-              <a href="#" className="text-slate-500 hover:text-fcit-300 transition-colors duration-300">Terms of Service</a>
+              <a href="#" className="text-slate-400 hover:text-fcit-400 transition-colors duration-300 uppercase tracking-tighter">Privacy Policy</a>
+              <a href="#" className="text-slate-400 hover:text-fcit-400 transition-colors duration-300 uppercase tracking-tighter">Terms of Service</a>
             </div>
           </div>
         </div>

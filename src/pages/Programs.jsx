@@ -2,7 +2,80 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Monitor, Code, Brain, Shield, Database, BarChart3, Cpu, ArrowRight, Clock, CheckCircle, ChevronDown, Download, Layers, X, BookOpen } from 'lucide-react'
 import { useState } from 'react'
 import ProgramModal from '../components/ProgramModal'
+import TextReveal from '../components/TextReveal'
+import FadeIn from '../components/FadeIn'
+import AnimatedDivider from '../components/AnimatedDivider'
 
+const bcaJourney = [
+  { sem: 'Sem 1', title: 'Fundamentals', skills: ['C Programming', 'Logic Design', 'Mathematics'], focus: 'Core logic building and procedural programming basics.' },
+  { sem: 'Sem 2', title: 'Data Structures', skills: ['C++', 'DS', 'Computer Architecture'], focus: 'Understanding memory management and efficient algorithm design.' },
+  { sem: 'Sem 3', title: 'Web Development', skills: ['Java', 'HTML/CSS/JS', 'OS'], focus: 'Building interactive interfaces and understanding system cores.' },
+  { sem: 'Sem 4', title: 'Database & Networking', skills: ['SQL', 'Networking', 'Python'], focus: 'Managing data at scale and communication protocols.' },
+  { sem: 'Sem 5', title: 'Mobile & AI', skills: ['App Dev', 'AI Basics', 'Software Eng'], focus: 'Mobile ecosystems and an introduction to machine intelligence.' },
+  { sem: 'Sem 6', title: 'Grand Finale', skills: ['Major Project', 'Cloud Computing', 'Cyber Security'], focus: 'Deploying real-world applications to the cloud with security.' },
+]
+
+const mcaJourney = [
+  { sem: 'Sem 1', title: 'Advanced Computing', skills: ['Adv Java', 'ML Basics', 'Big Data'], focus: 'High-level application architectures and data science.' },
+  { sem: 'Sem 2', title: 'Intelligent Systems', skills: ['Deep Learning', 'DevOps', 'Cloud'], focus: 'Neural networks and automated deployment pipelines.' },
+  { sem: 'Sem 3', title: 'Specialization', skills: ['IoT', 'BlockChain', 'AR/VR'], focus: 'Diving deep into emerging technologies and niche sectors.' },
+  { sem: 'Sem 4', title: 'Research & Industry', skills: ['Industrial Project', 'Thesis', 'Optimization'], focus: 'Corporate capstone projects and research publications.' },
+]
+
+function CurriculumJourney({ data, title }) {
+  return (
+    <div className="py-20">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        className="mb-12 px-4"
+      >
+        <h3 className="text-3xl font-black text-slate-800 mb-2">{title} <span className="text-fcit-400">Journey</span></h3>
+        <div className="w-16 h-1 bg-fcit-300 rounded-full" />
+      </motion.div>
+      
+      <div className="flex overflow-x-auto pb-12 pt-4 px-4 gap-8 no-scrollbar scroll-smooth snap-x">
+        {data.map((step, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            className="flex-shrink-0 w-[300px] snap-center group relative mt-10"
+          >
+            {/* Liquid Connector */}
+            {i !== data.length - 1 && (
+              <div className="absolute top-[28px] left-[50%] w-[100%] h-0.5 bg-gradient-to-r from-fcit-300/50 to-transparent z-0 hidden lg:block" />
+            )}
+            
+            <div className="relative z-10 flex flex-col items-center">
+              {/* Semester Node */}
+              <div className="w-14 h-14 rounded-2xl bg-white border-2 border-fcit-100 flex items-center justify-center text-fcit-400 font-black text-lg shadow-sm group-hover:bg-fcit-400 group-hover:text-white group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 mb-6 group-hover:shadow-glow-maroon">
+                {i + 1}
+              </div>
+              
+              {/* Content Card */}
+              <div className="w-full bg-white/60 backdrop-blur-md rounded-[2rem] border border-white/80 p-6 shadow-sm group-hover:shadow-xl group-hover:bg-white transition-all duration-300">
+                <span className="text-[10px] font-black text-fcit-300 uppercase tracking-widest mb-1 block">{step.sem}</span>
+                <h4 className="text-xl font-black text-slate-900 mb-4 group-hover:text-fcit-400 transition-colors uppercase tracking-tight">{step.title}</h4>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {step.skills.map((s, j) => (
+                    <span key={j} className="px-2.5 py-1 rounded-full bg-white border border-slate-100 text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-slate-600 text-xs font-medium leading-relaxed">{step.focus}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
 const scaPrograms = [
   {
     title: 'BCA – General',
@@ -111,10 +184,12 @@ const scsPrograms = [
 function ProgramCard({ prog, i, onOpen }) {
   return (
     <motion.div
+       variants={{}}
        initial={{ opacity: 0, y: 30 }}
        whileInView={{ opacity: 1, y: 0 }}
        transition={{ delay: i * 0.1, duration: 0.5 }}
-       viewport={{ once: true }}
+       viewport={{ once: true, amount: 0.1 }}
+       style={{ willChange: 'transform, opacity' }}
        className="group relative bg-white rounded-[2.5rem] p-1 shadow-sm hover:shadow-[0_20px_60px_-15px_rgba(99,103,255,0.2)] transition-all duration-500"
      >
        <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10`} />
@@ -202,9 +277,11 @@ export default function Programs() {
              transition={{ duration: 0.6 }}
              className="inline-block p-8 md:p-12 rounded-[3rem] bg-white/60 backdrop-blur-3xl border border-white/80 shadow-xl shadow-fcit-200/20"
           >
-            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight text-glow">
-              Academic <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">Programs</span>
-            </h1>
+            <TextReveal
+               text="Academic Programs"
+               highlightFrom={1}
+               className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight text-glow"
+            />
             <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed mb-8">
               FCIT offers a comprehensive range of undergraduate and postgraduate degrees across two distinct schools of excellence: <strong className="font-bold text-fcit-400">SCA & SCS</strong>.
             </p>
@@ -289,9 +366,11 @@ export default function Programs() {
             <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-fcit-100/50 border border-fcit-200 text-fcit-400 font-black mb-6 shadow-sm tracking-widest uppercase text-xs">
               SCA
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
-              School of <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-300">Computer Application</span>
-            </h2>
+            <TextReveal
+              text="School of Computer Application"
+              highlightFrom={2}
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight"
+            />
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-300 mx-auto rounded-full mb-8" />
             <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
               Explore undergraduate and postgraduate programs designed to build your expertise in computer applications, programming, and software engineering.
@@ -320,9 +399,11 @@ export default function Programs() {
             <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-fcit-200 text-fcit-400 font-black mb-6 shadow-sm tracking-widest uppercase text-xs">
               SCS
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
-              School of <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-300 to-fcit-400">Computer Science</span>
-            </h2>
+            <TextReveal
+              text="School of Computer Science"
+              highlightFrom={2}
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight"
+            />
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-300 to-fcit-400 mx-auto rounded-full mb-8" />
             <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
               Explore advanced master's programs that develop deep expertise in AI, Data Science, Cyber Security, and cutting-edge theoretical computing research.
@@ -334,6 +415,39 @@ export default function Programs() {
               <ProgramCard key={i} prog={prog} i={i} onOpen={() => openProgramModal(prog)} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Curriculum Experience Phase */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        {/* Abstract Background Accents */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(circle_at_top_right,var(--color-fcit-100),transparent_70%)] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface-100 border border-slate-200 text-slate-400 font-bold mb-6 shadow-sm tracking-widest uppercase text-xs">
+              Experience
+            </div>
+            <TextReveal
+              text="Curriculum Journey"
+              highlightFrom={1}
+              className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight"
+            />
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
+              Experience a visual roadmap of your academic evolution. From foundational basics to advanced industry research.
+            </p>
+          </motion.div>
+
+          <CurriculumJourney title="BCA" data={bcaJourney} />
+          
+          <AnimatedDivider />
+          
+          <CurriculumJourney title="MCA" data={mcaJourney} />
         </div>
       </section>
     </motion.div>
