@@ -101,15 +101,23 @@ export default function Navbar() {
               </motion.div>
 
               <motion.div
-                className="hidden md:flex flex-col justify-center border-l-2 transition-colors pl-4 border-white/20 leading-tight group-hover:border-fcit-200 transition-all duration-500"
+                className="flex flex-col justify-center border-l-2 transition-colors pl-3 sm:pl-4 border-white/20 leading-tight group-hover:border-fcit-200 transition-all duration-500"
               >
                 <div className="flex items-center gap-2">
                   <motion.span
-                    className="font-medium text-[0.8rem] tracking-[0.25em] text-white/70 uppercase mb-0.5"
+                    className="font-medium text-[0.5rem] sm:text-[0.8rem] tracking-[0.2em] sm:tracking-[0.25em] text-white/70 uppercase mb-0.5"
                   >
                     Faculty of
                   </motion.span>
-
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1 }}
+                    className="hidden xs:flex px-1.5 sm:px-2 py-0.5 rounded-full bg-fcit-200/20 border border-fcit-200/30 items-center gap-1"
+                  >
+                    <Sparkles className="w-2 sm:w-2.5 h-2 sm:h-2.5 text-fcit-200" />
+                    <span className="text-[8px] sm:text-[10px] font-black text-fcit-200 tracking-tighter uppercase">Center of Excellence</span>
+                  </motion.div>
                 </div>
                 <motion.span
                   animate={{
@@ -118,7 +126,7 @@ export default function Navbar() {
                   transition={{
                     backgroundPosition: { duration: 5, repeat: Infinity, ease: "linear" }
                   }}
-                  className="font-black text-[1.4rem] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-fcit-200 via-white to-fcit-200 bg-[length:200%_auto] filter drop-shadow-[0_0_10px_rgba(252,211,77,0.4)]"
+                  className="font-black text-[0.8rem] sm:text-[1.4rem] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-fcit-200 via-white to-fcit-200 bg-[length:200%_auto] filter drop-shadow-[0_0_10px_rgba(252,211,77,0.4)]"
                 >
                   Computing and IT
                 </motion.span>
