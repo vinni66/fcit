@@ -1,13 +1,53 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
 
 @theme {
-  --color-fcit-100: rgb(253, 241, 218); /* Light Gold */
-  --color-fcit-200: rgb(233, 192, 100); /* Soft Gold */
-  --color-fcit-300: rgb(218, 165, 32); /* Gold */
-  --color-fcit-400: rgb(114, 28, 36); /* Maroon */
+  --color-fcit-100: #fff9eb;
+  --color-fcit-200: #fcd34d;
+  --color-fcit-300: #daa520;
+  --color-fcit-400: #721c24;
+  
+  --color-surface-50: #ffffff;
+  --color-surface-100: #f8fafc;
+  --color-surface-200: #f1f5f9;
+  --color-surface-800: #1e1b1e;
+  --color-surface-900: #0f172a;
+  
+  --shadow-glass: 0 8px 32px 0 rgba(114, 28, 36, 0.1);
+  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
+@layer base {
+  body {
+    @apply transition-colors duration-500 bg-surface-50 text-slate-700;
+  }
+  .dark body {
+    @apply bg-surface-900 text-slate-100;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-glass;
+  }
+  .dark .glass {
+    @apply bg-slate-900/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)];
+  }
+  .glow-maroon {
+    @apply shadow-[0_0_20px_rgba(114,28,36,0.3)];
+  }
+  .glow-gold {
+    @apply shadow-[0_0_20px_rgba(218,165,32,0.4)];
+  }
+  .text-glow {
+    text-shadow: 0 0 15px rgba(114, 28, 36, 0.2);
+  }
+  .shadow-premium {
+    @apply shadow-[0_20px_50px_-12px_rgba(114,28,36,0.15)];
+  }
+}
+
+
 
 * {
   font-family: 'DM Sans', sans-serif;

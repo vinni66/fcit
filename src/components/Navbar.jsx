@@ -34,41 +34,41 @@ export default function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
+      className={`sticky top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
         scrolled
-          ? 'bg-fcit-400/95 backdrop-blur-xl border-fcit-400 shadow-[0_10px_30px_-10px_rgba(114,28,36,0.3)] py-2'
-          : 'bg-gradient-to-r from-fcit-400 to-[#5d171d] shadow-lg py-4 border-transparent'
+          ? 'bg-fcit-400/95 backdrop-blur-xl border-fcit-400 shadow-lg py-2'
+          : 'bg-gradient-to-r from-fcit-400 to-[#5d171d] py-4 border-transparent'
       }`}
     >
-      <div className="w-full max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group shrink-0">
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="flex items-center justify-center"
+              className="flex items-center justify-center p-1.5"
             >
               <img src="https://cdn.jsdelivr.net/gh/vinni66/Images/assets/gmulogo1.png" alt="GMU Logo" className="h-10 sm:h-12 lg:h-14 w-auto object-contain drop-shadow-sm" />
             </motion.div>
-            <div className="hidden md:flex flex-col justify-center border-l-2 border-white/20 pl-3 xl:pl-4">
-              <span className="font-extrabold text-[1rem] lg:text-[1.1rem] tracking-tight text-white group-hover:text-fcit-200 transition-colors leading-snug">
+            <div className={`hidden md:flex flex-col justify-center border-l transition-colors pl-3 border-white/20`}>
+              <span className={`font-extrabold text-[1.1rem] tracking-tight transition-colors leading-tight text-white`}>
                 GM University
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden xl:flex items-center space-x-0.5">
+          <nav className="hidden xl:flex items-center space-x-1">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-4 py-2 text-[13px] xl:text-sm font-bold transition-all duration-300 whitespace-nowrap rounded-md ${
+                  className={`relative px-4 py-2 text-sm font-bold transition-all duration-300 whitespace-nowrap rounded-xl ${
                     isActive
-                      ? 'text-fcit-400 bg-fcit-300 shadow-md'
+                      ? 'text-fcit-400 bg-fcit-100/50 shadow-md'
                       : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
@@ -76,7 +76,7 @@ export default function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="activeNavIndicator"
-                      className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-fcit-400 rounded-full"
+                      className={`absolute -bottom-1 left-1.5 right-1.5 h-1 rounded-full bg-fcit-400`}
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -85,10 +85,10 @@ export default function Navbar() {
             })}
             
             {/* Search Icon */}
-            <div className="pl-4 ml-2 border-l border-white/20">
+            <div className={`pl-4 ml-2 border-l transition-colors border-white/20`}>
               <button 
                 onClick={() => setSearchOpen(true)}
-                className="p-2 text-white/90 hover:text-fcit-200 transition-colors bg-white/5 hover:bg-white/15 rounded-full"
+                className={`p-2.5 rounded-xl transition-all bg-white/10 text-white hover:bg-white/20`}
                 aria-label="Search"
               >
                 <Search className="w-4 h-4" />
@@ -100,19 +100,13 @@ export default function Navbar() {
           <div className="flex items-center gap-2 xl:hidden">
             <Link 
               to="/admissions"
-              className="bg-fcit-400 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm mr-1 border border-fcit-300"
+              className={`text-white text-xs font-bold px-4 py-2 rounded-xl transition-all bg-white/20 border border-white/20 shadow-lg`}
             >
               Apply
             </Link>
             <button
-              onClick={() => setSearchOpen(true)}
-              className="text-white p-2 rounded-xl hover:bg-white/20 transition-colors"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-            <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-white p-2 rounded-xl hover:bg-white/20 transition-colors shrink-0"
+              className={`p-2 rounded-xl transition-colors text-white`}
             >
               {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -124,23 +118,24 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden bg-gradient-to-b from-fcit-400 to-[#5d171d] border-t border-white/10 shadow-2xl overflow-hidden"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            className={`absolute top-full left-0 right-0 border-t overflow-hidden p-4 bg-fcit-400 border-white/10 shadow-2xl`}
           >
-            <div className="px-4 py-6 space-y-2">
+            <div className="grid grid-cols-2 gap-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-5 py-4 rounded-xl text-base font-bold transition-all duration-300 ${
+                  className={`px-5 py-4 rounded-2xl text-sm font-bold transition-all duration-300 flex items-center gap-3 ${
                     location.pathname === link.path
-                      ? 'text-fcit-400 bg-fcit-300 shadow-md'
-                      : 'text-white/90 hover:text-white hover:bg-white/10'
+                      ? 'text-fcit-400 bg-fcit-100 shadow-inner'
+                      : 'text-white/80 hover:bg-white/10'
                   }`}
                 >
+                  <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === link.path ? 'bg-fcit-400' : 'bg-white'}`} />
                   {link.name}
                 </Link>
               ))}
@@ -148,6 +143,9 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+
+
 
       {/* Search Overlay Placeholder */}
       <AnimatePresence>

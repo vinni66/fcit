@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Monitor, Code, Brain, Shield, Database, BarChart3, Cpu, ArrowRight, Clock, CheckCircle, ChevronDown, Download, Layers, X } from 'lucide-react'
+import { Monitor, Code, Brain, Shield, Database, BarChart3, Cpu, ArrowRight, Clock, CheckCircle, ChevronDown, Download, Layers, X, BookOpen } from 'lucide-react'
 import { useState } from 'react'
+import ProgramModal from '../components/ProgramModal'
 
 const scaPrograms = [
   {
@@ -8,6 +9,7 @@ const scaPrograms = [
     duration: '3 Years (Full-time)',
     eligibility: '10+2 in any stream with Mathematics',
     icon: Monitor,
+    category: 'SCA',
     gradient: 'from-fcit-400 to-fcit-300',
     highlights: ['Core Programming', 'Software Engineering', 'Database Management', 'Web Technologies'],
   },
@@ -16,6 +18,7 @@ const scaPrograms = [
     duration: '3 Years (Full-time)',
     eligibility: '10+2 in any stream with Mathematics',
     icon: Brain,
+    category: 'SCA',
     gradient: 'from-fcit-300 to-fcit-200',
     highlights: ['Machine Learning', 'Deep Learning', 'Data Visualization', 'Predictive Analytics'],
   },
@@ -24,6 +27,7 @@ const scaPrograms = [
     duration: '3 Years (Full-time)',
     eligibility: '10+2 in any stream with Mathematics',
     icon: BarChart3,
+    category: 'SCA',
     gradient: 'from-fcit-200 to-fcit-100',
     highlights: ['Big Data', 'Statistical Modeling', 'Python & R', 'Data Mining'],
   },
@@ -32,6 +36,7 @@ const scaPrograms = [
     duration: '3 Years (Full-time)',
     eligibility: '10+2 in any stream with Mathematics',
     icon: Shield,
+    category: 'SCA',
     gradient: 'from-fcit-400 via-fcit-300 to-fcit-200',
     highlights: ['Network Security', 'Ethical Hacking', 'Cryptography', 'Digital Forensics'],
   },
@@ -40,6 +45,7 @@ const scaPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: "Bachelor's degree with Mathematics",
     icon: Code,
+    category: 'SCA',
     gradient: 'from-fcit-300 to-fcit-400',
     highlights: ['Advanced Programming', 'Cloud Computing', 'System Design', 'Project Management'],
   },
@@ -48,6 +54,7 @@ const scaPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: "Bachelor's degree with Mathematics",
     icon: Brain,
+    category: 'SCA',
     gradient: 'from-fcit-200 to-fcit-300',
     highlights: ['Artificial Intelligence', 'Neural Networks', 'NLP', 'Computer Vision'],
   },
@@ -56,6 +63,7 @@ const scaPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: "Bachelor's degree with Mathematics",
     icon: Database,
+    category: 'SCA',
     gradient: 'from-fcit-400 to-fcit-300',
     highlights: ['Advanced Analytics', 'Machine Learning', 'Big Data Technologies', 'Data Engineering'],
   },
@@ -64,6 +72,7 @@ const scaPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: "Bachelor's degree with Mathematics",
     icon: Shield,
+    category: 'SCA',
     gradient: 'from-fcit-300 to-fcit-100',
     highlights: ['Advanced Cryptography', 'Penetration Testing', 'Security Architecture', 'Incident Response'],
   },
@@ -75,6 +84,7 @@ const scsPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: 'B.Sc/BCA Relevant Fields or B.Tech with Maths',
     icon: Cpu,
+    category: 'SCS',
     gradient: 'from-fcit-400 to-fcit-300',
     highlights: ['Advanced AI', 'Data Analytics', 'Research Methodology', 'Applied ML'],
   },
@@ -83,6 +93,7 @@ const scsPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: 'B.Sc/BCA Relevant Fields or B.Tech with Maths',
     icon: Database,
+    category: 'SCS',
     gradient: 'from-fcit-300 to-fcit-200',
     highlights: ['Statistical Learning', 'Data Warehousing', 'Visualization', 'Research Methods'],
   },
@@ -91,84 +102,55 @@ const scsPrograms = [
     duration: '2 Years (Full-time)',
     eligibility: 'B.Sc/BCA Relevant Fields or B.Tech with Maths',
     icon: Shield,
+    category: 'SCS',
     gradient: 'from-fcit-200 to-fcit-100',
     highlights: ['Advanced Security', 'Malware Analysis', 'Security Auditing', 'Cyber Law'],
   },
 ]
 
-function ProgramCard({ prog, i }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+function ProgramCard({ prog, i, onOpen }) {
   return (
     <motion.div
        initial={{ opacity: 0, y: 30 }}
        whileInView={{ opacity: 1, y: 0 }}
        transition={{ delay: i * 0.1, duration: 0.5 }}
        viewport={{ once: true }}
-       whileHover={{ y: -10 }}
-       className="group relative bg-white rounded-[2.5rem] p-1 shadow-sm hover:shadow-[0_20px_60px_-15px_rgba(99,103,255,0.2)] transition-all duration-300 hover:border-fcit-200"
+       className="group relative bg-white rounded-[2.5rem] p-1 shadow-sm hover:shadow-[0_20px_60px_-15px_rgba(99,103,255,0.2)] transition-all duration-500"
      >
        <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10`} />
-       <div className={`absolute inset-0 bg-gradient-to-br ${prog.gradient} rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`} />
        
        <div className="h-full bg-white rounded-[2.35rem] p-8 relative overflow-hidden z-10 border border-slate-100 group-hover:border-transparent transition-colors flex flex-col">
-         <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/20 rounded-bl-[100px] -z-10 group-hover:bg-fcit-100/50 transition-colors"></div>
+         <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/20 rounded-bl-[100px] -z-10 group-hover:bg-fcit-100/50 transition-colors pointer-events-none"></div>
          
          <div className={`w-16 h-16 rounded-[1.5rem] bg-gradient-to-br ${prog.gradient} flex items-center justify-center mb-6 shadow-lg shadow-fcit-400/20 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
            <prog.icon className="w-8 h-8 text-white" />
          </div>
-         <h3 className="text-2xl font-bold text-slate-900 mb-4 leading-tight group-hover:text-fcit-400 transition-colors">{prog.title}</h3>
+         <h3 className="text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-fcit-400 transition-colors uppercase tracking-tight">{prog.title}</h3>
          
-         <div className="inline-flex items-center self-start px-4 py-2 rounded-full bg-slate-50 text-slate-600 text-sm font-bold border border-slate-100 mb-6 group-hover:border-fcit-200/50 transition-colors">
-           <Clock className="w-4 h-4 mr-2 text-fcit-300" />
+         <div className="inline-flex items-center self-start px-4 py-2 rounded-full bg-slate-50 text-slate-600 text-[10px] font-black uppercase border border-slate-100 mb-6 group-hover:border-fcit-200/50 transition-colors tracking-widest">
+           <Clock className="w-3.5 h-3.5 mr-2 text-fcit-400" />
            {prog.duration}
          </div>
          
-         <p className="text-slate-500 text-sm mb-8 leading-relaxed font-medium bg-fcit-100/30 p-4 rounded-2xl border border-fcit-100/50">
-           <span className="font-bold text-fcit-400 block mb-1">Eligibility:</span> {prog.eligibility}
-         </p>
-         
-         <div className="space-y-3 mb-8 flex-grow">
-           {prog.highlights.map((h, j) => (
-             <div key={j} className="flex items-start gap-3 text-sm text-slate-600 font-medium">
-               <CheckCircle className="w-5 h-5 text-fcit-300 flex-shrink-0" />
-               <span className="pt-0.5">{h}</span>
-             </div>
-           ))}
+         <div className="space-y-4 mb-8 flex-grow">
+            <p className="text-xs font-black text-fcit-400 uppercase tracking-widest opacity-60">Program Highlights</p>
+            {prog.highlights.map((h, j) => (
+              <div key={j} className="flex items-start gap-4 text-sm text-slate-700 font-medium">
+                <CheckCircle className="w-5 h-5 text-fcit-400/50 flex-shrink-0" />
+                <span className="pt-0.5">{h}</span>
+              </div>
+            ))}
          </div>
 
-          <div 
-             className="pt-6 border-t border-slate-100 flex items-center justify-between text-fcit-400 font-bold hover:text-fcit-300 transition-colors cursor-pointer mt-auto"
-             onClick={() => setIsExpanded(!isExpanded)}
-           >
-            <span>Explore Curriculum</span>
-            <div className="w-12 h-12 rounded-full bg-fcit-100/30 flex items-center justify-center hover:bg-fcit-200/50 transition-colors">
-              <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                <ChevronDown className="w-5 h-5 text-fcit-400" />
-              </motion.div>
-            </div>
-          </div>
-          
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="pt-4 pb-2">
-                  <p className="text-sm text-slate-500 mb-4 font-medium leading-relaxed">
-                    Get detailed information about semester-wise subjects, lab requirements, and project work.
-                  </p>
-                  <button className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 shadow-md">
-                    <Download className="w-4 h-4" />
-                    Download Syllabus PDF
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+         <button 
+           onClick={onOpen}
+           className="mt-6 flex items-center justify-between w-full p-6 bg-slate-50 rounded-2xl group/btn hover:bg-fcit-400 transition-all border border-slate-100 hover:border-fcit-400"
+         >
+           <span className="text-xs font-black uppercase tracking-widest text-slate-900 group-hover/btn:text-white transition-colors">View Details</span>
+           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover/btn:bg-white/20 transition-all shadow-sm">
+             <ArrowRight className="w-5 h-5 text-fcit-400 group-hover/btn:text-white transition-colors" />
+           </div>
+         </button>
         </div>
     </motion.div>
   )
@@ -176,6 +158,13 @@ function ProgramCard({ prog, i }) {
 
 export default function Programs() {
   const [showCompare, setShowCompare] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openProgramModal = (p) => {
+    setSelectedProgram(p)
+    setIsModalOpen(true)
+  }
 
   return (
     <motion.div
@@ -184,6 +173,13 @@ export default function Programs() {
       transition={{ duration: 0.6 }}
       className="min-h-screen bg-[#f8fbff] text-slate-700 pt-24 font-sans"
     >
+      {/* Program Details Modal */}
+      <ProgramModal 
+        program={selectedProgram}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
       {/* Light Theme Standardized Hero */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -206,17 +202,17 @@ export default function Programs() {
              transition={{ duration: 0.6 }}
              className="inline-block p-8 md:p-12 rounded-[3rem] bg-white/60 backdrop-blur-3xl border border-white/80 shadow-xl shadow-fcit-200/20"
           >
-            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight">
+            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-slate-900 tracking-tight text-glow">
               Academic <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent drop-shadow-sm">Programs</span>
             </h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed mb-6">
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed mb-8">
               FCIT offers a comprehensive range of undergraduate and postgraduate degrees across two distinct schools of excellence: <strong className="font-bold text-fcit-400">SCA & SCS</strong>.
             </p>
             <button 
               onClick={() => setShowCompare(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-fcit-400 text-white rounded-xl font-bold shadow-lg shadow-fcit-400/20 hover:bg-fcit-300 hover:-translate-y-1 transition-all duration-300"
+              className="group relative inline-flex items-center gap-3 bg-fcit-400 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-fcit-400/20 hover:bg-fcit-300 transition-all duration-300"
             >
-              <Layers className="w-5 h-5" />
+              <Layers className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               Compare Specializations
             </button>
           </motion.div>
@@ -230,59 +226,50 @@ export default function Programs() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4"
+            className="fixed inset-0 z-[101] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="bg-white max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
+              className="bg-white max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-2xl border border-white/50"
             >
-              <div className="sticky top-0 bg-white border-b border-slate-100 p-6 flex justify-between items-center z-10">
-                <h2 className="text-2xl font-black text-slate-900">Program Comparison</h2>
-                <button onClick={() => setShowCompare(false)} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500">
+              <div className="sticky top-0 bg-white border-b border-slate-100 p-8 flex justify-between items-center z-10">
+                <h2 className="text-3xl font-black text-slate-900 tracking-tight">Program Comparison</h2>
+                <button onClick={() => setShowCompare(false)} className="w-10 h-10 bg-slate-50 hover:bg-fcit-100 flex items-center justify-center rounded-full text-slate-500 hover:text-fcit-400 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="p-6 overflow-x-auto">
+              <div className="p-8 overflow-x-auto">
                 <table className="w-full min-w-[700px] text-left border-collapse">
                   <thead>
                     <tr className="bg-slate-50">
-                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Specialization</th>
-                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Key Focus Areas</th>
-                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Career Paths</th>
-                      <th className="p-4 border-b border-slate-200 text-slate-900 font-bold">Math Base Req.</th>
+                      <th className="p-6 border-b border-slate-200 text-slate-900 font-extrabold uppercase text-xs tracking-widest">Specialization</th>
+                      <th className="p-6 border-b border-slate-200 text-slate-900 font-extrabold uppercase text-xs tracking-widest">Key Focus Areas</th>
+                      <th className="p-6 border-b border-slate-200 text-slate-900 font-extrabold uppercase text-xs tracking-widest">Career Paths</th>
+                      <th className="p-6 border-b border-slate-200 text-slate-900 font-extrabold uppercase text-xs tracking-widest">Math Base</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">General</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Core software eng, databases, networks</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Software Engineer, Cloud Architect</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Standard</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">AI & Data Analytics</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Generative AI, NLP, Predictive Modeling</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">AI Engineer, Data Analyst</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Strong</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">Data Science</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Big Data tech, Advanced Stats, Mining</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Data Scientist, ML Engineer</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">High</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 border-b border-slate-100 font-bold text-fcit-400">Cyber Security</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Cryptography, Ethical Hacking, Forensics</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Security Analyst, Pen Tester</td>
-                      <td className="p-4 border-b border-slate-100 text-slate-600">Standard</td>
-                    </tr>
+                    {[
+                      { name: 'General', focus: 'Core software eng, databases, networks', career: 'Software Engineer, Architect', base: 'Standard' },
+                      { name: 'AI & Data Analytics', focus: 'Generative AI, NLP, Predictive Modeling', career: 'AI Engineer, Analyst', base: 'Strong' },
+                      { name: 'Data Science', focus: 'Big Data tech, Advanced Stats, Mining', career: 'Data Scientist, ML Lead', base: 'High' },
+                      { name: 'Cyber Security', focus: 'Cryptography, Ethical Hacking, Forensics', career: 'Security Analyst, Pen Tester', base: 'Standard' },
+                    ].map((row, i) => (
+                      <tr key={i} className="group hover:bg-fcit-100/20 transition-colors">
+                        <td className="p-6 border-b border-slate-100 font-black text-fcit-400">{row.name}</td>
+                        <td className="p-6 border-b border-slate-100 text-slate-700 font-medium">{row.focus}</td>
+                        <td className="p-6 border-b border-slate-100 text-slate-700 font-medium">{row.career}</td>
+                        <td className="p-6 border-b border-slate-100">
+                          <span className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black uppercase text-slate-500">{row.base}</span>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
-              <div className="p-6 bg-slate-50 border-t border-slate-100 text-sm text-slate-500">
+              <div className="p-8 bg-slate-50 border-t border-slate-100 text-xs text-slate-500 font-medium tracking-wide">
                 Comparisons shown above are high-level generalizations to help you choose the right path.
               </div>
             </motion.div>
@@ -299,29 +286,29 @@ export default function Programs() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-fcit-100/50 border border-fcit-200 text-fcit-400 font-bold mb-6 shadow-sm tracking-widest uppercase text-sm">
+            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-fcit-100/50 border border-fcit-200 text-fcit-400 font-black mb-6 shadow-sm tracking-widest uppercase text-xs">
               SCA
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-              School of <span className="bg-gradient-to-r from-fcit-400 to-fcit-300 bg-clip-text text-transparent">Computer Application</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
+              School of <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-400 to-fcit-300">Computer Application</span>
             </h2>
-            <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-200 mx-auto rounded-full mb-8" />
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light">
+            <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-300 mx-auto rounded-full mb-8" />
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
               Explore undergraduate and postgraduate programs designed to build your expertise in computer applications, programming, and software engineering.
             </p>
           </motion.div>
-
+ 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {scaPrograms.map((prog, i) => (
-              <ProgramCard key={i} prog={prog} i={i} />
+              <ProgramCard key={i} prog={prog} i={i} onOpen={() => openProgramModal(prog)} />
             ))}
           </div>
         </div>
       </section>
 
       {/* SCS Section */}
-      <section className="py-24 bg-[#f8fbff] relative border-t border-fcit-100/50">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--color-fcit-100),transparent_50%)] pointer-events-none opacity-40" />
+      <section className="py-24 bg-[#f8fbff] relative border-t border-slate-100">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--color-fcit-100),transparent_50%)] pointer-events-none opacity-40 shrink-0" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
@@ -330,21 +317,21 @@ export default function Programs() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-fcit-200 text-fcit-400 font-bold mb-6 shadow-sm tracking-widest uppercase text-sm">
+            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-fcit-200 text-fcit-400 font-black mb-6 shadow-sm tracking-widest uppercase text-xs">
               SCS
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-              School of <span className="bg-gradient-to-r from-fcit-300 to-fcit-400 bg-clip-text text-transparent">Computer Science</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
+              School of <span className="text-transparent bg-clip-text bg-gradient-to-r from-fcit-300 to-fcit-400">Computer Science</span>
             </h2>
             <div className="w-24 h-1.5 bg-gradient-to-r from-fcit-300 to-fcit-400 mx-auto rounded-full mb-8" />
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light">
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
               Explore advanced master's programs that develop deep expertise in AI, Data Science, Cyber Security, and cutting-edge theoretical computing research.
             </p>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {scsPrograms.map((prog, i) => (
-              <ProgramCard key={i} prog={prog} i={i} />
+              <ProgramCard key={i} prog={prog} i={i} onOpen={() => openProgramModal(prog)} />
             ))}
           </div>
         </div>

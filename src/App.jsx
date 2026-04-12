@@ -25,6 +25,8 @@ function ScrollToTop() {
   return null
 }
 
+import ThemeToggle from './components/ThemeToggle'
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -43,6 +45,7 @@ export default function App() {
         <Route path="/admissions" element={<Admissions />} />
         <Route path="/contact-us" element={<Contact />} />
       </Routes>
+      <ThemeToggle />
       <BottomNav />
       <BackToTop />
       <ChatBot />
@@ -50,3 +53,4 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
