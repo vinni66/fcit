@@ -30,7 +30,7 @@ const leadershipPreview = [
     initials: 'RG',
     photoUrl: 'https://gmu.ac.in/FCIT/images/Director.jpg',
     gradient: 'from-fcit-300 to-pink-600',
-    specialization: 'Computer Applications',
+    specialization: 'Computing and IT',
     bio: 'Mr. Rajashekhar is a seasoned academician focusing on modern application architectures and full-stack development.',
     education: ['M.Tech in Software Engineering', 'MCA'],
   },
@@ -41,7 +41,7 @@ const leadershipPreview = [
     photoUrl: 'https://gmu.ac.in/FCIT/images/Dean.jpg',
     gradient: 'from-fcit-400 to-fcit-300',
     specialization: 'Computer Science & Engineering',
-    bio: 'Dr. Shweta Marigoudar serves as the Dean of the Faculty of Computer Applications and IT. With over 20 years of academic experience, she specializes in Cloud Computing and distributed systems.',
+    bio: 'Dr. Shweta Marigoudar serves as the Dean of the Faculty of Computing and IT. With over 20 years of academic experience, she specializes in Cloud Computing and distributed systems.',
     education: ['Ph.D. in Computer Science', 'M.Tech in CSE'],
     email: 'dean.fcit@gmu.ac.in'
   },

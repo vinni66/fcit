@@ -10,7 +10,7 @@ const faculty = [
     initials: 'RG',
     photoUrl: 'https://gmu.ac.in/FCIT/images/Director.jpg',
     gradient: 'from-fcit-300 to-pink-600',
-    specialization: 'Computer Applications',
+    specialization: 'Computing and IT',
     bio: 'Mr. Rajashekhar is a seasoned academician focusing on modern application architectures and full-stack development. He has mentored hundreds of students into successful careers in the global tech industry.',
     education: ['M.Tech in Software Engineering', 'MCA'],
   },
@@ -21,7 +21,7 @@ const faculty = [
     photoUrl: 'https://gmu.ac.in/FCIT/images/Dean.jpg',
     gradient: 'from-fcit-400 to-fcit-300',
     specialization: 'Computer Science & Engineering',
-    bio: 'Dr. Shweta Marigoudar serves as the Dean of the Faculty of Computer Applications and IT. With over 20 years of academic experience, she specializes in Cloud Computing and distributed systems. Under her leadership, the department has reached new heights in research and industry collaboration.',
+    bio: 'Dr. Shweta Marigoudar serves as the Dean of the Faculty of Computing and IT. With over 20 years of academic experience, she specializes in Cloud Computing and distributed systems. Under her leadership, the department has reached new heights in research and industry collaboration.',
     education: ['Ph.D. in Computer Science', 'M.Tech in CSE', 'B.E. in Computer Science'],
     email: 'dean.fcit@gmu.ac.in'
   },
@@ -41,7 +41,7 @@ const faculty = [
     initials: 'UN',
     photoUrl: 'https://gmu.ac.in/FCIT/images/HOD.jpg',
     gradient: 'from-emerald-600 to-fcit-100',
-    specialization: 'Computer Applications',
+    specialization: 'Computing and IT',
     bio: 'Mrs. Usha N manages the department operations with a focus on student-centric learning and hands-on lab sessions.',
     education: ['MCA with Gold Medal', 'BCA'],
   },
@@ -61,7 +61,7 @@ const faculty = [
     initials: 'SD',
     photoUrl: 'https://gmu.ac.in/FCIT/images/Swathi.jpg',
     gradient: 'from-rose-600 to-pink-600',
-    specialization: 'Computer Applications',
+    specialization: 'Computing and IT',
     bio: 'Smt. Swathi coordinates the Post-Graduate programs, ensuring research-oriented learning for MCA students.',
   },
   {
@@ -79,7 +79,7 @@ const faculty = [
     initials: 'KR',
     photoUrl: 'https://gmu.ac.in/FCIT/images/Krupa.jpg',
     gradient: 'from-teal-600 to-fcit-200',
-    specialization: 'Computer Applications',
+    specialization: 'Computing and IT',
   },
   {
     name: 'Mrs. Teja H',
@@ -101,7 +101,7 @@ const faculty = [
     initials: 'AV',
     photoUrl: 'https://gmu.ac.in/FCIT/images/Anu.jpg',
     gradient: 'from-fuchsia-600 to-purple-600',
-    specialization: 'Computer Applications',
+    specialization: 'Computing and IT',
   },
 ]
 

@@ -48,8 +48,8 @@ export default function Footer() {
               <div className="h-12 flex items-center justify-center bg-white rounded-xl p-1.5 shadow-lg shadow-fcit-400/20">
                 <img src="https://cdn.jsdelivr.net/gh/vinni66/Images/assets/gmulogo1.png" alt="GMU Logo" className="h-full w-auto object-contain" />
               </div>
-              <h3 className="text-2xl font-black text-white tracking-tight leading-none">
-                Faculty of <br /> Computer Applications
+              <h3 className="text-2xl font-black text-white tracking-tight leading-none uppercase">
+                Faculty of <br /> Computing and IT
               </h3>
             </div>
             <p className="text-slate-300/90 mb-8 leading-relaxed font-light text-sm pr-2">
@@ -159,7 +159,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-slate-500 text-sm font-medium">
-              © {year} FCIT - Faculty of Computer Applications. All rights reserved.
+              © {year} FCIT - Faculty of Computing and IT. All rights reserved.
             </div>
             <div className="flex items-center space-x-8 text-sm font-medium">
               <a href="#" className="text-slate-500 hover:text-fcit-300 transition-colors duration-300">Privacy Policy</a>

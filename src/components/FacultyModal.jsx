@@ -91,7 +91,7 @@ export default function FacultyModal({ faculty, isOpen, onClose }) {
                      <h3 className="text-2xl font-black text-slate-900 tracking-tight">Biography</h3>
                   </div>
                   <p className="text-slate-600 leading-relaxed text-lg font-light">
-                    {faculty.bio || `${faculty.name} is a distinguished faculty member at the Faculty of Computer Applications and Information Technology (FCIT). With extensive experience in ${faculty.specialization}, they have contributed significantly to both teaching and institutional development.`}
+                    {faculty.bio || `${faculty.name} is a distinguished faculty member at the Faculty of Computing and IT (FCIT). With extensive experience in ${faculty.specialization}, they have contributed significantly to both teaching and institutional development.`}
                   </p>
                 </section>
 

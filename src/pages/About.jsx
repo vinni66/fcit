@@ -50,7 +50,7 @@ export default function About() {
             transition={{ delay: 0.2 }}
             className="text-xl text-fcit-100 max-w-3xl mx-auto leading-relaxed"
           >
-            Faculty of Computing and Information Technology — GM University
+            Faculty of Computing and IT — GM University
           </motion.p>
         </div>
       </section>
