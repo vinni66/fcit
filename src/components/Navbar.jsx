@@ -213,7 +213,7 @@ export default function Navbar() {
                   <div className="flex items-center gap-2 mb-0.5 lg:mb-1">
                     <motion.span 
                       style={{ color: subTextColor }}
-                      className="text-[8px] sm:text-[10px] font-black tracking-[0.3em] uppercase whitespace-nowrap hidden lg:block"
+                      className="text-[8px] sm:text-[15px] font-black tracking-[0.3em] uppercase whitespace-nowrap hidden lg:block"
                     >
                       Faculty of
                     </motion.span>
