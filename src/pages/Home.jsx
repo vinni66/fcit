@@ -340,8 +340,8 @@ export default function Home() {
                   whileHover={{ scale: 1.02 }}
                   className="relative w-full aspect-square rounded-[3.5rem] overflow-hidden shadow-2xl ring-8 ring-fcit-100 border border-fcit-400/20"
                 >
-                  <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg" alt="Tech Carnival 2K26 Arena" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-fcit-400/60 to-transparent" />
+                  <img src="/gallery/tech_carnival_2k26/tech_carnival_2k26_17.jpeg" alt="Tech Carnival 2K26 Arena" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-fcit-400/40 via-transparent to-transparent opacity-60" />
                   
                   {/* Digital Scanning Line */}
                   <motion.div 

@@ -3,18 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Maximize2, X, Sparkles, Image as ImageIcon } from 'lucide-react'
 import TextReveal from './TextReveal'
 
-const images = [
-  { url: 'https://zhwicjfupdbaaceerozm.supabase.co/storage/v1/object/public/gallery-images/1774678559730-nzkfnj9lt0s.jpg', title: 'Department Convocation', category: 'Cultural', size: 'col-span-2 row-span-2', subtitle: 'Academic Excellence' },
-  { url: 'https://zhwicjfupdbaaceerozm.supabase.co/storage/v1/object/public/gallery-images/1774719584250-cigzaeslvsg.jpeg', title: 'Research Collaboration', category: 'Technical', size: 'col-span-1 row-span-1', subtitle: 'Expert Mentorship' },
-  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/3.jpg', title: 'Battle Ground Arena', category: 'Gaming', size: 'col-span-1 row-span-1', subtitle: 'BGMI Tournament' },
-  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/2.jpg', title: 'Code Compass', category: 'Technical', size: 'col-span-1 row-span-1', subtitle: 'Logic Challenge' },
-  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg', title: 'Flash Mob Drop', category: 'Cultural', size: 'col-span-1 row-span-2', subtitle: 'Tech Carnival Opening' },
-  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/4.jpg', title: 'Pixel Perfect', category: 'Technical', size: 'col-span-1 md:col-span-2 row-span-1', subtitle: 'PPT Presentation' },
-  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/2.jpg', title: 'Dance Mania Night', category: 'Cultural', size: 'col-span-1 md:col-span-2 row-span-1', subtitle: 'Stage Fusion' },
-  { url: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg', title: 'Scitopia Fusion', category: 'Cultural', size: 'col-span-1 row-span-1', subtitle: 'Final Stage Show' },
-]
+import { galleryImages } from '../data/galleryData'
 
-const categories = ['All', 'Technical', 'Gaming', 'Cultural']
+const categories = ['All', ...new Set(galleryImages.map(img => img.category))]
+
+const images = galleryImages.map((img, i) => {
+  // Create a dynamic mosaic pattern
+  let size = 'col-span-1 row-span-1'
+  if (i % 11 === 0) size = 'col-span-2 row-span-2'
+  else if (i % 7 === 0) size = 'col-span-1 row-span-2'
+  else if (i % 9 === 0) size = 'col-span-2 row-span-1'
+  
+  return { ...img, size }
+})
+
 
 const GalleryItem = memo(({ img, onExpand }) => {
   return (
@@ -28,9 +30,10 @@ const GalleryItem = memo(({ img, onExpand }) => {
       onClick={() => onExpand(img)}
     >
       <img 
-        src={`${img.url}?auto=format&fit=crop&q=80&w=1200`} 
+        src={img.url} 
         alt={img.title} 
-        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        loading="lazy"
       />
       
       {/* Light Liquid Overlay */}
@@ -64,11 +67,14 @@ const GalleryItem = memo(({ img, onExpand }) => {
 
 export default function CampusExperience() {
   const [activeTab, setActiveTab] = useState('All')
+  const [visibleCount, setVisibleCount] = useState(12)
   const [selected, setSelected] = useState(null)
 
   const filtered = useMemo(() => 
     activeTab === 'All' ? images : images.filter(i => i.category === activeTab),
   [activeTab])
+
+  const displayedImages = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
 
   return (
     <section className="py-24 bg-fcit-100/30 transition-colors duration-500 relative overflow-hidden">
@@ -91,20 +97,25 @@ export default function CampusExperience() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3 p-2 bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-sm">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveTab(cat)}
-                className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                  activeTab === cat 
-                    ? 'bg-fcit-400 text-white shadow-glow-maroon' 
-                    : 'text-slate-500 hover:text-fcit-400 hover:bg-fcit-100'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="flex-1 max-w-full overflow-x-auto no-scrollbar pb-2">
+            <div className="flex flex-nowrap gap-3 p-2 bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-sm w-max">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveTab(cat)
+                    setVisibleCount(12)
+                  }}
+                  className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+                    activeTab === cat 
+                      ? 'bg-fcit-400 text-white shadow-glow-maroon' 
+                      : 'text-slate-500 hover:text-fcit-400 hover:bg-fcit-100'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -113,11 +124,23 @@ export default function CampusExperience() {
           className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]"
         >
           <AnimatePresence mode="popLayout">
-            {filtered.map((img, i) => (
+            {displayedImages.map((img, i) => (
               <GalleryItem key={img.url} img={img} onExpand={setSelected} />
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {visibleCount < filtered.length && (
+          <div className="mt-16 flex justify-center">
+            <button 
+              onClick={() => setVisibleCount(prev => prev + 12)}
+              className="group relative inline-flex items-center gap-3 bg-white border border-slate-200 text-slate-900 px-10 py-5 rounded-full font-bold text-lg hover:bg-fcit-400 hover:text-white transition-all duration-500 shadow-premium hover:shadow-2xl"
+            >
+              <span>Load More Memories</span>
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Liquid Expansion Modal */}
@@ -142,7 +165,7 @@ export default function CampusExperience() {
                 <X className="w-6 h-6" />
               </button>
               
-              <img src={`${selected.url}?auto=format&fit=crop&q=95&w=1600`} alt={selected.title} className="w-full h-full object-cover" />
+              <img src={selected.url} alt={selected.title} className="w-full h-full object-contain bg-black/5" />
               
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent pointer-events-none" />
               

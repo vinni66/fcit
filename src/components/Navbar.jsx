@@ -6,6 +6,7 @@ import { Menu, X, GraduationCap, Search, ChevronDown, Sparkles } from 'lucide-re
 const primaryLinks = [
   { name: 'Home', path: '/' },
   { name: 'Programs', path: '/programs' },
+  { name: 'Gallery', path: '/gallery' },
   { name: 'Faculty', path: '/faculty' },
   { name: 'Placements', path: '/student-internships-placements' },
   { name: 'Admissions', path: '/admissions' },

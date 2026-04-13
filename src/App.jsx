@@ -21,6 +21,7 @@ const Placements = lazy(() => import('./pages/Placements'))
 const Alumni = lazy(() => import('./pages/Alumni'))
 const Admissions = lazy(() => import('./pages/Admissions'))
 const Contact = lazy(() => import('./pages/Contact'))
+const Gallery = lazy(() => import('./pages/Gallery'))
 
 // Lazy Load Heavy Footer
 const Footer = lazy(() => import('./components/Footer'))
@@ -60,6 +61,7 @@ export default function App() {
             <Route path="/alumni" element={<Alumni />} />
             <Route path="/admissions" element={<Admissions />} />
             <Route path="/contact-us" element={<Contact />} />
+            <Route path="/gallery" element={<Gallery />} />
           </Routes>
           <BottomNav />
           <BackToTop />

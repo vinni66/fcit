@@ -8,41 +8,43 @@ import MagneticButton from './MagneticButton'
 const slides = [
   {
     id: 1,
-    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/4.jpg',
-    title: 'Empowering Commerce &',
-    highlight: 'Tech Innovation',
+    image: '/gallery/tech_carnival_2k26/tech_carnival_2k26_1.jpeg',
+    title: 'Faculty of',
+    highlight: 'Computing and IT',
     subtitle: 'Where future corporate leaders and tech innovators are forged through excellence.',
     cta: 'Explore Programs',
     link: '/programs',
   },
   {
     id: 2,
-    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/3.jpg',
-    title: 'Transformative',
-    highlight: 'Learning Journey',
-    subtitle: 'State-of-the-art facilities and a dynamic curriculum aligned with global standards.',
+    image: '/gallery/graduation_day/graduation_day_1.jpeg',
+    title: 'Empowering',
+    highlight: 'Graduates',
+    subtitle: 'Celebrating academic excellence and the beginning of professional excellence.',
     cta: 'About Us',
     link: '/about',
   },
   {
     id: 3,
-    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/2.jpg',
-    title: 'Global Computing',
-    highlight: 'Excellence',
-    subtitle: 'Join a community of innovators solving real-world challenges through code.',
-    cta: 'Admissions',
-    link: '/admissions',
+    image: '/gallery/sports_events/sports_events_1.jpeg',
+    title: 'Active',
+    highlight: 'Campus Life',
+    subtitle: 'Developing leadership and teamwork through collaborative sports and events.',
+    cta: 'Media Gallery',
+    link: '/gallery',
   },
   {
     id: 4,
-    image: 'https://cdn.jsdelivr.net/gh/vinni66/Images@main/pht/1.jpg',
-    title: 'Cutting-Edge',
-    highlight: 'AI & Research',
-    subtitle: 'Push the boundaries of AI, Data Science, and Cyber Security with expert mentors.',
+    image: '/gallery/conference_2k25/conference_2k25_1.jpeg',
+    title: 'Innovative',
+    highlight: 'Research',
+    subtitle: 'Pushing boundaries in technology through global conferences and research initiatives.',
     cta: 'Our Research',
     link: '/research-publications',
   },
 ]
+
+
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0)
