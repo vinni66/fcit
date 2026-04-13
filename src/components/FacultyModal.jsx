@@ -7,30 +7,30 @@ export default function FacultyModal({ faculty, isOpen, onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-8">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 sm:p-6 md:p-8">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-md"
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-xl"
           />
 
           {/* Modal Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            exit={{ opacity: 0, scale: 0.95, y: 40 }}
             transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
-            className="relative w-full max-w-5xl max-h-[90vh] bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/50"
+            className="relative w-full h-full sm:h-auto sm:max-w-5xl sm:max-h-[90vh] bg-white sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border-none sm:border sm:border-white/50"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 z-20 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-slate-500 hover:text-fcit-400 hover:bg-white shadow-lg transition-all"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[210] w-10 h-10 sm:w-12 sm:h-12 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-slate-500 hover:text-fcit-400 hover:bg-white shadow-lg transition-all"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Sidebar / Profile Header */}

@@ -77,6 +77,8 @@ function MagneticLink({ children, to, isActive, isScrolled }) {
   )
 }
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 export default function Navbar() {
   const [hidden, setHidden] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -105,7 +107,7 @@ export default function Navbar() {
   const subTextColor = useTransform(scrollY, scrollRange, ["#94a3b8", "rgba(255,255,255,0.6)"])
 
   // Performance-optimized blur: Fixed blur with opacity fade (Lowered for mobile)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
+  const isMobile = getIsMobile()
   const backdropBlur = useTransform(scrollY, [0, 30], ["blur(0px)", `blur(${isMobile ? 12 : 25}px)`])
 
   const [isScrolled, setIsScrolled] = useState(false)
@@ -185,7 +187,7 @@ export default function Navbar() {
             rotateY: tiltY,
             translateZ: 0, 
           }}
-          className="max-w-[105rem] w-full flex items-center justify-between px-5 lg:px-14 pointer-events-auto relative z-10 will-change-[transform,width,height,opacity] overflow-visible preserve-3d"
+          className="max-w-[105rem] w-full flex items-center justify-between px-5 lg:px-10 pointer-events-auto relative z-10 will-change-[transform,width,height,opacity] overflow-visible preserve-3d"
         >
           <div className="flex items-center justify-between w-full h-full">
             <motion.div
@@ -195,7 +197,7 @@ export default function Navbar() {
               style={{ x: brandX, y: brandY }}
               className="flex items-center group cursor-pointer shrink-0"
             >
-              <Link to="/" className="flex items-center gap-3 lg:gap-6">
+              <Link to="/" className="flex items-center gap-3 lg:gap-4">
                 <motion.div
                   style={{ scale: isMobile ? 0.75 : logoScale }}
                   className="relative p-2 lg:p-2.5 bg-white rounded-xl lg:rounded-2xl shadow-xl overflow-hidden group/logo ring-4 ring-white/10 shrink-0 flex items-center justify-center"
@@ -207,7 +209,7 @@ export default function Navbar() {
                   />
                 </motion.div>
 
-                <div className="flex flex-col border-l border-white/10 pl-3 lg:pl-6 leading-none transition-all duration-500 shrink-0">
+                <div className="flex flex-col border-l border-white/10 pl-3 lg:pl-4 leading-none transition-all duration-500 shrink-0">
                   <div className="flex items-center gap-2 mb-0.5 lg:mb-1">
                     <motion.span 
                       style={{ color: subTextColor }}
@@ -262,7 +264,7 @@ export default function Navbar() {
               <div className="relative group/more h-full">
                 <button
                   onMouseEnter={() => setDropdownOpen(true)}
-                  className={`flex items-center gap-2 px-6 py-2.5 text-xs font-black uppercase tracking-widest transition-all ${isScrolled ? 'text-white/70' : 'text-slate-600'}`}
+                  className={`flex items-center gap-2 px-4 py-2.5 text-xs font-black uppercase tracking-widest transition-all ${isScrolled ? 'text-white/70' : 'text-slate-600'}`}
                 >
                   More <ChevronDown className={`w-3 h-3 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
                 </button>

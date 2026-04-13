@@ -20,7 +20,7 @@ const NavItem = memo(({ item, isActive, hovered, onClick, onMouseEnter, onMouseL
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
-      className={`relative flex flex-col items-center justify-center px-4 py-2 rounded-full transition-all duration-300 group ${
+      className={`relative flex flex-col items-center justify-center px-2 sm:px-4 py-2 rounded-full transition-all duration-300 group ${
         isActive 
           ? 'bg-fcit-400 text-white shadow-lg scale-110' 
           : 'text-slate-600 hover:bg-fcit-100 hover:scale-105'
@@ -42,12 +42,12 @@ const NavItem = memo(({ item, isActive, hovered, onClick, onMouseEnter, onMouseL
         }}
         className={`relative z-10 transition-colors duration-300`}
       >
-        <Icon size={20} className="md:w-[22px] md:h-[22px]" strokeWidth={isActive ? 2.5 : 2} />
+        <Icon size={20} className="w-[20px] h-[20px] md:w-[22px] md:h-[22px]" strokeWidth={isActive ? 2.5 : 2} />
       </motion.div>
 
-      {/* Label */}
+      {/* Label - Hidden on mobile, shown on desktop */}
       <span
-        className={`text-[9px] md:text-[10px] tracking-tight mt-1 relative z-10 transition-all duration-300 ${
+        className={`hidden lg:block text-[9px] md:text-[10px] tracking-tight mt-1 relative z-10 transition-all duration-300 ${
           isActive ? 'font-semibold' : 'font-medium'
         }`}
       >
@@ -66,9 +66,12 @@ const NavItem = memo(({ item, isActive, hovered, onClick, onMouseEnter, onMouseL
   )
 })
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 export default function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
+  const isMobile = getIsMobile()
   const [hovered, setHovered] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
   const { scrollY } = useScroll()
@@ -95,17 +98,17 @@ export default function BottomNav() {
             opacity: 1, 
             y: 0, 
             x: '-50%',
-            transition: { type: "spring", stiffness: 260, damping: 20 }
+            transition: { type: "spring", stiffness: 350, damping: 25 }
           }}
           className="fixed bottom-6 left-1/2 z-[100] w-auto max-w-[95%] px-4"
         >
           {/* Main Floating Pill Container */}
           <motion.nav
             animate={{ 
-              y: [0, -4, 0],
+              y: isMobile ? 0 : [0, -4, 0],
               transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
             }}
-            className="relative flex items-center justify-center gap-2 md:gap-4 px-3 py-2 rounded-full bg-white/80 backdrop-blur-xl border border-fcit-400/10 shadow-[0_10px_40px_rgba(114,28,36,0.1)] transition-all duration-300"
+            className="relative flex items-center justify-center gap-1 md:gap-4 px-2 lg:px-3 py-1 lg:py-2 rounded-full bg-white/95 backdrop-blur-2xl border border-fcit-400/10 shadow-[0_20px_50px_rgba(114,28,36,0.15)] transition-all duration-300"
           >
             {/* iOS Glossy Shine Overlay */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/40 to-transparent pointer-events-none" />

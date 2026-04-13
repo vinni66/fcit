@@ -30,9 +30,11 @@ const Counter = memo(({ value, suffix = "" }) => {
   )
 })
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 const StatCard = memo(({ stat, index }) => {
   const cardRef = useRef(null)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
+  const isMobile = getIsMobile()
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -110,8 +112,8 @@ export default function StatsCounter() {
     <div className="py-16 lg:py-24 relative overflow-hidden bg-white">
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-fcit-400/5 blur-[100px] rounded-full pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-fcit-300/5 blur-[100px] rounded-full pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-6 lg:px-4 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-4 lg:px-4 relative z-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
           {stats.map((stat, i) => (
             <StatCard key={i} stat={stat} index={i} />
           ))}

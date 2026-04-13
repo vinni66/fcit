@@ -67,9 +67,12 @@ const facilities = [
   { title: 'Cafeteria', description: 'Hygienic, multi-cuisine dining areas offering an excellent environment for discussions.', icon: Coffee },
 ]
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 export default function Home() {
   const [selectedFaculty, setSelectedFaculty] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const isMobile = getIsMobile()
 
   const openProfile = (f) => {
     setSelectedFaculty(f)
@@ -140,99 +143,93 @@ export default function Home() {
       <AnimatedDivider />
 
       {/* Real Functionality: Program Browser */}
-      <section className="bg-[#f8fbff] relative py-20">
+      <section className="bg-[#f8fbff] relative py-10 lg:py-20">
          <ProgramBrowser />
       </section>
 
-      <FadeIn className="py-24 bg-[#f8fbff] relative overflow-hidden">
-        <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-fcit-200 rounded-full blur-[140px] -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none animate-pulse" />
+      {/* Vision & Mission - Simplified for Mobile */}
+      <FadeIn className="py-10 lg:py-24 bg-[#f8fbff] relative overflow-hidden">
+        <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-fcit-200 rounded-full blur-[140px] -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-10 lg:mb-16">
             <TextReveal
               text="Our Vision & Mission"
-              className="text-4xl md:text-5xl font-black text-slate-900 mb-4"
+              className="text-3xl lg:text-5xl font-black text-slate-900 mb-4"
               highlightFrom={1}
             />
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto font-light">The guiding principles that drive our pursuit of academic and technological excellence.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            <div className="relative group h-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-fcit-400 to-fcit-200 rounded-[3rem] blur-2xl opacity-10 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"></div>
-              <div className="relative h-full bg-white rounded-[3rem] p-10 md:p-14 border border-slate-100 shadow-premium overflow-hidden hover:border-fcit-400 transition-all duration-500">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/30 rounded-bl-[120px] -z-0 transition-transform duration-700 group-hover:scale-110"></div>
-                <div className="relative z-10">
-                  <div className="w-16 h-16 bg-fcit-100/50 rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-fcit-400 transition-colors duration-500">
-                    <Globe className="w-8 h-8 text-fcit-400 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-6 group-hover:text-fcit-400 transition-colors">Vision</h3>
-                  <p className="text-slate-700 text-xl leading-relaxed font-light">
-                    To be a leading center of excellence in computing and information technology, fostering innovation, research, and transformative learning to shape the digital future.
-                  </p>
-                  <div className="mt-10 pt-8 border-t border-slate-50">
-                    <span className="px-4 py-1.5 rounded-full bg-fcit-100 text-fcit-400 text-xs font-black uppercase tracking-widest">Innovation First</span>
-                  </div>
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+            {/* Vision Card */}
+            <div className="relative group">
+              <div className="relative h-full bg-white rounded-[2.5rem] lg:rounded-[3rem] p-8 lg:p-14 border border-slate-100 shadow-premium overflow-hidden">
+                <div className="w-12 h-12 lg:w-16 lg:h-16 bg-fcit-100/50 rounded-2xl flex items-center justify-center mb-6 lg:mb-8 group-hover:bg-fcit-400 transition-colors duration-500">
+                  <Globe className="w-6 h-6 lg:w-8 lg:h-8 text-fcit-400 group-hover:text-white transition-colors" />
                 </div>
+                <h3 className="text-2xl lg:text-3xl font-black text-slate-900 mb-4 lg:mb-6">Vision</h3>
+                <p className="text-slate-700 text-lg lg:text-xl leading-relaxed font-light">
+                  To be a leading center of excellence in computing and information technology, fostering innovation and transformative learning.
+                </p>
               </div>
             </div>
 
-            <div className="relative group h-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-fcit-300 to-fcit-100 rounded-[3rem] blur-2xl opacity-10 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"></div>
-              <div className="relative h-full bg-white rounded-[3rem] p-10 md:p-14 border border-slate-100 shadow-premium overflow-hidden hover:border-fcit-300 transition-all duration-500">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-fcit-100/30 rounded-bl-[120px] -z-0 transition-transform duration-700 group-hover:scale-110"></div>
-                <div className="relative z-10">
-                  <div className="w-16 h-16 bg-fcit-100/50 rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-fcit-300 transition-colors duration-500">
-                    <Award className="w-8 h-8 text-fcit-300 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-6 group-hover:text-fcit-300 transition-colors">Mission</h3>
-                  <ul className="space-y-5 text-slate-700">
-                    {mission.map((m, i) => (
-                      <li key={i} className="flex items-start gap-4 p-2 rounded-xl transition-colors">
-                        <div className="w-3 h-3 bg-fcit-300 rounded-full mt-2 flex-shrink-0 shadow-[0_0_10px_rgba(218,165,32,0.6)]" />
-                        <span className="text-lg leading-relaxed font-light">{m}</span>
-                      </li>
-                    ))}
-                  </ul>
+            {/* Mission Card */}
+            <div className="relative group">
+              <div className="relative h-full bg-white rounded-[2.5rem] lg:rounded-[3rem] p-8 lg:p-14 border border-slate-100 shadow-premium overflow-hidden">
+                <div className="w-12 h-12 lg:w-16 lg:h-16 bg-fcit-100/50 rounded-2xl flex items-center justify-center mb-6 lg:mb-8 hover:bg-fcit-300 transition-colors">
+                  <Award className="w-6 h-6 lg:w-8 lg:h-8 text-fcit-300 group-hover:text-white transition-colors" />
                 </div>
+                <h3 className="text-2xl lg:text-3xl font-black text-slate-900 mb-4 lg:mb-6">Mission</h3>
+                <ul className="space-y-4 text-slate-700">
+                  {mission.slice(0, isMobile ? 2 : mission.length).map((m, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-fcit-300 rounded-full mt-2 flex-shrink-0" />
+                      <span className="text-sm lg:text-lg font-light leading-relaxed">{m}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </FadeIn>
 
-      <FadeIn className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <TextReveal
-              text="Department Objectives"
-              className="text-4xl md:text-5xl font-black text-slate-900 mb-4"
-              highlightFrom={1}
-            />
-            <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-300 mx-auto rounded-full" />
-          </div>
+      {/* Hide Objectives on Mobile to reduce scroll fatigue */}
+      {!isMobile && (
+        <FadeIn className="py-24 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <TextReveal
+                text="Department Objectives"
+                className="text-4xl md:text-5xl font-black text-slate-900 mb-4"
+                highlightFrom={1}
+              />
+              <div className="w-20 h-1.5 bg-gradient-to-r from-fcit-400 to-fcit-300 mx-auto rounded-full" />
+            </div>
 
-          <div className="relative border-l-2 border-fcit-100 ml-4 md:ml-0 lg:pl-0">
-            {objectives.map((obj, i) => (
-              <div key={i} className="relative pl-8 md:pl-0 mb-12 last:mb-0 group">
-                <div className="absolute left-[-9px] md:left-[-9px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white border-4 border-fcit-400 shadow-lg group-hover:scale-150 group-hover:bg-fcit-400 transition-all duration-300"></div>
-                <div className="bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-fcit-200 p-6 md:p-8 md:ml-12 shadow-sm hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
-                  <div className="flex items-center gap-6">
-                    <span aria-hidden="true" className="text-5xl md:text-7xl font-black text-fcit-400/10 group-hover:text-fcit-400/20 transition-all duration-500 pointer-events-none select-none text-glow">
-                      0{i + 1}
-                    </span>
-                    <p className="text-xl text-slate-700 leading-relaxed font-medium">{obj}</p>
+            <div className="relative border-l-2 border-fcit-100 ml-4 md:ml-0 lg:pl-0">
+              {objectives.map((obj, i) => (
+                <div key={i} className="relative pl-8 md:pl-0 mb-12 last:mb-0 group">
+                  <div className="absolute left-[-9px] md:left-[-9px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white border-4 border-fcit-400 shadow-lg group-hover:scale-150 group-hover:bg-fcit-400 transition-all duration-300"></div>
+                  <div className="bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-fcit-200 p-6 md:p-8 md:ml-12 shadow-sm hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
+                    <div className="flex items-center gap-6">
+                      <span aria-hidden="true" className="text-5xl md:text-7xl font-black text-fcit-400/10 group-hover:text-fcit-400/20 transition-all duration-500 pointer-events-none select-none text-glow">
+                        0{i + 1}
+                      </span>
+                      <p className="text-xl text-slate-700 leading-relaxed font-medium">{obj}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
+      )}
 
       <AnimatedDivider />
 
-      <FadeIn className="py-24 bg-[#f8fbff]">
+      <FadeIn className="py-10 lg:py-24 bg-[#f8fbff]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <TextReveal
@@ -246,7 +243,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 items-center">
+          <div className={`grid ${isMobile ? 'grid-cols-3 gap-2 px-1' : 'lg:grid-cols-3 gap-8'} items-center`}>
             {leadershipPreview.map((f, i) => {
               const isDean = f.designation.includes('Dean')
               return (
@@ -257,29 +254,34 @@ export default function Home() {
                   transition={{ delay: i * 0.1, duration: 0.5 }}
                   viewport={{ once: true }}
                   onClick={() => openProfile(f)}
-                  className={`bg-white rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${
-                    isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
+                  className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${
+                    isMobile 
+                      ? 'p-2' 
+                      : isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
                   }`}
                 >
-                  {isDean && (
-                    <div className="absolute top-6 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-fcit-400 text-white text-[9px] font-black uppercase tracking-[0.3em] shadow-lg">
-                      Head of Faculty
-                    </div>
-                  )}
-                  <div className={`${isDean ? 'w-36 h-36 mb-10' : 'w-28 h-28 mb-8'} rounded-[2rem] bg-fcit-100/50 flex items-center justify-center mx-auto shadow-sm group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 overflow-hidden relative`}>
-                    {f.photoUrl ? (
-                      <img src={f.photoUrl} alt={f.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${f.gradient}`}>
-                        <span className={`${isDean ? 'text-5xl' : 'text-4xl'} font-black text-white`}>{f.initials}</span>
+                  <div className={`relative ${isMobile ? 'w-16 h-16 mx-auto mb-2' : 'w-40 h-40 mx-auto mb-8'} group-hover:scale-110 transition-transform duration-500`}>
+                    <div className={`absolute inset-0 bg-gradient-to-tr ${f.gradient} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity`} />
+                    <img 
+                      src={f.photoUrl} 
+                      alt={f.name} 
+                      className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10" 
+                    />
+                    {isDean && !isMobile && (
+                      <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border border-fcit-100 z-20">
+                         <Award className="w-6 h-6 text-fcit-400" />
                       </div>
                     )}
                   </div>
-                  <h3 className={`${isDean ? 'text-3xl' : 'text-2xl'} font-black text-slate-900 mb-2 group-hover:text-fcit-400 transition-colors tracking-tight`}>{f.name}</h3>
-                  <div className={`inline-flex items-center px-4 py-1.5 rounded-full ${isDean ? 'bg-fcit-400 text-white' : 'bg-fcit-100 text-fcit-400'} font-black text-[10px] mb-6 uppercase tracking-widest shadow-sm`}>
-                    {f.designation}
+                  
+                  <div className={isMobile ? 'px-1' : ''}>
+                    <h3 className={`${isMobile ? 'text-[9px]' : 'text-2xl'} font-black text-slate-900 leading-tight group-hover:text-fcit-400 transition-colors uppercase tracking-tight line-clamp-2`}>
+                      {f.name}
+                    </h3>
+                    <p className={`${isMobile ? 'text-[7px]' : 'text-sm'} text-fcit-400 font-bold uppercase tracking-widest mt-1 opacity-70`}>
+                      {isMobile ? f.designation.split(',')[0] : f.designation}
+                    </p>
                   </div>
-                  <p className="text-slate-700 font-medium text-sm mb-4 line-clamp-2">{f.specialization}</p>
                 </motion.div>
               )
             })}
@@ -374,9 +376,9 @@ export default function Home() {
 
       <DepartmentTimeline />
 
-      <FadeIn className="py-24 bg-white relative">
+      <FadeIn className="py-10 lg:py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-           <div className="text-center mb-16">
+           <div className="text-center mb-10 lg:mb-16">
             <TextReveal
               text="Campus Facilities"
               className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
@@ -413,9 +415,9 @@ export default function Home() {
         </div>
       </FadeIn>
 
-      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-fcit-100/30 via-[#f8fbff] to-white">
+      <section className="relative py-12 lg:py-24 overflow-hidden bg-gradient-to-br from-fcit-100/30 via-[#f8fbff] to-white">
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <FadeIn className="p-12 md:p-16 rounded-[3rem] bg-white/70 border border-white/80 backdrop-blur-3xl shadow-[0_20px_60px_-15px_rgba(99,103,255,0.1)] relative overflow-hidden">
+          <FadeIn className="p-8 md:p-16 rounded-[2.5rem] lg:rounded-[3rem] bg-white/70 border border-white/80 backdrop-blur-3xl shadow-[0_20px_60px_-15px_rgba(99,103,255,0.1)] relative overflow-hidden">
             <TextReveal
               text="Ready to Shape Your Future?"
               className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight"

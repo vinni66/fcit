@@ -86,7 +86,10 @@ const allPrograms = [
   },
 ]
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 export default function ProgramBrowser() {
+  const isMobile = getIsMobile()
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
   const [selectedProgram, setSelectedProgram] = useState(null)
@@ -155,11 +158,10 @@ export default function ProgramBrowser() {
         </div>
       </div>
 
-      {/* Results Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 min-h-[400px]">
+      {/* Results Grid - Compact for Mobile */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 min-h-[max-content]">
         <AnimatePresence mode="popLayout">
           {filteredPrograms.map((prog, index) => {
-            const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
             return (
               <motion.div
                 key={prog.id}
@@ -168,43 +170,44 @@ export default function ProgramBrowser() {
                 animate={{ 
                   opacity: 1, 
                   scale: 1,
-                  transition: { 
-                    duration: 0.4, 
-                    delay: index * 0.05
-                  }
+                  transition: { duration: 0.4, delay: index * 0.05 }
                 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="bg-white p-6 lg:p-8 rounded-[2rem] lg:rounded-[2.5rem] border border-slate-200 flex flex-col justify-between group hover:border-fcit-400 hover:shadow-premium transition-all duration-300 relative overflow-hidden"
+                onClick={() => openProgramDetails(prog)}
+                className="bg-white p-5 lg:p-8 rounded-[1.5rem] lg:rounded-[2.5rem] border border-slate-200 flex flex-col justify-between group hover:border-fcit-400 hover:shadow-premium transition-all duration-300 relative overflow-hidden cursor-pointer active:scale-95"
               >
                 <div>
                   <motion.div 
-                    className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-fcit-100/50 flex items-center justify-center mb-6 lg:mb-8 group-hover:bg-fcit-400 transition-colors shadow-sm"
+                    className="w-10 h-10 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl bg-fcit-100/50 flex items-center justify-center mb-4 lg:mb-8 group-hover:bg-fcit-400 transition-colors shadow-sm"
                     animate={isMobile ? {} : { y: [0, -4, 0] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
                   >
-                    <prog.icon className="w-6 h-6 lg:w-7 lg:h-7 text-fcit-400 group-hover:text-white transition-colors" />
+                    <prog.icon className="w-5 h-5 lg:w-7 lg:h-7 text-fcit-400 group-hover:text-white transition-colors" />
                   </motion.div>
-                  <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-1 lg:mb-2 leading-tight group-hover:text-fcit-400 transition-colors">{prog.title}</h3>
-                  <p className="text-[10px] lg:text-sm text-fcit-400 font-bold mb-4 lg:mb-6 tracking-wide uppercase opacity-80">{prog.category} • {prog.duration}</p>
+                  <h3 className="text-sm lg:text-2xl font-bold text-slate-900 mb-1 leading-tight group-hover:text-fcit-400 transition-colors">{prog.title}</h3>
+                  <p className="text-[8px] lg:text-sm text-fcit-400 font-bold mb-2 lg:mb-6 tracking-wide uppercase opacity-70">
+                    {prog.category} {isMobile ? '' : `• ${prog.duration}`}
+                  </p>
                   
-                  <div className="flex flex-wrap gap-2">
-                    {prog.tags.slice(0, isMobile ? 2 : 10).map(tag => (
-                      <span key={tag} className="px-2 py-1 rounded-lg bg-slate-50 text-[9px] font-black text-slate-500 uppercase tracking-widest group-hover:bg-fcit-100 group-hover:text-fcit-400 transition-all">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  {!isMobile && (
+                    <div className="flex flex-wrap gap-2">
+                      {prog.tags.slice(0, 10).map(tag => (
+                        <span key={tag} className="px-2 py-1 rounded-lg bg-slate-50 text-[9px] font-black text-slate-500 uppercase tracking-widest group-hover:bg-fcit-100 group-hover:text-fcit-400 transition-all">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 
-                <button 
-                  onClick={() => openProgramDetails(prog)}
-                  className="mt-6 lg:mt-10 flex items-center justify-between w-full text-fcit-400 font-black group/btn pt-4 lg:pt-6 border-t border-slate-50"
-                >
-                  <span className="uppercase text-[10px] tracking-widest">Learn More</span>
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-fcit-100/50 flex items-center justify-center group-hover/btn:bg-fcit-400 group-hover/btn:text-white transition-all shadow-sm">
-                    <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                {!isMobile && (
+                  <div className="mt-10 flex items-center justify-between w-full text-fcit-400 font-black pt-6 border-t border-slate-50">
+                    <span className="uppercase text-[10px] tracking-widest">Learn More</span>
+                    <div className="w-10 h-10 rounded-full bg-fcit-100/50 flex items-center justify-center group-hover:bg-fcit-400 group-hover:text-white transition-all shadow-sm">
+                      <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
-                </button>
+                )}
               </motion.div>
             )
           })}

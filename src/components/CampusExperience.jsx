@@ -4,17 +4,21 @@ import { ChevronRight, ChevronLeft, Maximize2, X, Sparkles, Image as ImageIcon, 
 import TextReveal from './TextReveal'
 
 import { galleryImages } from '../data/galleryData'
+import { CDN_BASE } from '../constants'
 
 const categories = ['All', ...new Set(galleryImages.map(img => img.category))]
 
 const images = galleryImages.map((img, i) => {
+  // Use unified CDN_BASE prefix
+  const finalUrl = `${CDN_BASE}/${img.url.startsWith('/') ? img.url.slice(1) : img.url}`
+  
   // Create a dynamic mosaic pattern
   let size = 'col-span-1 row-span-1'
   if (i % 11 === 0) size = 'col-span-2 row-span-2'
   else if (i % 7 === 0) size = 'col-span-1 row-span-2'
   else if (i % 9 === 0) size = 'col-span-2 row-span-1'
   
-  return { ...img, size }
+  return { ...img, url: finalUrl, size }
 })
 
 
@@ -104,7 +108,10 @@ const GalleryItem = memo(({ img, onExpand }) => {
   )
 })
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 export default function CampusExperience() {
+  const isMobile = getIsMobile()
   const [activeTab, setActiveTab] = useState('All')
   const [visibleCount, setVisibleCount] = useState(12)
   const [selected, setSelected] = useState(null)
@@ -185,26 +192,28 @@ export default function CampusExperience() {
 
         <motion.div 
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[200px] sm:auto-rows-[250px]"
+          className={`grid ${isMobile ? 'grid-cols-1 gap-4 overflow-hidden rounded-3xl' : 'sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[200px] sm:auto-rows-[250px]'}`}
         >
           <AnimatePresence mode="popLayout">
-            {displayedImages.map((img, i) => (
-              <GalleryItem key={img.url} img={img} onExpand={setSelected} />
+            {displayedImages.slice(0, isMobile ? 1 : visibleCount).map((img, i) => (
+              <GalleryItem 
+                key={img.url} 
+                img={{...img, size: isMobile ? 'aspect-[4/3] w-full' : img.size}} 
+                onExpand={setSelected} 
+              />
             ))}
           </AnimatePresence>
         </motion.div>
 
-        {visibleCount < filtered.length && (
-          <div className="mt-16 flex justify-center">
-            <button 
-              onClick={() => setVisibleCount(prev => prev + 12)}
-              className="group relative inline-flex items-center gap-3 bg-white border border-slate-200 text-slate-900 px-10 py-5 rounded-full font-bold text-lg hover:bg-fcit-400 hover:text-white transition-all duration-500 shadow-premium hover:shadow-2xl"
-            >
-              <span>Load More Memories</span>
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        )}
+        <div className="mt-10 lg:mt-16 flex justify-center">
+          <button 
+            onClick={() => isMobile ? (window.location.href = '/gallery') : setVisibleCount(prev => prev + 12)}
+            className="group relative inline-flex items-center gap-3 bg-white border border-slate-200 text-slate-900 px-8 lg:px-10 py-4 lg:py-5 rounded-full font-bold text-sm lg:text-lg hover:bg-fcit-400 hover:text-white transition-all duration-500 shadow-premium hover:shadow-2xl"
+          >
+            <span>{isMobile ? 'Explore Full Gallery' : 'Load More Memories'}</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
       </div>
 
       {/* Immersive Expansion Modal */}

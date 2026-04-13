@@ -36,9 +36,11 @@ const getDynamicMilestones = () => {
 
 const allMilestones = getDynamicMilestones()
 
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 1024
+
 export default function DepartmentTimeline() {
   const containerRef = useRef(null)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
+  const isMobile = getIsMobile()
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
