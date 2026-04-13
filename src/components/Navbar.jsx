@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useMotionValueEvent } from 'framer-motion'
-import { Menu, X, GraduationCap, Search, ChevronDown, Sparkles } from 'lucide-react'
+import { Menu, X, ChevronDown, Sparkles, ArrowRight, ChevronRight } from 'lucide-react'
 
 const primaryLinks = [
   { name: 'Home', path: '/' },
@@ -22,333 +22,358 @@ const secondaryLinks = [
 
 const allLinks = [...primaryLinks, ...secondaryLinks]
 
+// Magnetic Link Wrapper for extra smoothness
+function MagneticLink({ children, to, isActive, isScrolled }) {
+  const ref = useRef(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  
+  const springConfig = { damping: 15, stiffness: 150 }
+  const mouseX = useSpring(x, springConfig)
+  const mouseY = useSpring(y, springConfig)
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e
+    const { left, top, width, height } = ref.current.getBoundingClientRect()
+    const centerX = left + width / 2
+    const centerY = top + height / 2
+    x.set((clientX - centerX) * 0.4)
+    y.set((clientY - centerY) * 0.4)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: mouseX, y: mouseY }}
+      className="relative z-10"
+    >
+      <Link
+        to={to}
+        className={`relative z-10 px-6 py-2.5 text-xs font-black uppercase tracking-widest transition-colors duration-500 flex items-center justify-center ${
+          isActive 
+            ? (isScrolled ? 'text-white' : 'text-fcit-400') 
+            : (isScrolled ? 'text-white/70' : 'text-slate-600')
+        }`}
+      >
+        {isActive && (
+          <motion.div
+            layoutId="activeIndicator"
+            className={`absolute inset-0 rounded-full shadow-lg ring-1 ${
+              isScrolled ? 'bg-white/20 ring-white/30' : 'bg-fcit-100 ring-fcit-400/10'
+            }`}
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+          />
+        )}
+        <span className="relative z-10">{children}</span>
+      </Link>
+    </motion.div>
+  )
+}
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [hoveredLink, setHoveredLink] = useState(null)
   const location = useLocation()
   
   const { scrollY } = useScroll()
 
-  // Smart Hide Navbar Logic
+  // Optimized Interpolations
+  const scrollRange = [0, 100]
+  
+  // Use a numeric spring for the overall transition progress (0 to 1)
+  const transitionProgress = useTransform(scrollY, scrollRange, [0, 1])
+  const smoothProgress = useSpring(transitionProgress, { stiffness: 200, damping: 30 })
+
+  // Drive geometry from the smooth numeric progress
+  const navWidth = useTransform(smoothProgress, [0, 1], ["100%", "92%"])
+  const navHeight = useTransform(smoothProgress, [0, 1], ["7.5rem", "5.2rem"])
+  const navRadius = useTransform(smoothProgress, [0, 1], ["0rem", "2.8rem"])
+  const navY = useTransform(smoothProgress, [0, 1], [0, 18])
+  const navOpacity = useTransform(smoothProgress, [0, 1], [0, 1])
+  const logoScale = useTransform(smoothProgress, [0, 1], [1, 0.82])
+  
+  const brandTextColor = useTransform(scrollY, scrollRange, ["#721c24", "#ffffff"])
+  const subTextColor = useTransform(scrollY, scrollRange, ["#94a3b8", "rgba(255,255,255,0.6)"])
+
+  // Performance-optimized blur: Fixed blur with opacity fade
+  const backdropBlur = useTransform(scrollY, [0, 30], ["blur(0px)", "blur(25px)"])
+
+  const [isScrolled, setIsScrolled] = useState(false)
   useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 60)
+    
+    // Smart Hide Logic
     const previous = scrollY.getPrevious()
-    if (latest > previous && latest > 150) {
+    if (latest > previous && latest > 250) {
       setHidden(true)
     } else {
       setHidden(false)
     }
   })
 
-  // Magnetic Effect State
-  const brandRef = useRef(null)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const springConfig = { damping: 20, stiffness: 150 }
-  const magX = useSpring(mouseX, springConfig)
-  const magY = useSpring(mouseY, springConfig)
+  // Throttled 3D Tilt Effect
+  const headerRef = useRef(null)
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+  const tiltX = useSpring(rotateX, { damping: 30, stiffness: 80 })
+  const tiltY = useSpring(rotateY, { damping: 30, stiffness: 80 })
 
-  const handleMouseMove = (e) => {
+  const handleTilt = (e) => {
+    if (!headerRef.current || isScrolled === false) return 
+    const { clientX, clientY } = e
+    const { left, top, width, height } = headerRef.current.getBoundingClientRect()
+    const centerX = left + width / 2
+    const centerY = top + height / 2
+    // Reduced tilt intensity for performance
+    rotateX.set((centerY - clientY) * 0.01)
+    rotateY.set((clientX - centerX) * 0.01)
+  }
+
+  const resetTilt = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+    setHoveredLink(null)
+  }
+
+  // Brand Magnetic
+  const brandRef = useRef(null)
+  const bX = useMotionValue(0)
+  const bY = useMotionValue(0)
+  const brandX = useSpring(bX, { damping: 25, stiffness: 120 })
+  const brandY = useSpring(bY, { damping: 25, stiffness: 120 })
+
+  const handleBrandMagnetic = (e) => {
     if (!brandRef.current) return
+    const { clientX, clientY } = e
     const rect = brandRef.current.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
     const centerY = rect.top + rect.height / 2
-    mouseX.set((e.clientX - centerX) * 0.15)
-    mouseY.set((e.clientY - centerY) * 0.15)
+    bX.set((clientX - centerX) * 0.2)
+    bY.set((clientY - centerY) * 0.2)
   }
-
-  const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
-  }
-
-  useEffect(() => {
-    let ticking = false
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 50)
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   return (
-    <motion.header
-      initial={{ y: -100, backdropFilter: 'blur(0.01px)' }}
-      animate={{ 
-        y: hidden ? -100 : 0,
-        backgroundColor: scrolled ? 'rgba(114, 28, 36, 0.95)' : 'rgba(255, 249, 235, 0.4)',
-        backgroundImage: scrolled 
-          ? 'linear-gradient(to right, rgba(114, 28, 36, 0.98), rgba(154, 43, 54, 0.98), rgba(218, 165, 32, 0.98))' 
-          : 'none',
-        backdropFilter: scrolled ? 'blur(25px)' : 'blur(0.01px)',
-        paddingTop: scrolled ? '0.5rem' : '1.25rem',
-        paddingBottom: scrolled ? '0.5rem' : '1.25rem',
-        borderBottomColor: scrolled ? 'rgba(218, 165, 32, 0.3)' : 'rgba(255, 255, 255, 0)',
-        boxShadow: scrolled ? '0 15px 50px -10px rgba(114, 28, 36, 0.4)' : '0 0 0px 0px rgba(0,0,0,0)'
-      }}
-      transition={{ 
-        duration: 0.6, 
-        ease: [0.22, 1, 0.36, 1],
-        backdropFilter: { type: 'tween', ease: 'easeOut', duration: 0.4 },
-        y: { duration: 0.4, ease: "easeInOut" }
-      }}
-      className="fixed top-0 left-0 right-0 z-50 border-b flex items-center h-20 transition-all duration-500"
-    >
-      <div className="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex items-center justify-between h-14">
-          <motion.div
-            ref={brandRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ x: magX, y: magY }}
-            className="flex items-center space-x-4 group shrink-0 py-1 px-3 rounded-2xl transition-colors hover:bg-white/5 cursor-pointer"
-          >
-            <Link to="/" className="flex items-center space-x-4">
-              {/* Emblem Logo with Glint */}
-              <motion.div
-                whileHover={{ scale: 1.05, rotate: 2 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative flex items-center justify-center p-2 bg-white rounded-2xl shadow-xl overflow-hidden group/logo border border-fcit-400/10"
-              >
-                <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" alt="FCIT Logo" className="h-10 w-auto object-contain drop-shadow-md z-10" />
-
-                {/* Light Sweep (Glint) */}
+    <>
+      <motion.header
+        ref={headerRef}
+        onMouseMove={handleTilt}
+        onMouseLeave={resetTilt}
+        animate={{ y: hidden ? -140 : 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 25 }}
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-0 sm:p-4 pointer-events-none perspective-1000"
+      >
+        <motion.div
+          style={{
+            width: navWidth,
+            height: navHeight,
+            backgroundColor: useTransform(navOpacity, (o) => `rgba(114, 28, 36, ${o * 0.96})`),
+            backdropFilter: backdropBlur,
+            borderRadius: navRadius,
+            boxShadow: useTransform(navOpacity, (o) => `0 ${o * 35}px ${o * 80}px -15px rgba(0,0,0,${o * 0.5})`),
+            y: navY,
+            rotateX: tiltX,
+            rotateY: tiltY,
+            translateZ: 0, // Force GPU layer
+          }}
+          className="max-w-[105rem] w-full flex items-center justify-between px-8 lg:px-14 pointer-events-auto relative z-10 will-change-[transform,width,height,opacity] overflow-visible preserve-3d"
+        >
+          <div className="flex items-center justify-between w-full h-full">
+            <motion.div
+              ref={brandRef}
+              onMouseMove={handleBrandMagnetic}
+              onMouseLeave={() => { bX.set(0); bY.set(0) }}
+              style={{ x: brandX, y: brandY }}
+              className="flex items-center group cursor-pointer shrink-0"
+            >
+              <Link to="/" className="flex items-center gap-4 sm:gap-6">
                 <motion.div
-                  animate={{
-                    left: ["-100%", "200%"]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    repeatDelay: 2,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute top-0 h-full w-12 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 z-20"
-                />
-              </motion.div>
-
-              <motion.div
-                className="flex flex-col justify-center border-l-2 transition-colors pl-3 sm:pl-4 border-white/20 leading-tight group-hover:border-fcit-200 transition-all duration-500"
-              >
-                <div className="flex items-center gap-2">
-                  <motion.span
-                    className={`font-medium text-[0.7rem] sm:text-[1.1rem] tracking-[0.2em] sm:tracking-[0.25em] uppercase mb-0.5 ${scrolled ? 'text-white/80' : 'text-slate-500'}`}
-                  >
-                    Faculty of
-                  </motion.span>
+                  style={{ scale: logoScale }}
+                  className="relative p-2.5 bg-white rounded-2xl shadow-xl overflow-hidden group/logo ring-4 ring-white/10 shrink-0 flex items-center justify-center"
+                >
+                  <img 
+                    src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" 
+                    alt="FCIT Logo" 
+                    className="h-10 w-auto object-contain z-10" 
+                  />
                   <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1 }}
-                    className={`hidden xs:flex px-1.5 sm:px-2 py-0.5 rounded-full items-center gap-1 ${scrolled ? 'bg-white/10 border-white/20' : 'bg-fcit-400/10 border-fcit-400/20'}`}
-                  >
-                    <Sparkles className={`w-2 sm:w-2.5 h-2 sm:h-2.5 ${scrolled ? 'text-fcit-200' : 'text-fcit-400'}`} />
-                    <span className={`text-[8px] sm:text-[10px] font-black tracking-tighter uppercase ${scrolled ? 'text-white' : 'text-fcit-400'}`}>Center of Excellence</span>
-                  </motion.div>
-                </div>
-                  <motion.span
-                    animate={{
-                      backgroundPosition: ["0% center", "200% center"]
-                    }}
-                    transition={{
-                      backgroundPosition: { duration: 5, repeat: Infinity, ease: "linear" }
-                    }}
-                    className={`font-black text-[0.8rem] sm:text-[1.4rem] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-fcit-400 via-fcit-200 to-fcit-400 bg-[length:200%_auto] filter drop-shadow-[0_2px_5px_rgba(114,28,36,0.1)] ${scrolled ? 'from-white via-fcit-200 to-white' : ''}`}
+                    animate={{ left: ["-100%", "200%"] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                    className="absolute top-0 h-full w-12 bg-gradient-to-r from-transparent via-fcit-300/20 to-transparent -skew-x-12 z-20"
+                  />
+                </motion.div>
+
+                <div className="flex flex-col border-l-2 border-white/10 pl-4 sm:pl-6 leading-none transition-all duration-500 shrink-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <motion.span 
+                      style={{ color: subTextColor }}
+                      className="text-[8px] sm:text-[10px] font-black tracking-[0.3em] uppercase whitespace-nowrap"
+                    >
+                      Faculty of
+                    </motion.span>
+                    <div className="px-2 py-0.5 rounded-full bg-fcit-300 text-[8px] font-black text-white uppercase tracking-tighter hidden xs:block">Premier</div>
+                  </div>
+                  <motion.span 
+                    style={{ color: brandTextColor }}
+                    className="text-lg sm:text-2xl font-black tracking-tighter whitespace-nowrap transition-colors"
                   >
                     Computing and IT
                   </motion.span>
-              </motion.div>
-            </Link>
-          </motion.div>
+                </div>
+              </Link>
+            </motion.div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden xl:flex items-center space-x-1">
-            {primaryLinks.map((link) => {
-              const isActive = location.pathname === link.path
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`relative px-4 py-2 text-sm font-black transition-all duration-300 whitespace-nowrap rounded-xl ${isActive
-                    ? (scrolled ? 'text-white bg-white/10 shadow-lg ring-1 ring-white/20' : 'text-fcit-400 bg-fcit-100/80 shadow-sm ring-1 ring-fcit-400/10')
-                    : (scrolled ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-fcit-400 hover:bg-fcit-100/40')
-                    }`}
-                >
-                  {link.name}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNavIndicator"
-                      className={`absolute -bottom-1 left-1.5 right-1.5 h-1 rounded-full ${scrolled ? 'bg-white' : 'bg-fcit-400'}`}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                </Link>
-              )
-            })}
-
-            {/* More Dropdown */}
-            <div className="relative">
-              <button
-                onMouseEnter={() => setDropdownOpen(true)}
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className={`flex items-center gap-1 px-4 py-2 text-sm font-black transition-all duration-300 rounded-xl ${dropdownOpen || secondaryLinks.some(l => location.pathname === l.path)
-                  ? (scrolled ? 'text-white bg-white/10 shadow-lg ring-1 ring-white/20' : 'text-fcit-400 bg-fcit-100/80 shadow-sm ring-1 ring-fcit-400/10')
-                  : (scrolled ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-fcit-400 hover:bg-fcit-100/40')
-                  }`}
-              >
-                More
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-
+            {/* Desktop Navigation */}
+            <nav className="hidden xl:flex items-center bg-white/5 backdrop-blur-md rounded-full p-1.5 border border-white/10 shadow-inner relative">
               <AnimatePresence>
-                {dropdownOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-[-1]"
-                      onMouseEnter={() => setDropdownOpen(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-56 p-2 bg-fcit-400/95 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden"
-                      onMouseLeave={() => setDropdownOpen(false)}
-                    >
-                      <div className="flex flex-col gap-1">
-                        {secondaryLinks.map((link) => {
-                          const isActive = location.pathname === link.path
-                          return (
-                            <Link
-                              key={link.path}
-                              to={link.path}
-                              onClick={() => setDropdownOpen(false)}
-                              className={`px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-between group ${isActive
-                                ? 'text-fcit-400 bg-fcit-100'
-                                : 'text-white/80 hover:text-white hover:bg-white/10'
-                                }`}
-                            >
-                              {link.name}
-                              <div className={`w-1 h-1 rounded-full transition-all duration-300 ${isActive ? 'bg-fcit-400 scale-150' : 'bg-white/20 group-hover:bg-white scale-100'}`} />
-                            </Link>
-                          )
-                        })}
-                      </div>
-                    </motion.div>
-                  </>
+                {hoveredLink && (
+                  <motion.div
+                    layoutId="hoverBlob"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="absolute inset-y-1.5 bg-white/15 rounded-full z-0 pointer-events-none"
+                    transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
+                    style={{ 
+                      left: hoveredLink.left,
+                      width: hoveredLink.width
+                    }}
+                  />
                 )}
               </AnimatePresence>
-            </div>
 
-            {/* Pill-style Search Button */}
-            <div className={`pl-4 ml-2 border-l transition-colors border-white/20`}>
-              <button
-                onClick={() => setSearchOpen(true)}
-                className={`flex items-center gap-2 pr-4 pl-3 py-2 rounded-full transition-all bg-white/10 text-white hover:bg-white/20 border border-white/10 group/search`}
-                aria-label="Search"
-              >
-                <Search className="w-4 h-4 text-white/70 group-hover/search:text-white group-hover/search:scale-110 transition-all" />
-                <span className="text-xs font-bold text-white/60 group-hover/search:text-white transition-colors">Search...</span>
-              </button>
-            </div>
-          </nav>
-
-          {/* Mobile Apply, Search & Toggle */}
-          <div className="flex items-center gap-2 xl:hidden">
-            <Link
-              to="/admissions"
-              className={`text-white text-xs font-bold px-4 py-2 rounded-xl transition-all bg-white/20 border border-white/20 shadow-lg`}
-            >
-              Apply
-            </Link>
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`p-2 rounded-xl transition-colors text-white`}
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            className={`absolute top-full left-0 right-0 border-t overflow-hidden p-4 bg-fcit-400 border-white/10 shadow-2xl`}
-          >
-            <div className="grid grid-cols-2 gap-2">
-              {allLinks.map((link) => (
-                <Link
+              {primaryLinks.map((link) => (
+                <MagneticLink
                   key={link.path}
                   to={link.path}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-5 py-4 rounded-2xl text-sm font-bold transition-all duration-300 flex items-center gap-3 ${location.pathname === link.path
-                    ? 'text-fcit-400 bg-fcit-100 shadow-inner'
-                    : 'text-white/80 hover:bg-white/10'
-                    }`}
+                  isActive={location.pathname === link.path}
+                  isScrolled={isScrolled}
                 >
-                  <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === link.path ? 'bg-fcit-400' : 'bg-white'}`} />
                   {link.name}
-                </Link>
+                </MagneticLink>
               ))}
+
+              {/* More Link */}
+              <div className="relative group/more h-full">
+                <button
+                  onMouseEnter={() => setDropdownOpen(true)}
+                  className={`flex items-center gap-2 px-6 py-2.5 text-xs font-black uppercase tracking-widest transition-all ${isScrolled ? 'text-white/70' : 'text-slate-600'}`}
+                >
+                  More <ChevronDown className={`w-3 h-3 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 15 }}
+                      onMouseLeave={() => setDropdownOpen(false)}
+                      className="absolute right-0 mt-3 w-64 p-3 bg-slate-900/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-2xl z-50"
+                    >
+                      {secondaryLinks.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center justify-between p-4 rounded-2xl text-[10px] font-black text-white hover:bg-white/10 transition-all uppercase tracking-[0.2em] group/sub"
+                        >
+                          {link.name} <ArrowRight className="w-3 h-3 opacity-0 group-hover/sub:opacity-100 transition-all translate-x-[-10px] group-hover/sub:translate-x-0" />
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </nav>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-4">
+               <Link
+                 to="/admissions"
+                 className={`hidden md:flex items-center gap-3 px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl ${
+                   isScrolled ? 'bg-white text-fcit-400 hover:scale-105' : 'bg-fcit-400 text-white hover:shadow-maroon-300'
+                 }`}
+               >
+                 Apply <Sparkles className="w-4 h-4" />
+               </Link>
+               <button
+                 onClick={() => setMobileOpen(true)}
+                 className={`xl:hidden p-3.5 rounded-2xl ${isScrolled ? 'bg-white/10 text-white' : 'bg-fcit-100 text-fcit-400 shadow-sm'}`}
+               >
+                 <Menu className="w-6 h-6" />
+               </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </motion.div>
+      </motion.header>
 
-
-
-
-      {/* Search Overlay Placeholder */}
+      {/* Full-screen Mobile Menu */}
       <AnimatePresence>
-        {searchOpen && (
+        {mobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-start justify-center pt-24 px-4"
+            className="fixed inset-0 z-[100] bg-fcit-400 flex flex-col p-12 overflow-hidden"
           >
-            <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100"
-            >
-              <div className="flex items-center px-4 border-b border-slate-100">
-                <Search className="w-5 h-5 text-slate-400" />
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="Search faculty, programs, or news..."
-                  className="flex-1 w-full p-4 text-slate-700 focus:outline-none text-lg"
-                />
-                <button
-                  onClick={() => setSearchOpen(false)}
-                  className="p-2 text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+            <div className="flex items-center justify-between mb-20">
+              <div className="p-3 bg-white rounded-2xl shadow-xl">
+                 <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" alt="Logo" className="h-8 w-auto" />
+              </div>
+              <button 
+                onClick={() => setMobileOpen(false)}
+                className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-white border border-white/20 active:scale-90"
+              >
+                <X className="w-8 h-8" />
+              </button>
+            </div>
+
+            <nav className="flex flex-col gap-4">
+              {allLinks.map((link, i) => (
+                <motion.div
+                  key={link.path}
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: i * 0.1 }}
                 >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="p-4 bg-slate-50 text-center text-slate-500 text-sm">
-                Press Enter to search
-              </div>
+                  <Link
+                    to={link.path}
+                    onClick={() => setMobileOpen(false)}
+                    className="text-4xl md:text-6xl font-black text-white hover:text-fcit-200 transition-colors tracking-tighter flex items-center gap-4"
+                  >
+                    {link.name} <ChevronRight className="w-8 h-8 opacity-20" />
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+
+            <motion.div 
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="mt-auto grid grid-cols-2 gap-4"
+            >
+              <Link to="/contact-us" className="p-8 bg-white/10 rounded-3xl border border-white/20 text-white text-center">
+                 <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">Support</div>
+                 <div className="font-bold">Contact Us</div>
+              </Link>
+              <Link to="/admissions" className="p-8 bg-fcit-300 rounded-3xl text-white text-center shadow-2xl">
+                 <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-2">Enrollment</div>
+                 <div className="font-bold uppercase">Apply 2026</div>
+              </Link>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   )
 }

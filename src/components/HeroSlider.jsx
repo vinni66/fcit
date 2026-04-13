@@ -4,11 +4,12 @@ import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react'
 import ThreeHero from './ThreeHero'
 import TypingText from './TypingText'
 import MagneticButton from './MagneticButton'
+import { CDN_BASE } from '../constants'
 
 const slides = [
   {
     id: 1,
-    image: '/gallery/tech_carnival_2k26/tech_carnival_2k26_1.jpeg',
+    image: `${CDN_BASE}/gallery/tech_carnival_2k26/tech_carnival_2k26_1.jpeg`,
     title: 'Faculty of',
     highlight: 'Computing and IT',
     subtitle: 'Where future corporate leaders and tech innovators are forged through excellence.',
@@ -17,7 +18,7 @@ const slides = [
   },
   {
     id: 2,
-    image: '/gallery/graduation_day/graduation_day_1.jpeg',
+    image: `${CDN_BASE}/gallery/graduation_day/graduation_day_1.jpeg`,
     title: 'Empowering',
     highlight: 'Graduates',
     subtitle: 'Celebrating academic excellence and the beginning of professional excellence.',
@@ -26,7 +27,7 @@ const slides = [
   },
   {
     id: 3,
-    image: '/gallery/sports_events/sports_events_1.jpeg',
+    image: `${CDN_BASE}/gallery/ethnic_day/ethnic_day_1.jpeg`,
     title: 'Active',
     highlight: 'Campus Life',
     subtitle: 'Developing leadership and teamwork through collaborative sports and events.',
@@ -35,12 +36,39 @@ const slides = [
   },
   {
     id: 4,
-    image: '/gallery/conference_2k25/conference_2k25_1.jpeg',
+    image: `${CDN_BASE}/gallery/conference_2k25/conference_2k25_1.jpeg`,
     title: 'Innovative',
     highlight: 'Research',
     subtitle: 'Pushing boundaries in technology through global conferences and research initiatives.',
     cta: 'Our Research',
     link: '/research-publications',
+  },
+  {
+    id: 5,
+    image: `${CDN_BASE}/gallery/student_corner/student_corner_6.jpeg`,
+    title: 'Collaborative',
+    highlight: 'Learning Hub',
+    subtitle: 'Engaging in student-led initiatives and interactive peer learning programs.',
+    cta: 'Student Life',
+    link: '/campus-life',
+  },
+  {
+    id: 6,
+    image: `${CDN_BASE}/gallery/mca_outreach_program/mca_outreach_program_1.jpeg`,
+    title: 'Meaningful',
+    highlight: 'Social Impact',
+    subtitle: 'Extending technology benefits to the community through specialized outreach and NSS.',
+    cta: 'Impact Stories',
+    link: '/outreach',
+  },
+  {
+    id: 7,
+    image: `${CDN_BASE}/gallery/ideathon/ideathon_1.jpeg`,
+    title: 'Future',
+    highlight: 'Creators',
+    subtitle: 'Fostering an entrepreneurial mindset through regular hackathons and innovation cycles.',
+    cta: 'Our Events',
+    link: '/events',
   },
 ]
 
@@ -69,30 +97,30 @@ export default function HeroSlider() {
   }
 
   return (
-    <div className="relative w-full h-screen md:h-[90vh] overflow-hidden bg-slate-900 rounded-b-[4rem] md:rounded-b-[5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] z-0">
+    <div className="relative w-full h-screen md:h-[90vh] overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-fcit-400/20 rounded-b-[4rem] md:rounded-b-[5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] z-0">
       {/* Background Images with AnimatePresence */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key={`bg-${current}`}
-          initial={{ opacity: 0, scale: 1 }}
-          animate={{ opacity: 0.9, scale: 1.08 }}
-          exit={{ opacity: 0, scale: 1.1 }}
-          transition={{ 
-            opacity: { duration: 1.5, ease: "easeOut" },
-            scale: { duration: 10, ease: "linear" }
-          }}
-          className="absolute inset-0 origin-center"
-          style={{ willChange: 'transform, opacity' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.9 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="absolute inset-0 z-0"
         >
-          <img 
+          <motion.img 
+            initial={{ scale: 1 }}
+            animate={{ scale: 1.1 }}
+            transition={{ duration: 10, ease: "linear" }}
             src={slides[current].image} 
             alt="Hero Background" 
             className="w-full h-full object-cover"
-            fetchPriority={current === 0 ? "high" : "auto"}
+            loading="eager"
+            fetchPriority="high"
           />
           {/* Subtle 10% Vignette/Overlay */}
-          <div className="absolute inset-0 bg-black/10" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
         </motion.div>
       </AnimatePresence>
 
@@ -104,11 +132,11 @@ export default function HeroSlider() {
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.8, ease: "circOut" }}
-          className="absolute inset-0"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -30 }}
+          transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+          className="absolute inset-0 z-10"
         >
           {/* Content */}
           <div className="relative z-10 w-full h-full flex items-center">

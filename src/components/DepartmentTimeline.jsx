@@ -1,44 +1,40 @@
 import { useRef } from 'react'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
-import { Award, Zap, Globe, Rocket, ShieldCheck, Heart } from 'lucide-react'
+import { motion, useScroll, useSpring } from 'framer-motion'
+import { Award, Zap, Globe, Rocket, ShieldCheck, GraduationCap, Users, Lightbulb, Camera } from 'lucide-react'
+import { galleryImages } from '../data/galleryData'
 
-const milestones = [
-  {
-    year: '2004',
-    title: 'The Inception',
-    description: 'The Faculty of Computing & IT was established with a vision to revolutionize technology education in the region.',
-    icon: Rocket,
-    color: '#DAA520'
-  },
-  {
-    year: '2012',
-    title: 'Innovation Milestone',
-    description: 'Inauguration of our first tier-1 High-Performance Computing Lab and the launch of the AI Research wing.',
-    icon: Zap,
-    color: '#721C24'
-  },
-  {
-    year: '2018',
-    title: 'Global Partnerships',
-    description: 'Signed strategic MOUs with IBM, Infosys, and international universities to foster global student exchange.',
-    icon: Globe,
-    color: '#DAA520'
-  },
-  {
-    year: '2024',
-    title: 'Digital Excellence',
-    description: 'Awarded "Center of Excellence" in Cloud Security. Launch of the Integrated MCA-PhD research track.',
-    icon: ShieldCheck,
-    color: '#721C24'
-  },
-  {
-    year: '2026',
-    title: 'Tech Carnival 2K26',
-    description: 'Launched our flagship National Level Technical Competition, bringing together 2000+ students from across the country.',
-    icon: Award,
-    color: '#DAA520'
-  }
-]
+// Priority categories to fetch from gallery
+const galleryMapping = {
+  'Orientation program': { title: 'Freshers Orientation', icon: Users, year: '2024' },
+  'Graduation day': { title: 'Commencement Ceremony', icon: GraduationCap, year: '2024' },
+  'sports events': { title: 'Inter-Collegiate Sports', icon: Zap, year: '2024' },
+  'conference_2k25': { title: 'International Conference', icon: Globe, year: '2025' },
+  'ideathon': { title: 'Innovation Ideathon', icon: Lightbulb, year: '2025' },
+  'Tech-carnival-2k26': { title: 'Tech Carnival 2K26', icon: Award, year: '2026' },
+}
+
+const getDynamicMilestones = () => {
+  const milestones = []
+  
+  Object.entries(galleryMapping).forEach(([category, meta]) => {
+    const representativeImage = galleryImages.find(img => img.category === category || img.category.toLowerCase() === category.replace('_', ' '))
+    
+    if (representativeImage) {
+      milestones.push({
+        year: meta.year,
+        title: meta.title,
+        description: representativeImage.title || `Excellence in ${meta.title} at GM University.`,
+        image: representativeImage.url,
+        icon: meta.icon,
+        isDynamic: true
+      })
+    }
+  })
+  
+  return milestones.sort((a, b) => parseInt(a.year) - parseInt(b.year))
+}
+
+const allMilestones = getDynamicMilestones()
 
 export default function DepartmentTimeline() {
   const containerRef = useRef(null)
@@ -84,7 +80,7 @@ export default function DepartmentTimeline() {
           </div>
 
           <div className="space-y-24">
-            {milestones.map((ms, i) => {
+            {allMilestones.map((ms, i) => {
                const isEven = i % 2 === 0
                return (
                  <motion.div
@@ -97,20 +93,39 @@ export default function DepartmentTimeline() {
                  >
                    {/* Card */}
                    <div className="w-full md:w-[45%]">
-                     <div className="group relative bg-[#f8fbff] p-10 rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500">
-                        <div className="absolute -top-6 left-10 px-6 py-2 bg-fcit-400 text-white font-black rounded-2xl shadow-lg ring-4 ring-white">
-                          {ms.year}
+                      <div className="group relative bg-[#f8fbff] rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 overflow-hidden">
+                        {/* Milestone Image / Visual */}
+                        <div className="h-48 relative overflow-hidden bg-slate-200">
+                          {ms.image ? (
+                            <img src={ms.image} alt={ms.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-fcit-400/20 to-fcit-100 flex items-center justify-center">
+                              <ms.icon className="w-16 h-16 text-fcit-400/20" />
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <div className="absolute top-6 left-8 px-6 py-2 bg-fcit-400 text-white font-black rounded-2xl shadow-lg ring-4 ring-white/20 backdrop-blur-md">
+                            {ms.year}
+                          </div>
+                          {ms.isDynamic && (
+                            <div className="absolute top-6 right-8 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest rounded-full">
+                              <Camera className="w-3 h-3 inline mr-1" /> Live Snapshot
+                            </div>
+                          )}
                         </div>
-                        <div className="flex items-start gap-6 pt-4">
-                           <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-fcit-400 shadow-sm group-hover:bg-fcit-400 group-hover:text-white transition-all duration-500 shrink-0">
-                             <ms.icon className="w-7 h-7" />
-                           </div>
-                           <div>
-                              <h3 className="text-2xl font-black text-slate-900 mb-4 group-hover:text-fcit-400 transition-colors uppercase tracking-tight">{ms.title}</h3>
-                              <p className="text-slate-600 font-medium leading-relaxed">{ms.description}</p>
-                           </div>
+
+                        <div className="p-10">
+                          <div className="flex items-start gap-6">
+                             <div className="w-14 h-14 bg-fcit-100/50 rounded-2xl flex items-center justify-center text-fcit-400 shadow-sm group-hover:bg-fcit-400 group-hover:text-white transition-all duration-500 shrink-0">
+                               <ms.icon className="w-7 h-7" />
+                             </div>
+                             <div>
+                                <h3 className="text-2xl font-black text-slate-900 mb-2 group-hover:text-fcit-400 transition-colors uppercase tracking-tight">{ms.title}</h3>
+                                <p className="text-slate-600 font-medium leading-relaxed line-clamp-3">{ms.description}</p>
+                             </div>
+                          </div>
                         </div>
-                     </div>
+                      </div>
                    </div>
 
                    {/* Center Pulse (Mobile Hidden) */}

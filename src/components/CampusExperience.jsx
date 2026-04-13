@@ -1,6 +1,6 @@
 import { useState, useMemo, memo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Maximize2, X, Sparkles, Image as ImageIcon } from 'lucide-react'
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { ChevronRight, ChevronLeft, Maximize2, X, Sparkles, Image as ImageIcon, ArrowRight } from 'lucide-react'
 import TextReveal from './TextReveal'
 
 import { galleryImages } from '../data/galleryData'
@@ -19,46 +19,84 @@ const images = galleryImages.map((img, i) => {
 
 
 const GalleryItem = memo(({ img, onExpand }) => {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const mouseXSpring = useSpring(x)
+  const mouseYSpring = useSpring(y)
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"])
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const width = rect.width
+    const height = rect.height
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+    const xPct = mouseX / width - 0.5
+    const yPct = mouseY / height - 0.5
+    x.set(xPct)
+    y.set(yPct)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      whileHover={{ y: -5 }}
-      className={`relative ${img.size} rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-premium hover:shadow-2xl transition-all duration-500`}
+      whileHover={{ y: -10, scale: 1.02 }}
+      className={`relative ${img.size} rounded-[3rem] overflow-hidden group cursor-pointer shadow-premium hover:shadow-[0_45px_100px_-20px_rgba(0,0,0,0.3)] transition-all duration-500 bg-white`}
       onClick={() => onExpand(img)}
     >
-      <img 
-        src={img.url} 
-        alt={img.title} 
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-        loading="lazy"
-      />
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={img.url} 
+          alt={img.title} 
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out"
+          loading="lazy"
+        />
+      </div>
       
-      {/* Light Liquid Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-fcit-100 via-fcit-100/40 to-transparent opacity-0 group-hover:opacity-95 transition-opacity duration-500" />
+      {/* Dynamic Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-fcit-400 via-fcit-400/20 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 z-10" />
       
-      {/* Lens Flare Effect (Goldish) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+      {/* Shine Effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20">
         <motion.div 
-          animate={{ x: [-100, 500], y: [-100, 500] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          className="w-[200px] h-[200px] bg-fcit-200/20 blur-[80px] rounded-full"
+          animate={{ x: [-100, 600], y: [-100, 600] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="w-[300px] h-[300px] bg-white/20 blur-[100px] rounded-full"
         />
       </div>
 
-      <div className="absolute bottom-6 left-8 right-8 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-        <div className="flex items-center gap-2 mb-2 border-b border-fcit-400/10 pb-2">
-          <span className="px-3 py-1 bg-fcit-400 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg">
+      {/* Content */}
+      <div 
+        style={{ transform: "translateZ(50px)" }}
+        className="absolute bottom-10 left-10 right-10 translate-y-6 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-30"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <span className="px-4 py-1.5 bg-white text-fcit-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
             {img.category}
           </span>
-          <div className="w-1 h-1 bg-fcit-400/30 rounded-full" />
-          <span className="text-fcit-400/60 text-[10px] font-bold uppercase tracking-wider">2026 Season</span>
+          <div className="w-1.5 h-1.5 bg-white/50 rounded-full" />
         </div>
-        <h4 className="text-2xl font-black text-slate-900 leading-tight mb-4 group-hover:text-fcit-400 transition-colors">{img.title}</h4>
-        <div className="flex items-center gap-2 text-fcit-400 font-black text-[10px] uppercase tracking-tighter">
-          Explore Moments <Maximize2 className="w-4 h-4" />
+        <h4 className="text-3xl font-black text-white leading-tight mb-6 drop-shadow-lg">{img.title}</h4>
+        <div className="flex items-center gap-3 text-white font-black text-[11px] uppercase tracking-widest bg-white/10 backdrop-blur-md w-max px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-fcit-400 transition-colors">
+          View Masterpiece <Maximize2 className="w-4 h-4" />
         </div>
       </div>
     </motion.div>
@@ -82,6 +120,31 @@ export default function CampusExperience() {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fcit-400/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-fcit-300/10 rounded-full blur-[100px] pointer-events-none" />
       
+      {/* Floating Decorative Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.1, 0.3, 0.1],
+              rotate: [0, 45, 0]
+            }}
+            transition={{
+              duration: 5 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.5
+            }}
+            className={`absolute w-32 h-32 border border-fcit-400/10 rounded-3xl`}
+            style={{
+              left: `${15 * (i + 1)}%`,
+              top: `${20 * (i % 3 + 1)}%`,
+            }}
+          />
+        ))}
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="text-left">
@@ -97,8 +160,8 @@ export default function CampusExperience() {
             </p>
           </div>
 
-          <div className="flex-1 max-w-full overflow-x-auto no-scrollbar pb-2">
-            <div className="flex flex-nowrap gap-3 p-2 bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl shadow-sm w-max">
+          <div className="flex-1 max-w-full overflow-x-auto no-scrollbar pb-4">
+            <div className="flex flex-nowrap gap-3 p-3 bg-white/60 backdrop-blur-3xl border border-white/80 rounded-[2rem] shadow-premium w-max">
               {categories.map(cat => (
                 <button
                   key={cat}
@@ -106,10 +169,10 @@ export default function CampusExperience() {
                     setActiveTab(cat)
                     setVisibleCount(12)
                   }}
-                  className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+                  className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 whitespace-nowrap ${
                     activeTab === cat 
-                      ? 'bg-fcit-400 text-white shadow-glow-maroon' 
-                      : 'text-slate-500 hover:text-fcit-400 hover:bg-fcit-100'
+                      ? 'bg-fcit-400 text-white shadow-[0_15px_30px_-5px_rgba(168,26,45,0.4)] scale-105' 
+                      : 'text-slate-500 hover:text-fcit-400 hover:bg-white/50'
                   }`}
                 >
                   {cat}
@@ -143,46 +206,96 @@ export default function CampusExperience() {
         )}
       </div>
 
-      {/* Liquid Expansion Modal */}
+      {/* Immersive Expansion Modal */}
       <AnimatePresence>
         {selected && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelected(null)}
-              className="absolute inset-0 bg-white/95 backdrop-blur-2xl"
+              className="absolute inset-0 bg-slate-950/95 backdrop-blur-3xl"
             />
+            
             <motion.div 
               layoutId={selected.url}
-              className="relative w-full max-w-6xl aspect-video bg-white rounded-[3rem] overflow-hidden shadow-2xl z-10 border border-slate-200"
+              className="relative w-full max-w-7xl h-[85vh] bg-white rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] z-10 border border-white/20 flex flex-col md:flex-row"
             >
-              <button 
-                onClick={() => setSelected(null)}
-                className="absolute top-8 right-8 z-20 w-12 h-12 bg-fcit-100 hover:bg-fcit-400 text-fcit-400 hover:text-white rounded-full flex items-center justify-center backdrop-blur-xl transition-all border border-fcit-200"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              
-              <img src={selected.url} alt={selected.title} className="w-full h-full object-contain bg-black/5" />
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent pointer-events-none" />
-              
-              <div className="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                  <span className="inline-flex items-center gap-2 text-fcit-300 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">
-                    <ImageIcon className="w-4 h-4" /> Media Gallery Item
-                  </span>
-                  <h2 className="text-4xl md:text-6xl font-black text-fcit-400 tracking-tighter mb-2">{selected.title}</h2>
-                  <p className="text-slate-600 font-medium text-lg max-w-2xl leading-relaxed">
-                    Visual highlights from our specialized labs and high-energy corporate engagement sessions at GM University.
-                  </p>
-                </div>
-                <div className="flex gap-4">
-                  <button onClick={() => setSelected(null)} className="px-10 py-4 bg-fcit-400 text-white font-black rounded-full hover:scale-105 transition-transform flex items-center gap-3 shadow-xl">
-                    Next Story <ChevronRight className="w-5 h-5" />
+              {/* Image Section */}
+              <div className="relative flex-1 bg-slate-100 overflow-hidden group/modal">
+                <img src={selected.url} alt={selected.title} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
+                
+                {/* Modal Navigation Controls */}
+                <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover/modal:opacity-100 transition-opacity duration-300">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      const idx = displayedImages.findIndex(img => img.url === selected.url)
+                      const prevIdx = idx > 0 ? idx - 1 : displayedImages.length - 1
+                      setSelected(displayedImages[prevIdx])
+                    }}
+                    className="w-16 h-16 bg-white/10 hover:bg-white text-white hover:text-fcit-400 rounded-full flex items-center justify-center backdrop-blur-3xl transition-all border border-white/20 shadow-2xl"
+                  >
+                    <ChevronLeft className="w-8 h-8" />
                   </button>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      const idx = displayedImages.findIndex(img => img.url === selected.url)
+                      const nextIdx = idx < displayedImages.length - 1 ? idx + 1 : 0
+                      setSelected(displayedImages[nextIdx])
+                    }}
+                    className="w-16 h-16 bg-white/10 hover:bg-white text-white hover:text-fcit-400 rounded-full flex items-center justify-center backdrop-blur-3xl transition-all border border-white/20 shadow-2xl"
+                  >
+                    <ChevronRight className="w-8 h-8" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Info Section */}
+              <div className="w-full md:w-[400px] p-12 md:p-16 flex flex-col justify-between bg-white relative">
+                <button 
+                  onClick={() => setSelected(null)}
+                  className="absolute top-10 right-10 w-12 h-12 bg-slate-50 hover:bg-fcit-400 text-slate-400 hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+
+                <div className="pt-8">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="px-4 py-1.5 bg-fcit-400 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg">
+                      {selected.category}
+                    </span>
+                    <span className="text-slate-300 text-xs font-bold uppercase tracking-widest leading-none">Global Gallery</span>
+                  </div>
+                  
+                  <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.9]">{selected.title}</h2>
+                  
+                  <div className="space-y-6">
+                    <p className="text-slate-600 font-medium text-lg leading-relaxed">
+                      Captured during a high-energy session at FCIT, showcasing our state-of-the-art facilities and student innovation hub.
+                    </p>
+                    <div className="flex items-center gap-4 py-6 border-y border-slate-50">
+                      <div className="w-12 h-12 rounded-2xl bg-fcit-100/50 flex items-center justify-center text-fcit-400 shadow-sm">
+                        <ImageIcon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Metadata</div>
+                        <div className="text-sm font-bold text-slate-900">4K High-Res Asset</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-12">
+                   <button 
+                     onClick={() => setSelected(null)}
+                     className="w-full py-5 bg-gradient-to-r from-fcit-400 to-fcit-300 text-white font-black rounded-3xl hover:shadow-[0_20px_40px_-10px_rgba(168,26,45,0.4)] transition-all flex items-center justify-center gap-3 active:scale-95"
+                   >
+                     Return to Mosaic <ArrowRight className="w-5 h-5" />
+                   </button>
                 </div>
               </div>
             </motion.div>
