@@ -12,17 +12,23 @@ const images = galleryImages.map((img, i) => {
   // Use unified CDN_BASE prefix
   const finalUrl = `${CDN_BASE}/${img.url.startsWith('/') ? img.url.slice(1) : img.url}`
   
+  // Find 3 other images from the same category to use for the pop-up effect
+  const previews = galleryImages
+    .filter(other => other.category === img.category && other.url !== img.url)
+    .slice(0, 3)
+    .map(p => `${CDN_BASE}/${p.url.startsWith('/') ? p.url.slice(1) : p.url}`)
+
   // Create a dynamic mosaic pattern
   let size = 'col-span-1 row-span-1'
   if (i % 11 === 0) size = 'col-span-2 row-span-2'
   else if (i % 7 === 0) size = 'col-span-1 row-span-2'
   else if (i % 9 === 0) size = 'col-span-2 row-span-1'
   
-  return { ...img, url: finalUrl, size }
+  return { ...img, url: finalUrl, size, previews }
 })
 
 
-const GalleryItem = memo(({ img, onExpand }) => {
+const GalleryItem = memo(({ img, onExpand, isAlbumView }) => {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -53,57 +59,99 @@ const GalleryItem = memo(({ img, onExpand }) => {
   return (
     <motion.div
       layout
+      whileHover={isAlbumView ? "hover" : { scale: 1.02, y: -5 }}
       style={{
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
+        willChange: "transform",
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      whileHover={{ y: -10, scale: 1.02 }}
-      className={`relative ${img.size} rounded-[3rem] overflow-hidden group cursor-pointer shadow-premium hover:shadow-[0_45px_100px_-20px_rgba(0,0,0,0.3)] transition-all duration-500 bg-white`}
+      className={`relative ${img.size} rounded-[3rem] group cursor-pointer shadow-premium hover:shadow-[0_45px_100px_-20px_rgba(0,0,0,0.3)] transition-all duration-500 bg-white`}
       onClick={() => onExpand(img)}
     >
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={img.url} 
-          alt={img.title} 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out"
-          loading="lazy"
-        />
-      </div>
-      
-      {/* Dynamic Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-fcit-400 via-fcit-400/20 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 z-10" />
-      
-      {/* Shine Effect */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20">
-        <motion.div 
-          animate={{ x: [-100, 600], y: [-100, 600] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="w-[300px] h-[300px] bg-white/20 blur-[100px] rounded-full"
-        />
+      {/* Main Container */}
+      <div className="relative w-full h-full rounded-[3rem] overflow-hidden z-10 bg-white shadow-xl">
+        <div className="absolute inset-0">
+          <motion.img 
+            src={img.url} 
+            alt={img.title} 
+            variants={{ hover: { scale: 1.1 } }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        
+        {/* Dynamic Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-fcit-400 via-fcit-400/20 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 z-10" />
+        
+        {/* Shine Effect */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20">
+          <motion.div 
+            animate={{ x: [-100, 600], y: [-100, 600] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-[300px] h-[300px] bg-white/20 blur-[100px] rounded-full"
+          />
+        </div>
+
+        {/* Content */}
+        <div 
+          style={{ transform: "translateZ(50px)" }}
+          className="absolute bottom-10 left-10 right-10 translate-y-6 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-30"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-5 py-2 bg-white text-fcit-400 text-[11px] font-black uppercase tracking-[0.25em] rounded-full shadow-[0_10px_30px_-5px_rgba(255,255,255,0.8)] border-2 border-fcit-400/5 hover:scale-110 transition-transform">
+              {img.category}
+            </span>
+            <div className="w-2 h-2 bg-white/80 rounded-full animate-pulse shadow-[0_0_10px_white]" />
+          </div>
+          <h4 className="text-3xl font-black text-white leading-tight mb-6 drop-shadow-lg">{img.title}</h4>
+          <div className="flex items-center gap-3 text-white font-black text-[11px] uppercase tracking-widest bg-white/10 backdrop-blur-md w-max px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-fcit-400 transition-colors">
+            View Masterpiece <Maximize2 className="w-4 h-4" />
+          </div>
+        </div>
       </div>
 
-      {/* Content */}
-      <div 
-        style={{ transform: "translateZ(50px)" }}
-        className="absolute bottom-10 left-10 right-10 translate-y-6 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-30"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <span className="px-4 py-1.5 bg-white text-fcit-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
-            {img.category}
-          </span>
-          <div className="w-1.5 h-1.5 bg-white/50 rounded-full" />
+      {/* Pop-up Preview Images (In Front of main image) - ONLY ON ALL TAB */}
+      {isAlbumView && (
+        <div className="absolute inset-0 pointer-events-none z-50">
+          {/* Optimized Background Glow (Using radial-gradient instead of blur filter) */}
+          <motion.div
+            variants={{ hover: { opacity: 1, scale: 1.6 } }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            className="absolute inset-0 bg-[radial-gradient(circle,rgba(168,26,45,0.4)_0%,transparent_75%)] rounded-full"
+          />
+
+          {img.previews && img.previews.map((previewUrl, idx) => (
+            <motion.div
+              key={previewUrl}
+              variants={{
+                hover: {
+                  x: idx === 0 ? -120 : idx === 1 ? 120 : 0,
+                  y: idx === 2 ? -140 : -80,
+                  rotate: idx === 0 ? -25 : idx === 1 ? 25 : 0,
+                  scale: 0.85,
+                  opacity: 1,
+                  z: 100,
+                  boxShadow: "0 30px 60px -12px rgba(0,0,0,0.25), 0 18px 36px -18px rgba(0,0,0,0.3)"
+                }
+              }}
+              initial={{ x: 0, y: 0, rotate: 0, scale: 0.5, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 350, damping: 22, delay: idx * 0.08 }}
+              className="absolute inset-0 rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl"
+              style={{ willChange: "transform", transform: "translateZ(0)" }}
+            >
+              <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+            </motion.div>
+          ))}
         </div>
-        <h4 className="text-3xl font-black text-white leading-tight mb-6 drop-shadow-lg">{img.title}</h4>
-        <div className="flex items-center gap-3 text-white font-black text-[11px] uppercase tracking-widest bg-white/10 backdrop-blur-md w-max px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-fcit-400 transition-colors">
-          View Masterpiece <Maximize2 className="w-4 h-4" />
-        </div>
-      </div>
+      )}
     </motion.div>
   )
 })
@@ -116,9 +164,17 @@ export default function CampusExperience() {
   const [visibleCount, setVisibleCount] = useState(12)
   const [selected, setSelected] = useState(null)
 
-  const filtered = useMemo(() => 
-    activeTab === 'All' ? images : images.filter(i => i.category === activeTab),
-  [activeTab])
+  const filtered = useMemo(() => {
+    if (activeTab === 'All') {
+      const seen = new Set()
+      return images.filter(img => {
+        if (seen.has(img.category)) return false
+        seen.add(img.category)
+        return true
+      })
+    }
+    return images.filter(i => i.category === activeTab)
+  }, [activeTab])
 
   const displayedImages = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
 
@@ -199,6 +255,7 @@ export default function CampusExperience() {
               <GalleryItem 
                 key={img.url} 
                 img={{...img, size: isMobile ? 'aspect-[4/3] w-full' : img.size}} 
+                isAlbumView={activeTab === 'All'}
                 onExpand={setSelected} 
               />
             ))}
@@ -232,37 +289,42 @@ export default function CampusExperience() {
               layoutId={selected.url}
               className="relative w-full max-w-7xl h-[85vh] bg-white rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] z-10 border border-white/20 flex flex-col md:flex-row"
             >
-              {/* Image Section */}
-              <div className="relative flex-1 bg-slate-100 overflow-hidden group/modal">
-                <img src={selected.url} alt={selected.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
+              {/* Album Locked Navigation Calculation */}
+              {(() => {
+                const albumImages = images.filter(img => img.category === selected.category)
+                const currentIdx = albumImages.findIndex(img => img.url === selected.url)
                 
-                {/* Modal Navigation Controls */}
-                <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover/modal:opacity-100 transition-opacity duration-300">
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      const idx = displayedImages.findIndex(img => img.url === selected.url)
-                      const prevIdx = idx > 0 ? idx - 1 : displayedImages.length - 1
-                      setSelected(displayedImages[prevIdx])
-                    }}
-                    className="w-16 h-16 bg-white/10 hover:bg-white text-white hover:text-fcit-400 rounded-full flex items-center justify-center backdrop-blur-3xl transition-all border border-white/20 shadow-2xl"
-                  >
-                    <ChevronLeft className="w-8 h-8" />
-                  </button>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      const idx = displayedImages.findIndex(img => img.url === selected.url)
-                      const nextIdx = idx < displayedImages.length - 1 ? idx + 1 : 0
-                      setSelected(displayedImages[nextIdx])
-                    }}
-                    className="w-16 h-16 bg-white/10 hover:bg-white text-white hover:text-fcit-400 rounded-full flex items-center justify-center backdrop-blur-3xl transition-all border border-white/20 shadow-2xl"
-                  >
-                    <ChevronRight className="w-8 h-8" />
-                  </button>
-                </div>
-              </div>
+                return (
+                  <div className="relative flex-1 bg-slate-100 overflow-hidden group/modal">
+                    <img src={selected.url} alt={selected.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
+                    
+                    {/* Modal Navigation Controls */}
+                    <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover/modal:opacity-100 transition-opacity duration-300">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          const prevIdx = currentIdx > 0 ? currentIdx - 1 : albumImages.length - 1
+                          setSelected(albumImages[prevIdx])
+                        }}
+                        className="w-16 h-16 bg-white/10 hover:bg-white text-white hover:text-fcit-400 rounded-full flex items-center justify-center backdrop-blur-3xl transition-all border border-white/20 shadow-2xl"
+                      >
+                        <ChevronLeft className="w-8 h-8" />
+                      </button>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          const nextIdx = currentIdx < albumImages.length - 1 ? currentIdx + 1 : 0
+                          setSelected(albumImages[nextIdx])
+                        }}
+                        className="w-16 h-16 bg-white/10 hover:bg-white text-white hover:text-fcit-400 rounded-full flex items-center justify-center backdrop-blur-3xl transition-all border border-white/20 shadow-2xl"
+                      >
+                        <ChevronRight className="w-8 h-8" />
+                      </button>
+                    </div>
+                  </div>
+                )
+              })()}
 
               {/* Info Section */}
               <div className="w-full md:w-[400px] p-12 md:p-16 flex flex-col justify-between bg-white relative">
