@@ -29,6 +29,7 @@ const GalleryItem = memo(({ img, onExpand }) => {
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"])
 
   const handleMouseMove = (e) => {
+    if (window.innerWidth < 1024) return
     const rect = e.currentTarget.getBoundingClientRect()
     const width = rect.width
     const height = rect.height
@@ -122,12 +123,12 @@ export default function CampusExperience() {
       
       {/* Floating Decorative Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(typeof window !== 'undefined' && window.innerWidth < 768 ? 3 : 6)].map((_, i) => (
           <motion.div
             key={i}
             animate={{
               y: [0, -20, 0],
-              opacity: [0.1, 0.3, 0.1],
+              opacity: [0.1, 0.2, 0.1],
               rotate: [0, 45, 0]
             }}
             transition={{
@@ -136,7 +137,7 @@ export default function CampusExperience() {
               ease: "easeInOut",
               delay: i * 0.5
             }}
-            className={`absolute w-32 h-32 border border-fcit-400/10 rounded-3xl`}
+            className={`absolute w-32 h-32 border border-fcit-400/10 rounded-3xl hidden sm:block`}
             style={{
               left: `${15 * (i + 1)}%`,
               top: `${20 * (i % 3 + 1)}%`,
@@ -184,7 +185,7 @@ export default function CampusExperience() {
 
         <motion.div 
           layout
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[200px] sm:auto-rows-[250px]"
         >
           <AnimatePresence mode="popLayout">
             {displayedImages.map((img, i) => (

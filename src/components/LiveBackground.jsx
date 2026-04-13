@@ -36,7 +36,7 @@ const LiveBackground = memo(() => {
       />
 
       {/* Floating Digital Particles */}
-      {[...Array(30)].map((_, i) => (
+      {[...Array(typeof window !== 'undefined' && window.innerWidth < 768 ? 10 : 30)].map((_, i) => (
         <motion.div
           key={i}
           initial={{ 
@@ -63,11 +63,11 @@ const LiveBackground = memo(() => {
         />
       ))}
 
-      {/* Periodic Scanning Sweep */}
+      {/* Periodic Scanning Sweep - Desktop Only */}
       <motion.div 
         animate={{ top: ['-20%', '120%'] }}
         transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-fcit-400/10 to-transparent blur-sm"
+        className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-fcit-400/10 to-transparent blur-sm hidden lg:block"
       />
     </div>
   )

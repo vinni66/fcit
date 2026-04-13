@@ -32,6 +32,7 @@ const Counter = memo(({ value, suffix = "" }) => {
 
 const StatCard = memo(({ stat, index }) => {
   const cardRef = useRef(null)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -39,7 +40,7 @@ const StatCard = memo(({ stat, index }) => {
   const mouseY = useSpring(y, { stiffness: 150, damping: 15 })
 
   function handleMouseMove(event) {
-    if (!cardRef.current) return
+    if (!cardRef.current || isMobile) return
     const rect = cardRef.current.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
     const centerY = rect.top + rect.height / 2
@@ -70,7 +71,7 @@ const StatCard = memo(({ stat, index }) => {
       style={{ x: mouseX, y: mouseY }}
       transition={{ delay: index * 0.1, duration: 1.2, ease: 'easeOut' }}
       viewport={{ once: true, amount: 0.1 }}
-      className="relative group p-10 rounded-[3rem] bg-white border border-slate-100 transition-all duration-300 hover:border-fcit-200 hover:scale-[1.02] overflow-hidden"
+      className="relative group p-7 lg:p-10 rounded-[2.5rem] lg:rounded-[3rem] bg-white border border-slate-100 transition-all duration-300 hover:border-fcit-200 hover:scale-[1.02] overflow-hidden"
     >
       {/* Entrance glow ring */}
       <motion.div
@@ -88,12 +89,12 @@ const StatCard = memo(({ stat, index }) => {
       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <motion.div 
-        className={`w-16 h-16 rounded-[1.25rem] bg-gradient-to-br ${stat.color} flex items-center justify-center mb-8 shadow-lg shadow-fcit-400/20 transform group-hover:-translate-y-2 transition-transform duration-300`}
-        whileHover={{ rotate: [0, -5, 5, 0], scale: 1.1 }}
+        className={`w-14 h-14 lg:w-16 lg:h-16 rounded-[1.25rem] bg-gradient-to-br ${stat.color} flex items-center justify-center mb-6 lg:mb-8 shadow-lg shadow-fcit-400/20 transform group-hover:-translate-y-2 transition-transform duration-300`}
+        whileHover={{ rotate: isMobile ? 0 : [0, -5, 5, 0], scale: isMobile ? 1 : 1.1 }}
       >
-        <stat.icon className="w-8 h-8 text-white" />
+        <stat.icon className="w-7 h-7 lg:w-8 lg:h-8 text-white" />
       </motion.div>
-      <div className="text-4xl md:text-5xl font-black text-slate-900 mb-2 tracking-tighter text-glow">
+      <div className="text-4xl lg:text-5xl font-black text-slate-900 mb-2 tracking-tighter text-glow">
         <Counter value={stat.value} suffix={stat.suffix} />
       </div>
       <p className="text-fcit-400 font-black uppercase tracking-[0.2em] text-[10px] opacity-70">
@@ -106,11 +107,11 @@ const StatCard = memo(({ stat, index }) => {
 
 export default function StatsCounter() {
   return (
-    <div className="py-24 relative overflow-hidden bg-white">
+    <div className="py-16 lg:py-24 relative overflow-hidden bg-white">
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-fcit-400/5 blur-[100px] rounded-full pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-fcit-300/5 blur-[100px] rounded-full pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-4 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, i) => (
             <StatCard key={i} stat={stat} index={i} />
           ))}

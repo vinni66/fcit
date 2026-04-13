@@ -12,15 +12,17 @@ function BackgroundBubbles() {
   const scrollProgress = scroll.scrollYProgress
   
   const bubbles = useMemo(() => {
-    return new Array(40).fill().map(() => ({
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
+    const count = isMobile ? 12 : 40
+    return new Array(count).fill().map(() => ({
       position: [
-        (Math.random() - 0.5) * viewport.width * 3,
-        (Math.random() - 0.5) * viewport.height * 3,
-        (Math.random() - 0.5) * 10
+        (Math.random() - 0.5) * viewport.width * (isMobile ? 1.5 : 3),
+        (Math.random() - 0.5) * viewport.height * (isMobile ? 1.5 : 3),
+        (Math.random() - 0.5) * (isMobile ? 5 : 10)
       ],
       scale: Math.random() * 0.4 + 0.1,
-      speed: Math.random() * 0.4 + 0.1,
-      distort: Math.random() * 0.5 + 0.3,
+      speed: Math.random() * 0.3 + 0.1,
+      distort: isMobile ? 0 : Math.random() * 0.5 + 0.3,
       color: Math.random() > 0.5 ? '#721C24' : '#DAA520'
     }))
   }, [viewport])
@@ -58,16 +60,26 @@ function BackgroundBubbles() {
           position={b.position} 
           scale={b.scale}
         >
-          <MeshDistortMaterial
-            color={b.color}
-            speed={b.speed * 2}
-            distort={b.distort}
-            radius={1}
-            opacity={0.3}
-            transparent
-            metalness={0.8}
-            roughness={0.2}
-          />
+          {b.distort > 0 ? (
+            <MeshDistortMaterial
+              color={b.color}
+              speed={b.speed * 2}
+              distort={b.distort}
+              radius={1}
+              opacity={0.3}
+              transparent
+              metalness={0.8}
+              roughness={0.2}
+            />
+          ) : (
+            <meshStandardMaterial
+              color={b.color}
+              transparent
+              opacity={0.4}
+              metalness={0.5}
+              roughness={0.5}
+            />
+          )}
         </Sphere>
       ))}
     </>
@@ -80,6 +92,9 @@ function Rig() {
   const vec = new THREE.Vector3()
 
   useFrame((state) => {
+    const isMobile = window.innerWidth < 1024
+    if (isMobile) return
+
     // Camera parralax
     camera.position.lerp(vec.set(mouse.x * 2, mouse.y * 2, camera.position.z), 0.05)
     camera.lookAt(0, 0, 0)

@@ -104,8 +104,9 @@ export default function Navbar() {
   const brandTextColor = useTransform(scrollY, scrollRange, ["#721c24", "#ffffff"])
   const subTextColor = useTransform(scrollY, scrollRange, ["#94a3b8", "rgba(255,255,255,0.6)"])
 
-  // Performance-optimized blur: Fixed blur with opacity fade
-  const backdropBlur = useTransform(scrollY, [0, 30], ["blur(0px)", "blur(25px)"])
+  // Performance-optimized blur: Fixed blur with opacity fade (Lowered for mobile)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
+  const backdropBlur = useTransform(scrollY, [0, 30], ["blur(0px)", `blur(${isMobile ? 12 : 25}px)`])
 
   const [isScrolled, setIsScrolled] = useState(false)
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -128,12 +129,12 @@ export default function Navbar() {
   const tiltY = useSpring(rotateY, { damping: 30, stiffness: 80 })
 
   const handleTilt = (e) => {
-    if (!headerRef.current || isScrolled === false) return 
+    // Disable tilt on mobile/touch for performance
+    if (!headerRef.current || isScrolled === false || isMobile) return 
     const { clientX, clientY } = e
     const { left, top, width, height } = headerRef.current.getBoundingClientRect()
     const centerX = left + width / 2
     const centerY = top + height / 2
-    // Reduced tilt intensity for performance
     rotateX.set((centerY - clientY) * 0.01)
     rotateY.set((clientX - centerX) * 0.01)
   }
@@ -152,7 +153,7 @@ export default function Navbar() {
   const brandY = useSpring(bY, { damping: 25, stiffness: 120 })
 
   const handleBrandMagnetic = (e) => {
-    if (!brandRef.current) return
+    if (!brandRef.current || isMobile) return
     const { clientX, clientY } = e
     const rect = brandRef.current.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
@@ -169,22 +170,22 @@ export default function Navbar() {
         onMouseLeave={resetTilt}
         animate={{ y: hidden ? -140 : 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 25 }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-0 sm:p-4 pointer-events-none perspective-1000"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-0 lg:p-4 pointer-events-none perspective-1000"
       >
         <motion.div
           style={{
-            width: navWidth,
-            height: navHeight,
+            width: isMobile ? "94%" : navWidth,
+            height: isMobile ? "4.2rem" : navHeight,
             backgroundColor: useTransform(navOpacity, (o) => `rgba(114, 28, 36, ${o * 0.96})`),
             backdropFilter: backdropBlur,
-            borderRadius: navRadius,
+            borderRadius: isMobile ? "1.5rem" : navRadius,
             boxShadow: useTransform(navOpacity, (o) => `0 ${o * 35}px ${o * 80}px -15px rgba(0,0,0,${o * 0.5})`),
-            y: navY,
+            y: isMobile ? 12 : navY,
             rotateX: tiltX,
             rotateY: tiltY,
-            translateZ: 0, // Force GPU layer
+            translateZ: 0, 
           }}
-          className="max-w-[105rem] w-full flex items-center justify-between px-8 lg:px-14 pointer-events-auto relative z-10 will-change-[transform,width,height,opacity] overflow-visible preserve-3d"
+          className="max-w-[105rem] w-full flex items-center justify-between px-5 lg:px-14 pointer-events-auto relative z-10 will-change-[transform,width,height,opacity] overflow-visible preserve-3d"
         >
           <div className="flex items-center justify-between w-full h-full">
             <motion.div
@@ -194,38 +195,34 @@ export default function Navbar() {
               style={{ x: brandX, y: brandY }}
               className="flex items-center group cursor-pointer shrink-0"
             >
-              <Link to="/" className="flex items-center gap-4 sm:gap-6">
+              <Link to="/" className="flex items-center gap-3 lg:gap-6">
                 <motion.div
-                  style={{ scale: logoScale }}
-                  className="relative p-2.5 bg-white rounded-2xl shadow-xl overflow-hidden group/logo ring-4 ring-white/10 shrink-0 flex items-center justify-center"
+                  style={{ scale: isMobile ? 0.75 : logoScale }}
+                  className="relative p-2 lg:p-2.5 bg-white rounded-xl lg:rounded-2xl shadow-xl overflow-hidden group/logo ring-4 ring-white/10 shrink-0 flex items-center justify-center"
                 >
                   <img 
                     src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" 
                     alt="FCIT Logo" 
-                    className="h-10 w-auto object-contain z-10" 
-                  />
-                  <motion.div
-                    animate={{ left: ["-100%", "200%"] }}
-                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-                    className="absolute top-0 h-full w-12 bg-gradient-to-r from-transparent via-fcit-300/20 to-transparent -skew-x-12 z-20"
+                    className="h-8 lg:h-10 w-auto object-contain z-10" 
                   />
                 </motion.div>
 
-                <div className="flex flex-col border-l-2 border-white/10 pl-4 sm:pl-6 leading-none transition-all duration-500 shrink-0">
-                  <div className="flex items-center gap-2 mb-1">
+                <div className="flex flex-col border-l border-white/10 pl-3 lg:pl-6 leading-none transition-all duration-500 shrink-0">
+                  <div className="flex items-center gap-2 mb-0.5 lg:mb-1">
                     <motion.span 
                       style={{ color: subTextColor }}
-                      className="text-[8px] sm:text-[10px] font-black tracking-[0.3em] uppercase whitespace-nowrap"
+                      className="text-[8px] sm:text-[10px] font-black tracking-[0.3em] uppercase whitespace-nowrap hidden lg:block"
                     >
                       Faculty of
                     </motion.span>
-                    <div className="px-2 py-0.5 rounded-full bg-fcit-300 text-[8px] font-black text-white uppercase tracking-tighter hidden xs:block">Premier</div>
+                    <div className="px-2 py-0.5 rounded-full bg-fcit-300 text-[8px] font-black text-white uppercase tracking-tighter hidden lg:block">Premier</div>
                   </div>
                   <motion.span 
                     style={{ color: brandTextColor }}
-                    className="text-lg sm:text-2xl font-black tracking-tighter whitespace-nowrap transition-colors"
+                    className="text-lg lg:text-2xl font-black tracking-tighter whitespace-nowrap transition-colors"
                   >
-                    Computing and IT
+                    <span className="lg:hidden">FCIT</span>
+                    <span className="hidden lg:inline">Computing and IT</span>
                   </motion.span>
                 </div>
               </Link>

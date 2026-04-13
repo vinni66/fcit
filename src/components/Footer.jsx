@@ -39,16 +39,16 @@ export default function Footer() {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-fcit-300/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-20 relative z-10">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-10 lg:gap-8">
           
           {/* Brand & Social */}
           <div className="lg:col-span-4 xl:col-span-3">
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-12 flex items-center justify-center bg-white rounded-xl p-1.5 shadow-lg shadow-fcit-400/10 border border-fcit-400/5">
+              <div className="h-10 lg:h-12 flex items-center justify-center bg-white rounded-xl p-1.5 shadow-lg shadow-fcit-400/10 border border-fcit-400/5">
                 <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" alt="FCIT Logo" className="h-full w-auto object-contain" />
               </div>
-              <h3 className="text-2xl font-black text-fcit-400 tracking-tight leading-none uppercase">
+              <h3 className="text-xl lg:text-2xl font-black text-fcit-400 tracking-tight leading-none uppercase">
                 Faculty of <br /> Computing and IT
               </h3>
             </div>

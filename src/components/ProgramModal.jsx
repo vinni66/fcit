@@ -34,18 +34,18 @@ export default function ProgramModal({ program, isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
-            className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/50"
+            className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/50"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 z-20 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-slate-500 hover:text-fcit-400 hover:bg-white shadow-lg transition-all"
+              className="absolute top-4 right-4 lg:top-6 lg:right-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-slate-500 hover:text-fcit-400 hover:bg-white shadow-lg transition-all"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 lg:w-6 lg:h-6" />
             </button>
 
             {/* Sidebar / Overview */}
-            <div className={`w-full md:w-[380px] bg-gradient-to-br ${program.gradient || 'from-fcit-400 to-fcit-300'} p-10 flex flex-col text-white relative overflow-hidden flex-shrink-0`}>
+            <div className={`w-full md:w-[350px] lg:w-[380px] bg-gradient-to-br ${program.gradient || 'from-fcit-400 to-fcit-300'} p-7 lg:p-10 flex flex-col text-white relative overflow-hidden flex-shrink-0`}>
               <div className="absolute inset-0 bg-black/10 pointer-events-none" />
               
               {/* Icon Section */}
@@ -53,42 +53,42 @@ export default function ProgramModal({ program, isOpen, onClose }) {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center mb-8 relative z-10 shadow-xl"
+                className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl lg:rounded-3xl bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center mb-6 lg:mb-8 relative z-10 shadow-xl"
               >
-                {program.icon ? <program.icon className="w-10 h-10" /> : <Monitor className="w-10 h-10" />}
+                {program.icon ? <program.icon className="w-8 h-8 lg:w-10 lg:h-10" /> : <Monitor className="w-8 h-8 lg:w-10 lg:h-10" />}
               </motion.div>
 
               <div className="relative z-10">
-                <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/20 border border-white/30 text-[10px] font-black uppercase tracking-[0.2em] mb-4">
-                  {program.category || 'SCA'} • Academic Program
+                <div className="inline-flex items-center px-4 py-1 rounded-full bg-white/20 border border-white/30 text-[9px] font-black uppercase tracking-[0.2em] mb-3 lg:mb-4">
+                  {program.category || 'SCA'} • Program
                 </div>
-                <h2 className="text-3xl font-black mb-6 leading-tight tracking-tight">{program.title}</h2>
+                <h2 className="text-2xl lg:text-3xl font-black mb-6 leading-tight tracking-tight">{program.title}</h2>
                 
-                <div className="space-y-6 mb-10">
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                      <Clock className="w-5 h-5" />
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-4 lg:gap-6 mb-8 lg:mb-10">
+                  <div className="flex items-center gap-3 lg:gap-4 group">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <Clock className="w-4 h-4 lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-black text-white/60 tracking-widest">Duration</p>
-                      <p className="font-bold">{program.duration || '3 Years'}</p>
+                      <p className="text-[9px] uppercase font-black text-white/60 tracking-widest hidden lg:block">Duration</p>
+                      <p className="font-bold text-xs lg:text-base">{program.duration || '3 Years'}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                      <GraduationCap className="w-5 h-5" />
+                  <div className="flex items-center gap-3 lg:gap-4 group">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <GraduationCap className="w-4 h-4 lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-black text-white/60 tracking-widest">Eligibility</p>
-                      <p className="font-bold text-sm leading-snug">{program.eligibility || '10+2 with Mathematics'}</p>
+                      <p className="text-[9px] uppercase font-black text-white/60 tracking-widest hidden lg:block">Eligibility</p>
+                      <p className="font-bold text-[10px] lg:text-sm leading-snug">{program.eligibility || '10+2 with Math'}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-white/20">
-                  <button className="w-full flex items-center justify-center gap-3 bg-white text-fcit-400 py-4 rounded-2xl font-black text-sm hover:scale-105 transition-transform shadow-xl">
-                    <Download className="w-4 h-4" /> Download Prospectus
+                <div className="pt-6 lg:pt-8 border-t border-white/20">
+                  <button className="w-full flex items-center justify-center gap-3 bg-white text-fcit-400 py-3.5 lg:py-4 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm hover:scale-105 transition-transform shadow-xl">
+                    <Download className="w-4 h-4" /> Syllabus
                   </button>
                 </div>
               </div>
@@ -98,39 +98,39 @@ export default function ProgramModal({ program, isOpen, onClose }) {
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1 overflow-y-auto p-8 md:p-14 bg-white custom-scrollbar focus:outline-none">
-              <div className="max-w-3xl mx-auto space-y-16">
+            <div className="flex-1 overflow-y-auto p-7 lg:p-14 bg-white custom-scrollbar focus:outline-none">
+              <div className="max-w-3xl mx-auto space-y-10 lg:space-y-16">
                 
                 {/* Introduction */}
                 <section>
-                  <div className="flex items-center gap-4 mb-8">
-                     <div className="w-12 h-12 rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
-                        <BookOpen className="w-6 h-6" />
+                  <div className="flex items-center gap-4 mb-4 lg:mb-8">
+                     <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
+                        <BookOpen className="w-5 h-5 lg:w-6 lg:h-6" />
                      </div>
-                     <h3 className="text-3xl font-black text-slate-900 tracking-tight">Program Overview</h3>
+                     <h3 className="text-xl lg:text-3xl font-black text-slate-900 tracking-tight">Overview</h3>
                   </div>
-                  <p className="text-slate-600 leading-relaxed text-lg font-light">
-                    This program is meticulously designed to provide a strong theoretical foundation combined with intensive practical training. It focuses on emerging technologies and industry standards to ensure students are ready for the global job market.
+                  <p className="text-slate-600 leading-relaxed text-sm lg:text-lg font-medium opacity-80">
+                    This program provides a strong theoretical foundation combined with intensive practical training in emerging technologies to ensure global readiness.
                   </p>
                 </section>
 
                 {/* Curriculum Highlights */}
                 <section>
-                   <div className="flex items-center gap-4 mb-8">
-                     <div className="w-12 h-12 rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
-                        <Layers className="w-6 h-6" />
+                   <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                     <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
+                        <Layers className="w-5 h-5 lg:w-6 lg:h-6" />
                      </div>
-                     <h3 className="text-3xl font-black text-slate-900 tracking-tight">Curriculum Structure</h3>
+                     <h3 className="text-xl lg:text-3xl font-black text-slate-900 tracking-tight">Curriculum</h3>
                   </div>
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="grid grid-cols-1 gap-3 lg:gap-4">
                     {(program.detailedCurriculum || extendedData.curriculumHighlights).map((item, i) => (
-                      <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-6 p-6 rounded-[2rem] bg-slate-50 border border-slate-100 group hover:border-fcit-200 transition-all">
-                        <div className="flex-shrink-0 w-24 text-center">
-                          <span className="text-xs font-black uppercase text-fcit-400 tracking-widest">{item.sem}</span>
+                      <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-6 p-5 lg:p-6 rounded-2xl lg:rounded-[2rem] bg-slate-50 border border-slate-100 group hover:border-fcit-200 transition-all">
+                        <div className="flex-shrink-0 w-max sm:w-24">
+                          <span className="text-[10px] font-black uppercase text-fcit-400 tracking-widest">{item.sem}</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {item.subjects.map((sub, j) => (
-                            <span key={j} className="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 shadow-sm group-hover:border-fcit-100 transition-colors">
+                            <span key={j} className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-600 shadow-sm group-hover:border-fcit-100 transition-colors">
                               {sub}
                             </span>
                           ))}
@@ -142,15 +142,15 @@ export default function ProgramModal({ program, isOpen, onClose }) {
 
                 {/* Career Prospects */}
                 <section>
-                   <div className="flex items-center gap-4 mb-8">
-                     <div className="w-12 h-12 rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
-                        <Briefcase className="w-6 h-6" />
+                   <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                     <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
+                        <Briefcase className="w-5 h-5 lg:w-6 lg:h-6" />
                      </div>
-                     <h3 className="text-3xl font-black text-slate-900 tracking-tight">Career Opportunities</h3>
+                     <h3 className="text-xl lg:text-3xl font-black text-slate-900 tracking-tight">Opportunities</h3>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:gap-3">
                     {extendedData.careerPaths.map((role, i) => (
-                      <div key={i} className="px-4 py-3 rounded-xl border border-fcit-100 bg-fcit-100/30 text-fcit-400 font-black text-[11px] uppercase tracking-wider flex items-center justify-center text-center shadow-sm">
+                      <div key={i} className="px-3 py-2.5 rounded-xl border border-fcit-100 bg-fcit-100/20 text-fcit-400 font-black text-[9px] lg:text-[11px] uppercase tracking-wider flex items-center justify-center text-center shadow-sm">
                         {role}
                       </div>
                     ))}
@@ -158,13 +158,13 @@ export default function ProgramModal({ program, isOpen, onClose }) {
                 </section>
 
                 {/* Footer CTA */}
-                <div className="pt-16 border-t border-slate-100">
-                   <div className="bg-[#f8fbff] p-8 rounded-[2.5rem] border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6">
-                      <div>
-                        <h4 className="text-xl font-black text-slate-900 mb-1">Admissions are Open</h4>
-                        <p className="text-slate-500 text-sm">Secure your seat for the next academic batch.</p>
+                <div className="pt-10 lg:pt-16 border-t border-slate-100">
+                   <div className="bg-[#f8fbff] p-6 lg:p-8 rounded-[2rem] lg:rounded-[2.5rem] border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-5 lg:gap-6">
+                      <div className="text-center md:text-left">
+                        <h4 className="text-lg lg:text-xl font-black text-slate-900 mb-0.5">Admissions Open</h4>
+                        <p className="text-slate-500 text-xs lg:text-sm">Secure your seat for the next batch.</p>
                       </div>
-                      <a href="/admissions" className="bg-fcit-400 text-white px-8 py-3 rounded-full font-black text-sm hover:bg-fcit-300 transition-all flex items-center gap-2 shadow-lg shadow-fcit-400/20">
+                      <a href="/admissions" className="w-full md:w-auto bg-fcit-400 text-white px-8 py-3 rounded-full font-black text-xs lg:text-sm hover:bg-fcit-300 transition-all flex items-center justify-center gap-2 shadow-lg shadow-fcit-400/20">
                         Apply Now <ArrowRight className="w-4 h-4" />
                       </a>
                    </div>
