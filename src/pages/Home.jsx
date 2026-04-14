@@ -53,7 +53,7 @@ const leadershipPreview = [
     name: 'Ms. Shamina M. Attar',
     designation: 'Director, SCS, FCIT',
     initials: 'SA',
-    photoUrl: 'https://gmu.ac.in/FCIT/images/DirectorCS.jpg',
+    photoUrl: 'https://cdn.jsdelivr.net/gh/vinni66/fcit@main/FCIT-photo/faculty/WhatsApp%20Image%202026-04-14%20at%203.46.38%20PM.jpeg',
     gradient: 'from-cyan-600 to-fcit-400',
     specialization: 'Computer Science',
     bio: 'Ms. Shamina Attar leads the School of Computer Science with a focus on Algorithm design and Artificial Intelligence.',
@@ -81,7 +81,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#f8fbff] text-slate-700 font-sans">
-      <FacultyModal 
+      <FacultyModal
         faculty={selectedFaculty}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -92,7 +92,7 @@ export default function Home() {
 
       <FadeIn className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-fcit-100/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 opacity-70 pointer-events-none animate-pulse" />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="flex-1 text-left">
@@ -109,7 +109,7 @@ export default function Home() {
                 Welcome to the Department of Computer Science! Our programs foster technical depth, innovation, and hands-on learning for a fast-changing world. Join us to experience collaborative research, expert faculty, and vibrant student life.
               </p>
             </div>
-            
+
             <div className="flex-1 w-full">
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-tr from-fcit-400 to-fcit-200 rounded-3xl transform rotate-1 scale-105 opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-700"></div>
@@ -144,13 +144,13 @@ export default function Home() {
 
       {/* Real Functionality: Program Browser */}
       <section className="bg-[#f8fbff] relative py-10 lg:py-20">
-         <ProgramBrowser />
+        <ProgramBrowser />
       </section>
 
       {/* Vision & Mission - Simplified for Mobile */}
       <FadeIn className="py-10 lg:py-24 bg-[#f8fbff] relative overflow-hidden">
         <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-fcit-200 rounded-full blur-[140px] -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <div className="text-center mb-10 lg:mb-16">
             <TextReveal
@@ -254,26 +254,25 @@ export default function Home() {
                   transition={{ delay: i * 0.1, duration: 0.5 }}
                   viewport={{ once: true }}
                   onClick={() => openProfile(f)}
-                  className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${
-                    isMobile 
-                      ? 'p-2' 
+                  className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${isMobile
+                      ? 'p-2'
                       : isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
-                  }`}
+                    }`}
                 >
                   <div className={`relative ${isMobile ? 'w-16 h-16 mx-auto mb-2' : 'w-40 h-40 mx-auto mb-8'} group-hover:scale-110 transition-transform duration-500`}>
                     <div className={`absolute inset-0 bg-gradient-to-tr ${f.gradient} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity`} />
-                    <img 
-                      src={f.photoUrl} 
-                      alt={f.name} 
-                      className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10" 
+                    <img
+                      src={f.photoUrl}
+                      alt={f.name}
+                      className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10"
                     />
                     {isDean && !isMobile && (
                       <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border border-fcit-100 z-20">
-                         <Award className="w-6 h-6 text-fcit-400" />
+                        <Award className="w-6 h-6 text-fcit-400" />
                       </div>
                     )}
                   </div>
-                  
+
                   <div className={isMobile ? 'px-1' : ''}>
                     <h3 className={`${isMobile ? 'text-[9px]' : 'text-2xl'} font-black text-slate-900 leading-tight group-hover:text-fcit-400 transition-colors uppercase tracking-tight line-clamp-2`}>
                       {f.name}
@@ -293,7 +292,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="bg-white/80 backdrop-blur-3xl rounded-[4rem] p-12 md:p-20 shadow-premium border border-white/50 relative overflow-hidden group">
             {/* Animated Mesh Overlay Inside Card */}
-            <motion.div 
+            <motion.div
               animate={{
                 opacity: [0.03, 0.08, 0.03],
                 scale: [1, 1.05, 1],
@@ -301,14 +300,14 @@ export default function Home() {
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
               className="absolute inset-0 bg-gradient-to-br from-fcit-400 via-transparent to-fcit-200 pointer-events-none"
             />
-            
+
             <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
               <Zap className="w-64 h-64 text-fcit-400 rotate-12" />
             </div>
-            
+
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
               <div className="flex-1 text-center md:text-left">
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.05, y: -2 }}
                   className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-fcit-400 text-white font-black uppercase tracking-widest text-[10px] mb-8 shadow-lg cursor-default"
                 >
@@ -326,7 +325,7 @@ export default function Home() {
                     { val: '50+', label: 'Universities' },
                     { val: '₹2L+', label: 'Prize Pool' }
                   ].map((stat, i) => (
-                    <motion.div 
+                    <motion.div
                       key={i}
                       whileHover={{ scale: 1.05, y: -5 }}
                       className="px-6 py-4 bg-white/50 backdrop-blur-md rounded-3xl border border-white text-center shadow-sm"
@@ -339,22 +338,22 @@ export default function Home() {
               </div>
 
               <div className="flex-1 relative">
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.02 }}
                   className="relative w-full aspect-square rounded-[3.5rem] overflow-hidden shadow-2xl ring-8 ring-fcit-100 border border-fcit-400/20"
                 >
                   <img src={`${CDN_BASE}/gallery/tech_carnival_2k26/tech_carnival_2k26_17.jpeg`} alt="Tech Carnival 2K26 Arena" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                   <div className="absolute inset-0 bg-gradient-to-t from-fcit-400/40 via-transparent to-transparent opacity-60" />
-                  
+
                   {/* Digital Scanning Line */}
-                  <motion.div 
+                  <motion.div
                     animate={{ top: ['-10%', '110%'] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                     className="absolute left-0 right-0 h-1 bg-white/20 blur-sm pointer-events-none"
                   />
 
                   <div className="absolute bottom-10 left-10">
-                    <motion.div 
+                    <motion.div
                       animate={{ scale: [1, 1.1, 1], rotate: [0, 10, 0] }}
                       transition={{ duration: 4, repeat: Infinity }}
                       className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-fcit-400 shadow-xl mb-4"
@@ -378,7 +377,7 @@ export default function Home() {
 
       <FadeIn className="py-10 lg:py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-           <div className="text-center mb-10 lg:mb-16">
+          <div className="text-center mb-10 lg:mb-16">
             <TextReveal
               text="Campus Facilities"
               className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
