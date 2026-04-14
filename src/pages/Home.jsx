@@ -10,7 +10,8 @@ import FacultyModal from '../components/FacultyModal'
 import TextReveal from '../components/TextReveal'
 import AnimatedDivider from '../components/AnimatedDivider'
 import DepartmentTimeline from '../components/DepartmentTimeline'
-import { CDN_BASE } from '../constants'
+import NoticeBoard from '../components/NoticeBoard'
+import { CDN_BASE, UNIVERSITY_INFO, OFFICIAL_LINKS } from '../constants'
 
 const objectives = [
   'Impart comprehensive engineering education aligned with industry needs.',
@@ -29,35 +30,34 @@ const mission = [
 
 const leadershipPreview = [
   {
-    name: 'Mr. Rajashekhar G C',
-    designation: 'Director (SCA)',
-    initials: 'RG',
-    photoUrl: 'https://gmu.ac.in/FCIT/images/Director.jpg',
-    gradient: 'from-fcit-300 to-pink-600',
-    specialization: 'Computing and IT',
-    bio: 'Mr. Rajashekhar is a seasoned academician focusing on modern application architectures and full-stack development.',
-    education: ['M.Tech in Software Engineering', 'MCA'],
-  },
-  {
-    name: 'Dr. Shweta Marigoudar',
-    designation: 'Dean, FCIT',
+    name: 'Dr. Shwetha Marigoudar',
+    designation: 'Dean, Faculty of Computing & IT',
     initials: 'SM',
     photoUrl: 'https://gmu.ac.in/FCIT/images/Dean.jpg',
     gradient: 'from-fcit-400 to-fcit-300',
-    specialization: 'Computer Science & Engineering',
-    bio: 'Dr. Shweta Marigoudar serves as the Dean of the Faculty of Computing and IT. With over 20 years of academic experience, she specializes in Cloud Computing and distributed systems.',
-    education: ['Ph.D. in Computer Science', 'M.Tech in CSE'],
-    email: 'dean.fcit@gmu.ac.in'
+    specialization: 'Computing & IT',
+    bio: 'Dr. Shwetha Marigoudar serves as the Dean of the Faculty of Computing and IT, leading the department toward excellence.',
+    education: ['B.E.', 'M.Tech', 'Ph.D.'],
   },
   {
-    name: 'Ms. Shamina M. Attar',
-    designation: 'Director, SCS, FCIT',
+    name: 'Prof. Rajashekar G C',
+    designation: 'Director, SCA & Assistant Professor',
+    initials: 'RG',
+    photoUrl: 'https://gmu.ac.in/FCIT/images/Director.jpg',
+    gradient: 'from-fcit-300 to-pink-600',
+    specialization: 'Computer Applications, Mathematics',
+    bio: 'Prof. Rajashekar G C leads the School of Computer Applications with a focus on innovation and skill development.',
+    education: ['MCA', 'M.Sc. Mathematics'],
+  },
+  {
+    name: 'Shamina Attar',
+    designation: 'Director, SCS & Assistant Professor',
     initials: 'SA',
     photoUrl: 'https://cdn.jsdelivr.net/gh/vinni66/fcit@main/public/gallery/faculty/2.jpeg',
     gradient: 'from-cyan-600 to-fcit-400',
     specialization: 'Computer Science',
-    bio: 'Ms. Shamina Attar leads the School of Computer Science with a focus on Algorithm design and Artificial Intelligence.',
-    education: ['M.Sc in CS', 'M.Phil'],
+    bio: 'Ms. Shamina Attar leads the School of Computer Science, focusing on transformative impact through innovation.',
+    education: ['MCA'],
   },
 ]
 
@@ -89,6 +89,8 @@ export default function Home() {
       <HeroSlider />
 
       <StatsCounter />
+      
+      <NoticeBoard />
 
       <FadeIn className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-fcit-100/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 opacity-70 pointer-events-none animate-pulse" />
@@ -243,47 +245,75 @@ export default function Home() {
             </p>
           </div>
 
-          <div className={`grid ${isMobile ? 'grid-cols-3 gap-2 px-1' : 'lg:grid-cols-3 gap-8'} items-center`}>
-            {leadershipPreview.map((f, i) => {
-              const isDean = f.designation.includes('Dean')
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: isDean ? 0.95 : 0.9, y: 30 }}
-                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.5 }}
-                  viewport={{ once: true }}
-                  onClick={() => openProfile(f)}
-                  className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${isMobile
-                    ? 'p-2'
-                    : isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
-                    }`}
-                >
-                  <div className={`relative ${isMobile ? 'w-16 h-16 mx-auto mb-2' : 'w-40 h-40 mx-auto mb-8'} group-hover:scale-110 transition-transform duration-500`}>
-                    <div className={`absolute inset-0 bg-gradient-to-tr ${f.gradient} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity`} />
-                    <img
-                      src={f.photoUrl}
-                      alt={f.name}
-                      className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10"
-                    />
-                    {isDean && !isMobile && (
-                      <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border border-fcit-100 z-20">
-                        <Award className="w-6 h-6 text-fcit-400" />
-                      </div>
-                    )}
-                  </div>
+          {/* Dean Section - Centered on Top */}
+          <div className="flex justify-center mb-12">
+            {leadershipPreview.slice(0, 1).map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                onClick={() => openProfile(f)}
+                className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-fcit-200/50 shadow-2xl lg:scale-105 transition-all duration-500 text-center group cursor-pointer relative max-w-sm w-full ${isMobile ? 'p-6' : 'p-14'}`}
+              >
+                <div className={`relative ${isMobile ? 'w-24 h-24 mx-auto mb-4' : 'w-48 h-48 mx-auto mb-8'} group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`absolute inset-0 bg-gradient-to-tr ${f.gradient} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity`} />
+                  <img
+                    src={f.photoUrl}
+                    alt={f.name}
+                    className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10"
+                  />
+                  {!isMobile && (
+                    <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border border-fcit-100 z-20">
+                      <Award className="w-6 h-6 text-fcit-400" />
+                    </div>
+                  )}
+                </div>
 
-                  <div className={isMobile ? 'px-1' : ''}>
-                    <h3 className={`${isMobile ? 'text-[9px]' : 'text-2xl'} font-black text-slate-900 leading-tight group-hover:text-fcit-400 transition-colors uppercase tracking-tight line-clamp-2`}>
-                      {f.name}
-                    </h3>
-                    <p className={`${isMobile ? 'text-[7px]' : 'text-sm'} text-fcit-400 font-bold uppercase tracking-widest mt-1 opacity-70`}>
-                      {isMobile ? f.designation.split(',')[0] : f.designation}
-                    </p>
-                  </div>
-                </motion.div>
-              )
-            })}
+                <div className={isMobile ? 'px-1' : ''}>
+                  <h3 className={`${isMobile ? 'text-lg' : 'text-2xl'} font-black text-slate-900 leading-tight group-hover:text-fcit-400 transition-colors uppercase tracking-tight`}>
+                    {f.name}
+                  </h3>
+                  <p className={`${isMobile ? 'text-[10px]' : 'text-sm'} text-fcit-400 font-bold uppercase tracking-widest mt-1 opacity-70`}>
+                    {f.designation}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Directors Section - Grid below */}
+          <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'lg:grid-cols-2 gap-12 max-w-4xl mx-auto'} items-stretch`}>
+            {leadershipPreview.slice(1).map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                viewport={{ once: true }}
+                onClick={() => openProfile(f)}
+                className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${isMobile ? 'p-4' : 'p-10'}`}
+              >
+                <div className={`relative ${isMobile ? 'w-20 h-20 mx-auto mb-4' : 'w-36 h-36 mx-auto mb-6'} group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`absolute inset-0 bg-gradient-to-tr ${f.gradient} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity`} />
+                  <img
+                    src={f.photoUrl}
+                    alt={f.name}
+                    className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10"
+                  />
+                </div>
+
+                <div className={isMobile ? 'px-1' : ''}>
+                  <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-black text-slate-900 leading-tight group-hover:text-fcit-400 transition-colors uppercase tracking-tight`}>
+                    {f.name}
+                  </h3>
+                  <p className={`${isMobile ? 'text-[9px]' : 'text-xs'} text-fcit-400 font-bold uppercase tracking-widest mt-1 opacity-70`}>
+                    {f.designation}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </FadeIn>
@@ -334,6 +364,19 @@ export default function Home() {
                       <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{stat.label}</div>
                     </motion.div>
                   ))}
+                  {/* Event CTAs */}
+                  <div className="mt-10 flex flex-wrap items-center gap-6 justify-center md:justify-start">
+                    <a
+                      href="http://techcarnival.online"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/btn relative inline-flex items-center gap-3 bg-fcit-400 text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-fcit-400/20 hover:bg-fcit-300 transition-all duration-300 hover:scale-105"
+                    >
+                      <Globe className="w-5 h-5 group-hover/btn:animate-spin-slow" />
+                      Explore Event
+                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -427,7 +470,9 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="/admissions"
+                href={OFFICIAL_LINKS.ADMISSIONS}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-fcit-400 to-fcit-300 text-white px-10 py-5 rounded-full font-bold text-lg overflow-hidden transition-transform hover:scale-105 shadow-xl shadow-fcit-400/20"
               >
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />

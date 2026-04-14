@@ -3,20 +3,21 @@ import { School, ArrowRight, Calendar, FileText, CheckCircle, UploadCloud, UserC
 import TextReveal from '../components/TextReveal'
 import FadeIn from '../components/FadeIn'
 import AnimatedDivider from '../components/AnimatedDivider'
+import { OFFICIAL_LINKS } from '../constants'
 
 const eligibility = [
-  { program: 'BCA', criteria: '10+2 with Mathematics/Computer Science, min 50% aggregate' },
-  { program: 'MCA', criteria: "Bachelor's degree with Mathematics, min 55% aggregate" },
-  { program: 'B.Sc IT', criteria: '10+2 from recognized board, min 50% aggregate' },
-  { program: 'M.Sc IT', criteria: 'B.Sc IT / BCA / equivalent, min 55% aggregate' },
+  { program: 'BCA', criteria: 'Pass in 10+2 / PUC in any stream with at least 35% aggregate marks.' },
+  { program: 'MCA', criteria: "Bachelor's degree with 50% marks (45% for SC/ST/Cat-I) and valid PGCET / GMUSET score." },
+  { program: 'B.Sc IT', criteria: 'Pass in 10+2 / PUC in any stream from a recognized board.' },
+  { program: 'M.Sc', criteria: 'B.Sc / BCA from a recognized university with at least 50% aggregate marks.' },
 ]
 
 const steps = [
-  { step: 1, icon: FileText, title: 'Online Registration', desc: 'Fill the online application form on our portal and create your applicant ID.' },
-  { step: 2, icon: UploadCloud, title: 'Document Submission', desc: 'Securely upload your academic transcripts, certificates, and identity documents.' },
-  { step: 3, icon: CheckCircle, title: 'Entrance Test / Merit', desc: 'Appear for the scheduled entrance test or qualify based on your merit scores.' },
-  { step: 4, icon: UserCheck, title: 'Counseling & Seat Allotment', desc: 'Attend your personalized counseling session and receive your seat assignment.' },
-  { step: 5, icon: CreditCard, title: 'Fee Payment & Enrollment', desc: 'Secure your place by completing the fee payment and finalize enrollment.' },
+  { step: 1, icon: FileText, title: 'Visit Website', desc: 'Visit the official GM University website (gmu.ac.in) and navigate to the Admission section.' },
+  { step: 2, icon: UserCheck, title: 'Online Registration', desc: 'Click on "Apply Online" and register on the GMU Admission Portal.' },
+  { step: 3, icon: UploadCloud, title: 'Fill & Upload', desc: 'Complete the application form and upload the necessary academic documents.' },
+  { step: 4, icon: CreditCard, title: 'Fee Payment', desc: 'Pay the prescribed application fee through the secure online payment gateway.' },
+  { step: 5, icon: CheckCircle, title: 'Submission', desc: 'Submit the application and keep a copy for future counseling and merit verification.' },
 ]
 
 export default function Admissions() {
@@ -181,10 +182,12 @@ export default function Admissions() {
                 Applications for the upcoming academic session are now open. Secure your future in technology today.
               </p>
               <a
-                href="/contact-us"
+                href={OFFICIAL_LINKS.ADMISSIONS}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 bg-white text-fcit-400 px-10 py-5 rounded-full font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-lg group-hover:bg-slate-50"
               >
-                Contact Admissions <ArrowRight className="w-6 h-6" />
+                Apply Online <ArrowRight className="w-6 h-6" />
               </a>
             </div>
           </motion.div>

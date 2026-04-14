@@ -1,4 +1,5 @@
-import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ArrowRight } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ArrowRight, ExternalLink } from 'lucide-react'
+import { UNIVERSITY_INFO, OFFICIAL_LINKS } from '../constants'
 
 const socialLinks = [
   { icon: Facebook, href: 'https://facebook.com/gmuniversity', label: 'Facebook', color: 'hover:text-fcit-200 hover:bg-white/20' },
@@ -23,9 +24,17 @@ const academicLinks = [
 ]
 
 const contactInfo = [
-  { icon: MapPin, text: 'FCIT Campus, University Road, City - 577002' },
-  { icon: Phone, text: '+91-987-654-3210' },
-  { icon: Mail, text: 'info@fcit.edu' },
+  { icon: MapPin, text: UNIVERSITY_INFO.LOCATION },
+  { icon: Phone, text: UNIVERSITY_INFO.PHONE.join(' / ') },
+  { icon: Mail, text: UNIVERSITY_INFO.EMAIL },
+]
+
+const universityLinks = [
+  { name: 'Official Website', href: OFFICIAL_LINKS.MAIN_SITE },
+  { name: 'Academic Circulars', href: OFFICIAL_LINKS.CIRCULARS },
+  { name: 'University Notifications', href: OFFICIAL_LINKS.NOTIFICATIONS },
+  { name: 'Student ERP Portal', href: OFFICIAL_LINKS.STUDENT_ERP },
+  { name: 'Admission Enquiry', href: OFFICIAL_LINKS.ADMISSIONS },
 ]
 
 export default function Footer() {
@@ -93,22 +102,21 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Academics Links */}
+            {/* University Links */}
             <div>
-              <h3 className="text-lg font-bold mb-6 text-fcit-400 tracking-wide">Academics</h3>
+              <h3 className="text-lg font-bold mb-6 text-fcit-400 tracking-wide">University Resources</h3>
               <ul className="space-y-2">
-                {academicLinks.map((link) => (
+                {universityLinks.map((link) => (
                   <li key={link.name}>
                     <a
                       href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex justify-between items-center px-2 py-2 rounded-xl bg-transparent hover:bg-fcit-100 border border-transparent hover:border-fcit-400/10 transition-all duration-300 group"
                     >
-                      <span className="text-slate-600 group-hover:text-fcit-400 font-medium text-sm transition-colors">
-                        {link.name}
+                      <span className="text-slate-600 group-hover:text-fcit-400 font-medium text-sm transition-colors flex items-center gap-1.5">
+                        {link.name} <ExternalLink className="w-3 h-3 opacity-50 group-hover:opacity-100" />
                       </span>
-                      <div className="w-5 h-5 rounded-full bg-fcit-100 flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:bg-fcit-400/20 transition-all duration-300 shadow-sm">
-                        <ArrowRight className="w-3 h-3 text-fcit-400" />
-                      </div>
                     </a>
                   </li>
                 ))}

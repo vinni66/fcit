@@ -1,18 +1,31 @@
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Clock, CheckCircle, GraduationCap, Briefcase, Layers, Download, ArrowRight, BookOpen, Monitor } from 'lucide-react'
+import { X, Clock, CheckCircle, GraduationCap, Briefcase, Layers, Download, ArrowRight, BookOpen, Monitor, ExternalLink, CreditCard } from 'lucide-react'
+import { OFFICIAL_LINKS } from '../constants'
+import PDFViewerModal from './PDFViewerModal'
 
 export default function ProgramModal({ program, isOpen, onClose }) {
+  const [isPDFOpen, setIsPDFOpen] = useState(false)
+  
   if (!program) return null
+
+  // Determine which syllabus to show
+  const isMCA = program.title.toLowerCase().includes('mca')
+  const pdfUrl = program.syllabusUrl || (isMCA ? OFFICIAL_LINKS.MCA_SYLLABUS : OFFICIAL_LINKS.BCA_SYLLABUS)
+  const pdfTitle = `${program.title} Official Curriculum`
 
   // Mock extended data if not present
   const extendedData = {
-    careerPaths: ['Software Architect', 'Data Scientist', 'System Analyst', 'Full Stack Developer', 'Cloud Engineer'],
-    curriculumHighlights: [
+    careerPaths: program.careerPaths || ['Software Architect', 'Data Scientist', 'System Analyst', 'Full Stack Developer', 'Cloud Engineer'],
+    curriculumHighlights: program.detailedCurriculum || [
       { sem: 'Phase 1', subjects: ['Fundamentals of IT', 'Programming in C', 'Web Technologies', 'Mathematics'] },
       { sem: 'Phase 2', subjects: ['Data Structures', 'Database Systems', 'Operating Systems', 'Software Engineering'] },
       { sem: 'Phase 3', subjects: ['Advanced JAVA', 'Cloud Computing', 'Machine Learning', 'Big Data Analytics'] }
     ],
-    prerequisites: ['Basic Mathematics knowledge', 'Analytical thinking', 'Passion for technology']
+    prerequisites: ['Basic Mathematics knowledge', 'Analytical thinking', 'Passion for technology'],
+    tools: program.title.toLowerCase().includes('data science') 
+      ? ['Power BI', 'Tableau', 'Python', 'R Programming', 'Hadoop', 'Excel']
+      : ['VS Code', 'Git', 'Docker', 'Postman', 'Node.js', 'React']
   }
 
   return (
@@ -77,20 +90,52 @@ export default function ProgramModal({ program, isOpen, onClose }) {
                   
                   <div className="flex items-center gap-3 lg:gap-4 group">
                     <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <CreditCard className="w-4 h-4 lg:w-5 lg:h-5" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] uppercase font-black text-white/60 tracking-widest hidden lg:block">Annual Fee</p>
+                      <p className="font-bold text-xs lg:text-base">{program.fee || '₹ 1,35,000'}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 lg:gap-4 group">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <Layers className="w-4 h-4 lg:w-5 lg:h-5" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] uppercase font-black text-white/60 tracking-widest hidden lg:block">Credits</p>
+                      <p className="font-bold text-xs lg:text-base">{program.credits || '100 - 130'}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 lg:gap-4 group">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
                       <GraduationCap className="w-4 h-4 lg:w-5 lg:h-5" />
                     </div>
                     <div>
                       <p className="text-[9px] uppercase font-black text-white/60 tracking-widest hidden lg:block">Eligibility</p>
-                      <p className="font-bold text-[10px] lg:text-sm leading-snug">{program.eligibility || '10+2 with Math'}</p>
+                      <p className="font-bold text-[10px] lg:text-sm leading-snug">{program.eligibility || '10+2 / PUC'}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-6 lg:pt-8 border-t border-white/20">
-                  <button className="w-full flex items-center justify-center gap-3 bg-white text-fcit-400 py-3.5 lg:py-4 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm hover:scale-105 transition-transform shadow-xl">
-                    <Download className="w-4 h-4" /> Syllabus
+                <div className="pt-6 lg:pt-8 border-t border-white/20 space-y-3">
+                  <button 
+                    onClick={() => setIsPDFOpen(true)}
+                    className="w-full flex items-center justify-center gap-3 bg-white text-fcit-400 py-3.5 lg:py-4 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm hover:scale-105 transition-transform shadow-xl"
+                  >
+                    <Download className="w-4 h-4" /> Official Syllabus
                   </button>
+                  <a 
+                    href={isMCA ? OFFICIAL_LINKS.FCIT_PG : OFFICIAL_LINKS.FCIT_UG}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-3 bg-white/20 border border-white/30 text-white py-3 lg:py-3.5 rounded-xl lg:rounded-2xl font-bold text-[10px] lg:text-xs hover:bg-white/30 transition-all"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" /> University Page
+                  </a>
                 </div>
+
               </div>
 
               {/* Decorative background glow */}
@@ -156,6 +201,23 @@ export default function ProgramModal({ program, isOpen, onClose }) {
                     ))}
                   </div>
                 </section>
+                
+                {/* Technical Stack */}
+                <section>
+                   <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                     <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-fcit-100 flex items-center justify-center text-fcit-400 shadow-sm">
+                        <Monitor className="w-5 h-5 lg:w-6 lg:h-6" />
+                     </div>
+                     <h3 className="text-xl lg:text-3xl font-black text-slate-900 tracking-tight">Technical Stack</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {extendedData.tools.map((tool, i) => (
+                      <span key={i} className="px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-600 font-bold text-xs">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </section>
 
                 {/* Footer CTA */}
                 <div className="pt-10 lg:pt-16 border-t border-slate-100">
@@ -164,7 +226,12 @@ export default function ProgramModal({ program, isOpen, onClose }) {
                         <h4 className="text-lg lg:text-xl font-black text-slate-900 mb-0.5">Admissions Open</h4>
                         <p className="text-slate-500 text-xs lg:text-sm">Secure your seat for the next batch.</p>
                       </div>
-                      <a href="/admissions" className="w-full md:w-auto bg-fcit-400 text-white px-8 py-3 rounded-full font-black text-xs lg:text-sm hover:bg-fcit-300 transition-all flex items-center justify-center gap-2 shadow-lg shadow-fcit-400/20">
+                      <a 
+                        href={OFFICIAL_LINKS.ADMISSIONS} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full md:w-auto bg-fcit-400 text-white px-8 py-3 rounded-full font-black text-xs lg:text-sm hover:bg-fcit-300 transition-all flex items-center justify-center gap-2 shadow-lg shadow-fcit-400/20"
+                      >
                         Apply Now <ArrowRight className="w-4 h-4" />
                       </a>
                    </div>
@@ -190,6 +257,14 @@ export default function ProgramModal({ program, isOpen, onClose }) {
           `}} />
         </div>
       )}
+      
+      {/* Sub-Modal: PDF Viewer */}
+      <PDFViewerModal 
+        isOpen={isPDFOpen}
+        onClose={() => setIsPDFOpen(false)}
+        pdfUrl={pdfUrl}
+        title={pdfTitle}
+      />
     </AnimatePresence>
   )
 }

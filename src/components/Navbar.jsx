@@ -110,15 +110,7 @@ export default function Navbar() {
 
   const [isScrolled, setIsScrolled] = useState(false)
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 60)
-
-    // Smart Hide Logic
-    const previous = scrollY.getPrevious()
-    if (latest > previous && latest > 250) {
-      setHidden(true)
-    } else {
-      setHidden(false)
-    }
+    setIsScrolled(latest > 20)
   })
 
   // Throttled 3D Tilt Effect
@@ -168,24 +160,23 @@ export default function Navbar() {
         ref={headerRef}
         onMouseMove={handleTilt}
         onMouseLeave={resetTilt}
-        animate={{ y: hidden ? -140 : 0 }}
-        transition={{ type: "spring", stiffness: 100, damping: 25 }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-0 lg:p-4 pointer-events-none perspective-1000"
+        className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-center p-0 lg:p-4 pointer-events-none perspective-1000"
       >
         <motion.div
           style={{
             width: isMobile ? "94%" : navWidth,
             height: isMobile ? "4.2rem" : navHeight,
-            backgroundColor: useTransform(navOpacity, (o) => `rgba(114, 28, 36, ${o * 0.96})`),
-            backdropFilter: backdropBlur,
+            backgroundColor: useTransform(navOpacity, (o) => `rgba(114, 28, 36, ${Math.max(0.05, o * 0.96)})`),
+            backdropFilter: isScrolled ? backdropBlur : 'blur(8px)',
             borderRadius: isMobile ? "1.5rem" : navRadius,
             boxShadow: useTransform(navOpacity, (o) => `0 ${o * 35}px ${o * 80}px -15px rgba(0,0,0,${o * 0.5})`),
             y: isMobile ? 12 : navY,
             rotateX: tiltX,
             rotateY: tiltY,
+            border: useTransform(navOpacity, (o) => `1px solid rgba(255,255,255,${0.1 + o * 0.1})`),
             translateZ: 0,
           }}
-          className="max-w-[105rem] w-full flex items-center justify-between px-5 lg:px-10 pointer-events-auto relative z-10 will-change-[transform,width,height,opacity] overflow-visible preserve-3d"
+          className="max-w-[105rem] w-full flex items-center justify-between px-5 lg:px-10 pointer-events-auto relative z-10 perspective-1000"
         >
           <div className="flex items-center justify-between w-full h-full">
             <motion.div
@@ -207,19 +198,18 @@ export default function Navbar() {
                   />
                 </motion.div>
 
-                <div className="flex flex-col border-l border-white/10 pl-3 lg:pl-4 leading-none transition-all duration-500 shrink-0">
-                  <div className="flex items-center gap-2 mb-0.5 lg:mb-1">
+                <div className="flex flex-col border-l-2 border-white/20 pl-4 lg:pl-6 leading-[0.85] transition-all duration-500 shrink-0">
+                  <div className="flex items-center gap-2 mb-1 lg:mb-2">
                     <motion.span
                       style={{ color: subTextColor }}
-                      className="text-[8px] sm:text-[15px] font-black tracking-[0.3em] uppercase whitespace-nowrap hidden lg:block"
+                      className="text-[10px] lg:text-[17px] font-black tracking-[0.35em] uppercase whitespace-nowrap hidden lg:block"
                     >
                       Faculty of
                     </motion.span>
-
                   </div>
                   <motion.span
                     style={{ color: brandTextColor }}
-                    className="text-lg lg:text-2xl font-black tracking-tighter whitespace-nowrap transition-colors"
+                    className="text-2xl lg:text-3xl font-black tracking-tighter whitespace-nowrap transition-colors flex items-center gap-2"
                   >
                     <span className="lg:hidden">FCIT</span>
                     <span className="hidden lg:inline">Computing and IT</span>
@@ -294,13 +284,6 @@ export default function Navbar() {
 
             {/* Action Buttons */}
             <div className="flex items-center gap-4">
-              <Link
-                to="/admissions"
-                className={`hidden md:flex items-center gap-3 px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl ${isScrolled ? 'bg-white text-fcit-400 hover:scale-105' : 'bg-fcit-400 text-white hover:shadow-maroon-300'
-                  }`}
-              >
-                Apply <Sparkles className="w-4 h-4" />
-              </Link>
               <button
                 onClick={() => setMobileOpen(true)}
                 className={`xl:hidden p-3.5 rounded-2xl ${isScrolled ? 'bg-white/10 text-white' : 'bg-fcit-100 text-fcit-400 shadow-sm'}`}
@@ -358,13 +341,9 @@ export default function Navbar() {
               transition={{ delay: 0.8 }}
               className="mt-auto grid grid-cols-2 gap-4"
             >
-              <Link to="/contact-us" className="p-8 bg-white/10 rounded-3xl border border-white/20 text-white text-center">
+              <Link to="/contact-us" className="p-8 bg-white/10 rounded-3xl border border-white/20 text-white text-center col-span-2">
                 <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">Support</div>
                 <div className="font-bold">Contact Us</div>
-              </Link>
-              <Link to="/admissions" className="p-8 bg-fcit-300 rounded-3xl text-white text-center shadow-2xl">
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-2">Enrollment</div>
-                <div className="font-bold uppercase">Apply 2026</div>
               </Link>
             </motion.div>
           </motion.div>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCIT Resource Collection Form 2025-26</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: #1e293b;
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 40px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #721c24;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header-text {
+            text-align: right;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            color: #721c24;
+            font-size: 22px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .header-text p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px 15px;
+            font-weight: 800;
+            color: #721c24;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .field-group {
+            margin-bottom: 15px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .field-box {
+            min-height: 40px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 10px;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .field-box.large {
+            min-height: 80px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-note {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .signature-area {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .sig-box {
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        @media print {
+            body {
+                border: none;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .section-header {
+                background: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="https://cdn.jsdelivr.net/gh/vinni66/Images@main/assets/gmulogo1.png" alt="GMU Logo" class="logo">
+        <div class="header-text">
+            <h1>Resource Collection Form</h1>
+            <p>FACULTY OF COMPUTING & INFORMATION TECHNOLOGY</p>
+        </div>
+    </div>
+
+    <!-- Section 1: Faculty Details -->
+    <div class="form-section">
+        <div class="section-header">
+            <span>01. Faculty Member Information</span>
+            <span style="color:#64748b font-size: 10px;">Batch 2025-26</span>
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <span class="field-label">Full Name & Salutation</span>
+                <div class="field-box"></div>
+            </div>
+            <div class="field-group">
+                <span class="field-label">Designation</span>
+                <div class="field-box"></div>
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <span class="field-label">Highest Qualification</span>
+                <div class="field-box"></div>
+            </div>
+            <div class="field-group">
+                <span class="field-label">Primary Specialization</span>
+                <div class="field-box"></div>
+            </div>
+        </div>
+        <div class="field-group">
+            <span class="field-label">Professional Summary (For Website Profile)</span>
+            <div class="field-box large"></div>
+            <p class="info-note">* Please provide 2-3 sentences about your professional background and academic
+                interests.</p>
+        </div>
+    </div>
+
+    <!-- Section 2: Laboratory & Infrastructure -->
+    <div class="form-section">
+        <div class="section-header"><span>02. Infrastructure & Facilities</span></div>
+        <div class="field-group">
+            <span class="field-label">Assigned Laboratory Name (if any)</span>
+            <div class="field-box"></div>
+        </div>
+        <div class="field-group">
+            <span class="field-label">Key Equipment / Software Licenses in Lab</span>
+            <div class="field-box large"></div>
+            <p class="info-note">* e.g., NVIDIA RTX GPUs, MATLAB, Cisco Switches, AWS Education Access, etc.</p>
+        </div>
+    </div>
+
+    <!-- Section 3: Industry & Placements -->
+    <div class="form-section">
+        <div class="section-header"><span>03. Industry Connections & Achievements</span></div>
+        <div class="field-group">
+            <span class="field-label">Industry Recruiters / Partners Contacted for 2025 Batch</span>
+            <div class="field-box large"></div>
+        </div>
+        <div class="field-group">
+            <span class="field-label">Successful Student Placements (Names & Companies)</span>
+            <div class="field-box large"></div>
+            <p class="info-note">* Provide details for the Student Success Stories section of the website.</p>
+        </div>
+    </div>
+
+    <!-- Section 4: Document Uploads -->
+    <div class="form-section">
+        <div class="section-header"><span>04. Required Digital Assets (Email to Admin)</span></div>
+        <ul style="font-size: 13px; color: #475569; padding-left: 20px;">
+            <li style="margin-bottom: 8px;"><b>High-Res Portrait:</b> Professional photo for the Faculty Directory.</li>
+            <li style="margin-bottom: 8px;"><b>Lab Photos:</b> 2-3 landscape photos showing a functional lab
+                environment.</li>
+            <li style="margin-bottom: 8px;"><b>MoU Documents:</b> Scanned copies of current industry partnership
+                agreements.</li>
+        </ul>
+    </div>
+
+    <div class="signature-area">
+        <div class="sig-box">FACULTY SIGNATURE</div>
+        <div class="sig-box">HOD / DEAN APPROVAL</div>
+    </div>
+
+    <div
+        style="text-align: center; margin-top: 40px; font-size: 10px; color: #94a3b8; border-top: 1px dashed #e2e8f0; padding-top: 20px;">
+        This document is an internal request for digital resource aggregation. Please return the filled copy to the
+        Website Development Team.
+    </div>
+</body>
+
+</html>
