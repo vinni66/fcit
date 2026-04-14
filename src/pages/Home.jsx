@@ -53,7 +53,7 @@ const leadershipPreview = [
     name: 'Ms. Shamina M. Attar',
     designation: 'Director, SCS, FCIT',
     initials: 'SA',
-    photoUrl: 'https://cdn.jsdelivr.net/gh/vinni66/fcit@main/FCIT-photo/faculty/WhatsApp%20Image%202026-04-14%20at%203.46.38%20PM.jpeg',
+    photoUrl: 'https://cdn.jsdelivr.net/gh/vinni66/fcit@main/public/gallery/faculty/2.jpeg',
     gradient: 'from-cyan-600 to-fcit-400',
     specialization: 'Computer Science',
     bio: 'Ms. Shamina Attar leads the School of Computer Science with a focus on Algorithm design and Artificial Intelligence.',
@@ -255,8 +255,8 @@ export default function Home() {
                   viewport={{ once: true }}
                   onClick={() => openProfile(f)}
                   className={`bg-white rounded-[1.5rem] lg:rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${isMobile
-                      ? 'p-2'
-                      : isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
+                    ? 'p-2'
+                    : isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
                     }`}
                 >
                   <div className={`relative ${isMobile ? 'w-16 h-16 mx-auto mb-2' : 'w-40 h-40 mx-auto mb-8'} group-hover:scale-110 transition-transform duration-500`}>

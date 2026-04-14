@@ -9,7 +9,7 @@ import { CDN_BASE } from '../constants'
 const slides = [
   {
     id: 1,
-    image: `${CDN_BASE}/gallery/tech_carnival_2k26/tech_carnival_2k26_1.jpeg`,
+    image: `${CDN_BASE}/gallery/faculty/1.jpeg`,
     title: 'Faculty of',
     highlight: 'Computing and IT',
     subtitle: 'Where future corporate leaders and tech innovators are forged through excellence.',

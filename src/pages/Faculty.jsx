@@ -32,7 +32,7 @@ const faculty = [
     name: 'Ms. Shamina M. Attar',
     designation: 'Director, SCS, FCIT',
     initials: 'SA',
-    photoUrl: 'https://gmu.ac.in/FCIT/images/DirectorCS.jpg',
+    photoUrl: 'https://cdn.jsdelivr.net/gh/vinni66/fcit@main/public/gallery/faculty/2.jpeg',
     gradient: 'from-cyan-600 to-fcit-400',
     specialization: 'Computer Science',
     bio: 'Ms. Shamina Attar leads the School of Computer Science with a focus on Algorithm design and Artificial Intelligence. She is instrumental in curriculum development aligned with current industrial trends.',
@@ -125,7 +125,7 @@ export default function Faculty() {
       className="min-h-screen bg-[#f8fbff] text-slate-700 pt-24 font-sans"
     >
       {/* Faculty Modal */}
-      <FacultyModal 
+      <FacultyModal
         faculty={selectedFaculty}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -134,24 +134,24 @@ export default function Faculty() {
       {/* Light Theme Standardized Hero */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <motion.div 
-            animate={{ scale: [1, 1.1, 1], rotate: [0, 90, 0] }} 
+          <motion.div
+            animate={{ scale: [1, 1.1, 1], rotate: [0, 90, 0] }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             className="absolute top-0 right-[10%] w-[50%] h-[50%] bg-fcit-200/20 rounded-full blur-[100px]"
           />
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], x: [0, -50, 0] }} 
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], x: [0, -50, 0] }}
             transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
             className="absolute bottom-0 left-[10%] w-[40%] h-[40%] bg-fcit-400/10 rounded-full blur-[80px]"
           />
         </div>
-        
+
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-             initial={{ opacity: 0, scale: 0.95, y: 20 }}
-             animate={{ opacity: 1, scale: 1, y: 0 }}
-             transition={{ duration: 0.6 }}
-             className="inline-block p-8 md:p-12 rounded-[3rem] bg-white/60 backdrop-blur-3xl border border-white/80 shadow-xl shadow-fcit-200/20"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block p-8 md:p-12 rounded-[3rem] bg-white/60 backdrop-blur-3xl border border-white/80 shadow-xl shadow-fcit-200/20"
           >
             <TextReveal
               text="Our Faculty"
@@ -195,9 +195,8 @@ export default function Faculty() {
                   viewport={{ once: true, amount: 0.1 }}
                   style={{ willChange: 'transform, opacity' }}
                   onClick={() => openProfile(f)}
-                  className={`bg-white rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${
-                    isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
-                  }`}
+                  className={`bg-white rounded-[3rem] border border-slate-100 shadow-premium hover:shadow-2xl hover:border-fcit-400 transition-all duration-500 text-center group cursor-pointer relative ${isDean ? 'p-14 z-10 border-fcit-200/50 shadow-2xl lg:scale-105' : 'p-10'
+                    }`}
                 >
                   {isDean && (
                     <div className="absolute top-6 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-fcit-400 text-white text-[9px] font-black uppercase tracking-[0.3em] shadow-lg">
@@ -231,7 +230,7 @@ export default function Faculty() {
             })}
           </div>
 
-          
+
           <AnimatedDivider />
 
           {/* Faculty Members */}
