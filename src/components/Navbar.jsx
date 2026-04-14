@@ -102,7 +102,7 @@ export default function Navbar() {
   const logoScale = useTransform(smoothProgress, [0, 1], [1, 0.82])
 
   const brandTextColor = useTransform(scrollY, scrollRange, ["#721c24", "#ffffff"])
-  const subTextColor = useTransform(scrollY, scrollRange, ["#94a3b8", "rgba(255,255,255,0.6)"])
+  const subTextColor = useTransform(scrollY, scrollRange, ["#ffffff", "#ffffff"])
 
   // Performance-optimized blur: Fixed blur with opacity fade (Lowered for mobile)
   const isMobile = getIsMobile()
@@ -111,6 +111,13 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 20)
+    
+    const previous = scrollY.getPrevious()
+    if (latest > previous && latest > 150 && !mobileOpen) {
+      setHidden(true)
+    } else {
+      setHidden(false)
+    }
   })
 
   // Throttled 3D Tilt Effect
@@ -160,6 +167,8 @@ export default function Navbar() {
         ref={headerRef}
         onMouseMove={handleTilt}
         onMouseLeave={resetTilt}
+        animate={{ y: hidden ? "-120%" : 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-center p-0 lg:p-4 pointer-events-none perspective-1000"
       >
         <motion.div
